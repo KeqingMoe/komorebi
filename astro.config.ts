@@ -9,4 +9,7 @@ export default defineConfig({
       injectReset: true,
     }),
   ],
+  redirects: {
+    "/blog": "/",
+  },
 });

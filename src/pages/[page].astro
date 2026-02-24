@@ -1,0 +1,46 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getPostUrl, getSortedPosts } from "../lib/content";
+import Base from "../layouts/Base.astro";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getSortedPosts();
+  return paginate(posts, { pageSize: 10 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const posts = page.data;
+const { first, prev, next, last } = page.url;
+const { lastPage: total, currentPage: current } = page;
+---
+
+<Base>
+  <main>
+    <h1>文章列表</h1>
+    {
+      posts.map((post) => (
+        <article>
+          <a href={getPostUrl(post.id)}>
+            <h2>{post.data.title}</h2>
+          </a>
+          <time>{post.data.pubDate.toLocaleDateString("zh-CN")}</time>
+          <p>{post.data.description}</p>
+        </article>
+      ))
+    }
+
+    {
+      total > 1 && (
+        <div class="pagination">
+          {first && first != prev && <a href={first}>1</a>}
+          {current - 2 > 1 && <span>...</span>}
+          {prev && <a href={prev}>{current - 1}</a>}
+          <span>{current}</span>
+          {next && <a href={next}>{current + 1}</a>}
+          {current + 2 < total && <span>...</span>}
+          {last && last != next && <a href={last}>{total}</a>}
+        </div>
+      )
+    }
+  </main>
+</Base>
