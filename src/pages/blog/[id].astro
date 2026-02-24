@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import Base from "../../layouts/Base.astro";
 import { render } from "astro:content";
-import { getPosts } from "../../lib/content";
+import { getPosts, getPostUrl, getSortedPosts } from "../../lib/content";
 
 export const getStaticPaths = (async () => {
   const posts = await getPosts();
@@ -15,6 +15,11 @@ export const getStaticPaths = (async () => {
 const { post } = Astro.props;
 const { title, pubDate } = post.data;
 const { Content } = await render(post);
+
+const posts = await getSortedPosts();
+const currentIndex = posts.findIndex((p) => p.id == post.id);
+const prevPost = posts[currentIndex - 1];
+const nextPost = posts[currentIndex + 1];
 ---
 
 <Base title={title}>
@@ -24,6 +29,28 @@ const { Content } = await render(post);
       <time>{pubDate.toLocaleDateString("zh-CN")}</time>
     </header>
     <Content />
-    <footer>页脚占位符</footer>
+
+    <nav class="adjacent">
+      <div class="prev">
+        {
+          prevPost && (
+            <a href={getPostUrl(prevPost.id)}>
+              <span>← 上一篇</span>
+              <strong>{prevPost.data.title}</strong>
+            </a>
+          )
+        }
+      </div>
+      <div class="next">
+        {
+          nextPost && (
+            <a href={getPostUrl(nextPost.id)}>
+              <span>下一篇 →</span>
+              <strong>{nextPost.data.title}</strong>
+            </a>
+          )
+        }
+      </div>
+    </nav>
   </article>
 </Base>
