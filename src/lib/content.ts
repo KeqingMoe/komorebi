@@ -23,7 +23,7 @@ export function sortByPubDate(posts: CollectionEntry<'blog'>[]) {
   posts.sort((a, b) => {
     let ta = a.data.pubDate.valueOf();
     let tb = b.data.pubDate.valueOf();
-    return ta - tb;
+    return tb - ta;
   });
 }
 
