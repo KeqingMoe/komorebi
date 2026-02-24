@@ -36,15 +36,15 @@ const grouped = posts.reduce((acc, post) => {
 <Base title="归档">
   <h1>文章归档</h1>
   
-  {Array.from(grouped.entries()).reverse().map(([year, monthMap]) => (
+  {Array.from(grouped.entries()).map(([year, monthMap]) => (
     <section class="year-group">
       <h2>{year} 年</h2>
       
-      {Array.from(monthMap.entries()).reverse().map(([month, dayMap]) => (
+      {Array.from(monthMap.entries()).map(([month, dayMap]) => (
         <section class="month-group">
           <h3>{month} 月</h3>
           
-          {Array.from(dayMap.entries()).reverse().map(([day, dayPosts]) => (
+          {Array.from(dayMap.entries()).map(([day, dayPosts]) => (
             <section class="day-group">
               <h4>{day} 日</h4>
               <ul>
