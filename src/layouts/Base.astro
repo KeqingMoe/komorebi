@@ -26,6 +26,12 @@ const { title = "木漏れ日 Blog" } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
+    <nav>
+      <a href="/">首页</a>
+      <a href="/archive">归档</a>
+      <a href="/about">关于</a>
+    </nav>
+
     <slot />
   </body>
 </html>
@@ -37,5 +43,8 @@ const { title = "木漏れ日 Blog" } = Astro.props;
     padding: 2rem;
     font-family: system-ui, sans-serif;
     line-height: 1.6;
+  }
+  nav a {
+    margin-right: 1rem;
   }
 </style>
