@@ -1,0 +1,63 @@
+---
+import { getPostUrl, getSortedPosts } from "../lib/content";
+import Base from "../layouts/Base.astro";
+
+const posts = await getSortedPosts();
+
+type DayPosts = typeof posts;
+type MonthMap = Map<number, DayPosts>;
+type YearMap = Map<number, MonthMap>;
+
+const grouped = posts.reduce((acc, post) => {
+  const date = post.data.pubDate;
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  if (!acc.has(year)) {
+    acc.set(year, new Map());
+  }
+  const monthMap = acc.get(year)!;
+
+  if (!monthMap.has(month)) {
+    monthMap.set(month, new Map());
+  }
+  const dayMap = monthMap.get(month)!;
+
+  if (!dayMap.has(day)) {
+    dayMap.set(day, []);
+  }
+  dayMap.get(day)!.push(post);
+
+  return acc;
+}, new Map<number, YearMap>());
+---
+
+<Base title="归档">
+  <h1>文章归档</h1>
+  
+  {Array.from(grouped.entries()).reverse().map(([year, monthMap]) => (
+    <section class="year-group">
+      <h2>{year} 年</h2>
+      
+      {Array.from(monthMap.entries()).reverse().map(([month, dayMap]) => (
+        <section class="month-group">
+          <h3>{month} 月</h3>
+          
+          {Array.from(dayMap.entries()).reverse().map(([day, dayPosts]) => (
+            <section class="day-group">
+              <h4>{day} 日</h4>
+              <ul>
+                {dayPosts.map((post) => (
+                  <li>
+                    <a href={getPostUrl(post.id)}>{post.data.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </section>
+      ))}
+    </section>
+  ))}
+</Base>
