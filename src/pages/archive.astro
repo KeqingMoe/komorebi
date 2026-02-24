@@ -5,8 +5,8 @@ import Base from "../layouts/Base.astro";
 const posts = await getSortedPosts();
 
 type DayPosts = typeof posts;
-type MonthMap = Map<number, DayPosts>;
-type YearMap = Map<number, MonthMap>;
+type DayMap = Map<number, DayPosts>;
+type MonthMap = Map<number, DayMap>;
 
 const grouped = posts.reduce((acc, post) => {
   const date = post.data.pubDate;
@@ -15,12 +15,12 @@ const grouped = posts.reduce((acc, post) => {
   const day = date.getDate();
 
   if (!acc.has(year)) {
-    acc.set(year, new Map());
+    acc.set(year, new Map<number, DayMap>());
   }
   const monthMap = acc.get(year)!;
 
   if (!monthMap.has(month)) {
-    monthMap.set(month, new Map());
+    monthMap.set(month, new Map<number, DayPosts>());
   }
   const dayMap = monthMap.get(month)!;
 
@@ -30,7 +30,7 @@ const grouped = posts.reduce((acc, post) => {
   dayMap.get(day)!.push(post);
 
   return acc;
-}, new Map<number, YearMap>());
+}, new Map<number, MonthMap>());
 ---
 
 <Base title="归档">
