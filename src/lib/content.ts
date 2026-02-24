@@ -4,6 +4,11 @@ export async function getPosts<E extends CollectionEntry<keyof DataEntryMap>>(
   filter?: (entry: CollectionEntry<keyof DataEntryMap>) => entry is E,
 ) {
   return getCollection('blog', entry => {
+    if (/^\d+$/.test(entry.id)) {
+      throw new Error(
+        `Invalid blog post id ${entry.id}: numeric-only ids are reserved for pagination routes (/blog/:page).`,
+      );
+    }
     if (import.meta.env.PROD && entry.data.draft) {
       return false;
     }
