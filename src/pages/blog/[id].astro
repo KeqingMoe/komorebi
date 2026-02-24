@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "../../layouts/Base.astro";
+import { render } from "astro:content";
+import { getPosts } from "../../lib/content";
+
+export const getStaticPaths = (async () => {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { title, pubDate } = post.data;
+const { Content } = await render(post);
+---
+
+<Base title={title}>
+  <article>
+    <header>
+      <h1>{title}</h1>
+      <time>{pubDate.toLocaleDateString("zh-CN")}</time>
+    </header>
+    <Content />
+    <footer>页脚占位符</footer>
+  </article>
+</Base>
