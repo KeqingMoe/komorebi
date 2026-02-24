@@ -1,6 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
-import { getPosts } from "../lib/content";
+import { getPosts, getPostUrl } from "../lib/content";
 
 const posts = await getPosts();
 posts.sort((a, b) => {
@@ -15,7 +15,7 @@ posts.sort((a, b) => {
 		{
 			posts.map((post) => (
 				<article>
-					<a href={`/blog/${post.id}`}>
+					<a href={getPostUrl(post.id)}>
 						<h2>{post.data.title}</h2>
 					</a>
 					<time>{post.data.pubDate.toLocaleDateString("zh-CN")}</time>

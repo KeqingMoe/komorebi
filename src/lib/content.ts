@@ -10,3 +10,7 @@ export async function getPosts<E extends CollectionEntry<keyof DataEntryMap>>(
     return filter ? filter(entry) : true;
   });
 }
+
+export function getPostUrl(id: string) {
+  return `/blog/${id}`;
+}
