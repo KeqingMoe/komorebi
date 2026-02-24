@@ -1,12 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
-import { getPosts, getPostUrl } from "../lib/content";
+import { getSortedPosts, getPostUrl } from "../lib/content";
 
-const posts = await getPosts();
-posts.sort((a, b) => {
-	const get = (x: typeof a) => x.data.pubDate.valueOf();
-	return get(a) - get(b);
-});
+const posts = await getSortedPosts();
 ---
 
 <Base>
