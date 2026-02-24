@@ -2,24 +2,23 @@
 import type { GetStaticPaths } from "astro";
 import Base from "../../layouts/Base.astro";
 import { render } from "astro:content";
-import { getPosts, getPostUrl, getSortedPosts } from "../../lib/content";
+import { getSortedPosts, getPostUrl } from "../../lib/content";
 
 export const getStaticPaths = (async () => {
-  const posts = await getPosts();
-  return posts.map((post) => ({
+  const posts = await getSortedPosts();
+  return posts.map((post, i) => ({
     params: { id: post.id },
-    props: { post },
+    props: {
+      prevPost: posts[i - 1],
+      post,
+      nextPost: posts[i + 1],
+    },
   }));
 }) satisfies GetStaticPaths;
 
-const { post } = Astro.props;
+const { prevPost, post, nextPost } = Astro.props;
 const { title, pubDate } = post.data;
 const { Content } = await render(post);
-
-const posts = await getSortedPosts();
-const currentIndex = posts.findIndex((p) => p.id == post.id);
-const prevPost = posts[currentIndex - 1];
-const nextPost = posts[currentIndex + 1];
 ---
 
 <Base title={title}>
