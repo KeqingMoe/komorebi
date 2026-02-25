@@ -22,29 +22,33 @@ const props = {
 ---
 
 <Base title="文章列表">
-  <section>
-    <h1>文章列表</h1>
+  <div space-y-8>
+    <section>
+      <h1 mb-6 mt-6 text-3xl font-medium sm:mt-10>博客</h1>
+    </section>
 
-    <ol flex="~ col" gap-y-4 text-start>
-      {
-        posts.map((post) => (
-          <li
-            relative
-            rounded-2xl
-            border="~ base-content/10"
-            bg-base="200/40"
-            transition-colors
-            ease-in-out
-            hover:bg-neutral-100
-          >
-            <PostCard {post} />
-          </li>
-        ))
-      }
-    </ol>
-  </section>
+    <section space-y-6>
+      <ol flex="~ col" gap-y-4 text-start>
+        {
+          posts.map((post) => (
+            <li
+              relative
+              rounded-2xl
+              border="~ base-content/10"
+              bg-base="200/40"
+              transition-colors
+              ease-in-out
+              hover:bg-neutral-100
+            >
+              <PostCard {post} />
+            </li>
+          ))
+        }
+      </ol>
+    </section>
 
-  <section bg="base-200/40" border="~ base-content/10" rounded-2xl p="4 sm:6">
-    <PaginationNav {...props} />
-  </section>
+    <section bg="base-200/40" border="~ base-content/10" rounded-2xl p="4 sm:6">
+      <PaginationNav {...props} />
+    </section>
+  </div>
 </Base>
