@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { getPostUrl, getSortedPosts } from "../../lib/content";
 import Base from "../../layouts/Base.astro";
+import PaginationNav from "../../components/PaginationNav.astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getSortedPosts();
@@ -10,8 +11,13 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 const { page } = Astro.props;
 const posts = page.data;
-const { first, prev, next, last } = page.url;
-const { lastPage: total, currentPage: current } = page;
+
+const props = {
+  ...page.url,
+  total: page.lastPage,
+  current: page.currentPage,
+  posts: page.total,
+};
 ---
 
 <Base title="文章列表">
@@ -30,17 +36,7 @@ const { lastPage: total, currentPage: current } = page;
     }
   </section>
 
-  {
-    total > 1 && (
-      <nav aria-label="分页导航">
-        {first && first != prev && <a href={first}>1</a>}
-        {current - 2 > 1 && <span>...</span>}
-        {prev && <a href={prev}>{current - 1}</a>}
-        <span>{current}</span>
-        {next && <a href={next}>{current + 1}</a>}
-        {current + 2 < total && <span>...</span>}
-        {last && last != next && <a href={last}>{total}</a>}
-      </nav>
-    )
-  }
+  <section bg="base-200/40" border="~ base-content/10" rounded-2xl p="4 sm:6">
+    <PaginationNav {...props} />
+  </section>
 </Base>
