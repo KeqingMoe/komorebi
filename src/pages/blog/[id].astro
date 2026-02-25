@@ -22,13 +22,17 @@ const { Content } = await render(post);
 ---
 
 <Base title={title}>
-  <article>
-    <header>
-      <h1>{title}</h1>
-      <time>{pubDate.toLocaleDateString("zh-CN")}</time>
-    </header>
-    <Content />
+  <section>
+    <h1>{title}</h1>
+    <time>{pubDate.toLocaleDateString("zh-CN")}</time>
+    {post.data.draft && <span>这篇文章还是草稿，仅开发模式可见。</span>}
+  </section>
 
+  <article>
+    <Content />
+  </article>
+
+  <div>
     <nav class="adjacent">
       <div class="prev">
         {
@@ -51,5 +55,5 @@ const { Content } = await render(post);
         }
       </div>
     </nav>
-  </article>
+  </div>
 </Base>

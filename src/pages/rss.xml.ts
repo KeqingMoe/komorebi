@@ -16,7 +16,7 @@ export const GET: APIRoute = async (context) => {
   const blog = await getPosts();
   return rss({
     title: '木漏れ日',
-    description: 'A nice blog',
+    description: '木漏れ日 Blog',
     site: context.site,
     items: blog.map(post => ({
       title: post.data.title,

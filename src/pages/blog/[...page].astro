@@ -14,8 +14,8 @@ const { first, prev, next, last } = page.url;
 const { lastPage: total, currentPage: current } = page;
 ---
 
-<Base>
-  <main>
+<Base title="文章列表">
+  <section>
     <h1>文章列表</h1>
     {
       posts.map((post) => (
@@ -28,19 +28,19 @@ const { lastPage: total, currentPage: current } = page;
         </article>
       ))
     }
+  </section>
 
-    {
-      total > 1 && (
-        <div class="pagination">
-          {first && first != prev && <a href={first}>1</a>}
-          {current - 2 > 1 && <span>...</span>}
-          {prev && <a href={prev}>{current - 1}</a>}
-          <span>{current}</span>
-          {next && <a href={next}>{current + 1}</a>}
-          {current + 2 < total && <span>...</span>}
-          {last && last != next && <a href={last}>{total}</a>}
-        </div>
-      )
-    }
-  </main>
+  {
+    total > 1 && (
+      <nav aria-label="分页导航">
+        {first && first != prev && <a href={first}>1</a>}
+        {current - 2 > 1 && <span>...</span>}
+        {prev && <a href={prev}>{current - 1}</a>}
+        <span>{current}</span>
+        {next && <a href={next}>{current + 1}</a>}
+        {current + 2 < total && <span>...</span>}
+        {last && last != next && <a href={last}>{total}</a>}
+      </nav>
+    )
+  }
 </Base>

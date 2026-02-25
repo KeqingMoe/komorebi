@@ -34,7 +34,9 @@ const grouped = posts.reduce((acc, post) => {
 ---
 
 <Base title="归档">
-  <h1>文章归档</h1>
+  <section>
+    <h1>文章归档</h1>
+  </section>
   
   {Array.from(grouped.entries()).map(([year, monthMap]) => (
     <section class="year-group">
