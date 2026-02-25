@@ -1,8 +1,9 @@
 ---
 import type { GetStaticPaths } from "astro";
-import { getPostUrl, getSortedPosts } from "../../lib/content";
+import { getSortedPosts } from "../../lib/content";
 import Base from "../../layouts/Base.astro";
 import PaginationNav from "../../components/PaginationNav.astro";
+import PostCard from "../../components/PostCard.astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getSortedPosts();
@@ -23,17 +24,24 @@ const props = {
 <Base title="文章列表">
   <section>
     <h1>文章列表</h1>
-    {
-      posts.map((post) => (
-        <article>
-          <a href={getPostUrl(post.id)}>
-            <h2>{post.data.title}</h2>
-          </a>
-          <time>{post.data.pubDate.toLocaleDateString("zh-CN")}</time>
-          <p>{post.data.description}</p>
-        </article>
-      ))
-    }
+
+    <ol flex="~ col" gap-y-4 text-start>
+      {
+        posts.map((post) => (
+          <li
+            relative
+            rounded-2xl
+            border="~ base-content/10"
+            bg-base="200/40"
+            transition-colors
+            ease-in-out
+            hover:bg-neutral-100
+          >
+            <PostCard {post} />
+          </li>
+        ))
+      }
+    </ol>
   </section>
 
   <section bg="base-200/40" border="~ base-content/10" rounded-2xl p="4 sm:6">
