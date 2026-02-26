@@ -9,11 +9,19 @@ interface Props {
 const { prev, next } = Astro.props;
 ---
 
-<nav flex="~ wrap" items-start gap-y-2 mt="3 sm:6">
+<nav aria-label="相邻文章导航" flex="~ wrap" items-start gap-y-2 mt="3 sm:6">
   {
     prev && (
-      <a class="adjacent" mr-auto href={getPostUrl(prev.id)}>
-        <span flex-none>←</span>
+      <a
+        class="adjacent"
+        mr-auto
+        href={getPostUrl(prev.id)}
+        aria-label={`上一篇：${prev.data.title}`}
+        rel="prev"
+      >
+        <span flex-none aria-hidden>
+          ←
+        </span>
         <span min-w-0 truncate font-medium text-left>
           {prev.data.title}
         </span>
@@ -22,11 +30,19 @@ const { prev, next } = Astro.props;
   }
   {
     next && (
-      <a class="adjacent" ml-auto href={getPostUrl(next.id)}>
+      <a
+        class="adjacent"
+        ml-auto
+        href={getPostUrl(next.id)}
+        aria-label={`下一篇：${next.data.title}`}
+        rel="next"
+      >
         <span min-w-0 truncate font-medium text-right>
           {next.data.title}
         </span>
-        <span flex-none>→</span>
+        <span flex-none aria-hidden>
+          →
+        </span>
       </a>
     )
   }
@@ -43,6 +59,11 @@ const { prev, next } = Astro.props;
             py-2
             hover:text-primary
             hover:bg-neutral-100
+            focus-visible:text-primary
+            focus-visible:bg-neutral-100
+            focus-visible:outline-none
+            focus-visible:ring-2
+            focus-visible:ring-primary/40
             transition-colors
             duration-300
             min-w-0
