@@ -1,0 +1,36 @@
+---
+const links: {
+  url: string;
+  name: string;
+}[] = [
+  { url: "/", name: "首页" },
+  { url: "/archive", name: "归档" },
+  { url: "/about", name: "关于" },
+];
+---
+
+<nav
+  flex="~ row"
+  items-center
+  justify-center
+  overflow-hidden
+  aria-label="主导航"
+>
+  {
+    links.map(({ url, name }) => (
+      <a
+        flex-none
+        grow
+        px-3
+        py-2
+        text-right
+        font-medium
+        transition-none
+        hover:text-primary
+        href={url}
+      >
+        {name}
+      </a>
+    ))
+  }
+</nav>
