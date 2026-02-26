@@ -11,7 +11,16 @@ export default defineConfig({
   presets: [
     presetWind4(),
     presetAttributify(),
-    presetTypography(),
+    presetTypography({
+      cssExtend: {
+        'blockquote p:first-of-type::before': {
+          content: '""',
+        },
+        'blockquote p:last-of-type::after': {
+          content: '""',
+        },
+      }
+    }),
     presetIcons(),
   ],
   transformers: [

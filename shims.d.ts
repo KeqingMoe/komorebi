@@ -1,6 +1,6 @@
 import type { AttributifyAttributes } from '@unocss/preset-attributify';
 
-type VariantPrefixes = 'print';
+type VariantPrefixes = 'print' | 'prose';
 type UtilityNames = 'hidden' | 'block';
 
 type Variants = {
