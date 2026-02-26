@@ -2,8 +2,8 @@
 import type { GetStaticPaths } from "astro";
 import { getSortedPosts } from "../../lib/content";
 import Layout from "../../layouts/Layout.astro";
-import PaginationNav from "../../components/PaginationNav.astro";
-import PostCard from "../../components/PostCard.astro";
+import PaginationNav from "../../components/blog/PaginationNav.astro";
+import PostCard from "../../components/blog/PostCard.astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getSortedPosts();
