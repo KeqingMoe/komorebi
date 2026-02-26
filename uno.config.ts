@@ -13,6 +13,24 @@ export default defineConfig({
     presetAttributify(),
     presetTypography({
       cssExtend: {
+        h2: {
+          'margin-top': '3rem',
+        },
+        h3: {
+          'margin-top': '2.25rem',
+        },
+        blockquote: {
+          'border-left-width': '2px',
+          'border-left-style': 'solid',
+          'border-left-color': 'var(--un-prose-borders)',
+          'border-radius': '0',
+          'background-color': 'transparent',
+          'padding-left': '1rem',
+        },
+        'hr': {
+          'margin-top': '2em',
+          'margin-bottom': '2em',
+        },
         'blockquote p:first-of-type::before': {
           content: '""',
         },

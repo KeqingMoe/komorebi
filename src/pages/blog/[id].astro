@@ -3,8 +3,7 @@ import type { GetStaticPaths } from "astro";
 import Layout from "../../layouts/Layout.astro";
 import { render } from "astro:content";
 import { getSortedPosts } from "../../lib/content";
-import ReadingTime from "../../components/widgets/ReadingTime.astro";
-import WordsCount from "../../components/widgets/WordsCount.astro";
+import BlogHeader from "../../components/blog/BlogHeader.astro";
 import AdjacentNav from "../../components/blog/AdjacentNav.astro";
 
 export const getStaticPaths = (async () => {
@@ -21,62 +20,29 @@ export const getStaticPaths = (async () => {
 
 const { prev, post, next } = Astro.props;
 const { title, description, pubDate, updatedDate, draft } = post.data;
-const { words, time: milliseconds } = post.readingStats;
+const { readingStats } = post;
 const { Content } = await render(post);
 ---
 
 <Layout title={title}>
-  <article mt-6>
-    <section
-      border="~ base-content/5"
-      bg="base-200/40"
-      p="6 md:8 lg:12"
-      rounded-2xl
-      shadow-sm
-      text-base
+  <article mt="8 sm:10" text-base>
+    <BlogHeader
+      {...{ title, description, pubDate, updatedDate, draft, readingStats }}
+    />
+
+    <div h-px mt-6 mb-10 border="t dashed base-content/10"></div>
+
+    <div
+      prose="~ dark:invert"
+      max-w-none
+      text="base-content/90 [17px]"
+      leading-8
     >
-      <div flex="~ wrap" gap-x-4 gap-y-2 text="base-content/70">
-        <div flex items-center gap-1>
-          <div i-mdi:calendar-month></div>
-          <time>{pubDate.toLocaleDateString("zh-CN")}</time>
-        </div>
-
-        {
-          updatedDate && (
-            <div flex items-center gap-1>
-              <div i-mdi:calendar-edit />
-              <time>{updatedDate.toLocaleDateString("zh-CN")}</time>
-            </div>
-          )
-        }
-
-        <div flex items-center gap-1>
-          <WordsCount {words} />
-        </div>
-
-        <div flex items-center gap-1>
-          <ReadingTime {milliseconds} />
-        </div>
-
-        {
-          draft && (
-            <div flex items-center gap-1 text-red font-bold>
-              这篇文章还是草稿，仅开发模式可见。
-            </div>
-          )
-        }
-      </div>
-
-      <h1 mt="3" text="2xl sm:3xl" font-medium sm:mb-2>{title}</h1>
-      <p mt-3 italic text="base-content/70">{description}</p>
-
-      <div py-1></div>
-
-      <div prose="~ dark:invert" max-w-full>
-        <Content />
-      </div>
-    </section>
+      <Content />
+    </div>
   </article>
+
+  <div h-px my-10 border="t dashed base-content/10"></div>
 
   <AdjacentNav {prev} {next} />
 </Layout>

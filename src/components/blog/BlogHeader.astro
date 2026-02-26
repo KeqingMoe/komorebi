@@ -1,0 +1,78 @@
+---
+import type { ReadTimeResults } from "reading-time";
+import WordsCount from "../widgets/WordsCount.astro";
+import ReadingTime from "../widgets/ReadingTime.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate: Date | undefined;
+  draft: boolean;
+  readingStats: ReadTimeResults;
+}
+
+const { title, description, pubDate, updatedDate, draft } = Astro.props;
+const { words, time: milliseconds } = Astro.props.readingStats;
+---
+
+<header>
+  {
+    draft && (
+      <div class="meta-chip" text="!red-600 sm" bg="!red-100" mb-3>
+        该文章为草稿，仅开发模式可见。
+      </div>
+    )
+  }
+
+  <div flex="~ wrap" gap-2 text-sm>
+    <div class="meta-chip">
+      <div i-mdi:calendar-month></div>
+      <time>{pubDate.toLocaleDateString("zh-CN")}</time>
+    </div>
+
+    {
+      updatedDate && (
+        <div class="meta-chip">
+          <div i-mdi:calendar-edit />
+          <time>{updatedDate.toLocaleDateString("zh-CN")}</time>
+        </div>
+      )
+    }
+
+    <div class="meta-chip">
+      <WordsCount {words} />
+    </div>
+
+    <div class="meta-chip">
+      <ReadingTime {milliseconds} />
+    </div>
+  </div>
+
+  <h1 mt="5 sm:6" text="3xl sm:4xl" font-medium leading-tight>
+    {title}
+  </h1>
+
+  {
+    description && (
+      <p mt-3 text="base-content/65" leading-relaxed>
+        {description}
+      </p>
+    )
+  }
+</header>
+
+<style>
+  .meta-chip {
+    @apply inline-flex
+            items-center
+            gap-x-1.5
+            rounded-xl
+            px-3
+            py-1.5
+            text-base-content/70
+            bg-neutral-100
+            transition-colors
+            duration-300;
+  }
+</style>
