@@ -3,8 +3,8 @@ import type { GetStaticPaths } from "astro";
 import Layout from "../../layouts/Layout.astro";
 import { render } from "astro:content";
 import { getSortedPosts } from "../../lib/content";
-import BlogHeader from "../../components/blog/BlogHeader.astro";
-import AdjacentNav from "../../components/blog/AdjacentNav.astro";
+import PostHeader from "../../components/post/PostHeader.astro";
+import AdjacentNav from "../../components/post/AdjacentNav.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getSortedPosts();
@@ -26,7 +26,7 @@ const { Content } = await render(post);
 
 <Layout title={title}>
   <article mt="8 sm:10" text-base>
-    <BlogHeader
+    <PostHeader
       {...{ title, description, pubDate, updatedDate, draft, readingStats }}
     />
 
