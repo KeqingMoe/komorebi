@@ -13,32 +13,42 @@ const links: {
 
 if (Astro.site) {
   links.push({
-    url: '/rss.xml',
-    name: 'RSS',
-    icon: 'i-mdi:rss',
+    url: "/rss.xml",
+    name: "RSS",
+    icon: "i-mdi:rss",
   });
 }
 ---
 
-<footer mx="4 sm:6" mt-16 mb-5>
-  <div border="t base-content/10" pt-5>
-    <div flex="~ max-sm:col" items-center sm:justify-between gap-y="3 sm:0">
-      <div flex text="base-content/70">© 2026 時雨てる</div>
-      <div flex="~ row" items-center gap-x-2>
-        {
-          links.map(({ url, name, icon }) => (
-            <a
-              inline-block
-              text="base-content/70 hover:base-content/75"
-              href={url}
-              aria-label={name}
-            >
-              <div text-1.5rem class={icon} />
-            </a>
-            <span></span>
-          ))
-        }
-      </div>
-    </div>
+<footer
+  mx="4 sm:6"
+  mt-10
+  mb-5
+  pt-5
+  border="t base-content/10"
+  flex="~ max-sm:col"
+  items-center
+  sm:justify-between
+  gap-y="3 sm:0"
+>
+  <div text="base-content/70">
+    © 2026 時雨てる -
+    <a hover:text="base-content/80" href="https://github.com/KeqingMoe/komorebi"
+      >木漏れ日</a
+    >
+  </div>
+  <div flex="~ row" items-center gap-x-2>
+    {
+      links.map(({ url, name, icon }) => (
+        <a
+          inline-block
+          text="base-content/70 hover:base-content/80"
+          href={url}
+          aria-label={name}
+        >
+          <div text="1.5rem" class={icon} />
+        </a>
+      ))
+    }
   </div>
 </footer>
