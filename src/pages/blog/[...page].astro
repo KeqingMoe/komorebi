@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { getSortedPosts } from "../../lib/content";
-import Base from "../../layouts/Base.astro";
+import Layout from "../../layouts/Layout.astro";
 import PaginationNav from "../../components/PaginationNav.astro";
 import PostCard from "../../components/PostCard.astro";
 
@@ -21,7 +21,7 @@ const props = {
 };
 ---
 
-<Base title="文章列表">
+<Layout title="文章列表">
   <div space-y-8>
     <section>
       <h1 mb-6 mt-6 text-3xl font-medium sm:mt-10>博客</h1>
@@ -51,4 +51,4 @@ const props = {
       <PaginationNav {...props} />
     </section>
   </div>
-</Base>
+</Layout>

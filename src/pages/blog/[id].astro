@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from "astro";
-import Base from "../../layouts/Base.astro";
+import Layout from "../../layouts/Layout.astro";
 import { render } from "astro:content";
 import { getSortedPosts } from "../../lib/content";
 import ReadingTime from "../../components/widgets/ReadingTime.astro";
@@ -25,7 +25,7 @@ const { words, time: milliseconds } = post.readingStats;
 const { Content } = await render(post);
 ---
 
-<Base title={title}>
+<Layout title={title}>
   <article mt-6>
     <section
       border="~ base-content/5"
@@ -79,4 +79,4 @@ const { Content } = await render(post);
   </article>
 
   <AdjacentNav {prev} {next} />
-</Base>
+</Layout>
