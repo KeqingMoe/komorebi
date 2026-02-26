@@ -1,0 +1,51 @@
+---
+import { getPostUrl, type PostEntry } from "../../lib/content";
+
+interface Props {
+  prev: PostEntry | undefined;
+  next: PostEntry | undefined;
+}
+
+const { prev, next } = Astro.props;
+---
+
+<nav flex="~ wrap" items-start gap-y-2 mt="3 sm:6">
+  {
+    prev && (
+      <a class="adjacent" mr-auto href={getPostUrl(prev.id)}>
+        <span flex-none>←</span>
+        <span min-w-0 truncate font-medium text-left>
+          {prev.data.title}
+        </span>
+      </a>
+    )
+  }
+  {
+    next && (
+      <a class="adjacent" ml-auto href={getPostUrl(next.id)}>
+        <span min-w-0 truncate font-medium text-right>
+          {next.data.title}
+        </span>
+        <span flex-none>→</span>
+      </a>
+    )
+  }
+</nav>
+
+<style>
+  .adjacent {
+    @apply inline-flex
+            flex-initial
+            items-center
+            gap-x-2
+            rounded-xl
+            px-4
+            py-2
+            hover:text-primary
+            hover:bg-neutral-100
+            transition-colors
+            duration-300
+            min-w-0
+            max-w-full;
+  }
+</style>

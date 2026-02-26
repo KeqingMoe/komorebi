@@ -2,23 +2,24 @@
 import type { GetStaticPaths } from "astro";
 import Base from "../../layouts/Base.astro";
 import { render } from "astro:content";
-import { getSortedPosts, getPostUrl } from "../../lib/content";
+import { getSortedPosts } from "../../lib/content";
 import ReadingTime from "../../components/widgets/ReadingTime.astro";
 import WordsCount from "../../components/widgets/WordsCount.astro";
+import AdjacentNav from "../../components/blog/AdjacentNav.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getSortedPosts();
   return posts.map((post, i) => ({
     params: { id: post.id },
     props: {
-      prevPost: posts[i - 1],
+      prev: posts[i - 1],
       post,
-      nextPost: posts[i + 1],
+      next: posts[i + 1],
     },
   }));
 }) satisfies GetStaticPaths;
 
-const { prevPost, post, nextPost } = Astro.props;
+const { prev, post, next } = Astro.props;
 const { title, description, pubDate, updatedDate, draft } = post.data;
 const { words, time: milliseconds } = post.readingStats;
 const { Content } = await render(post);
@@ -77,28 +78,5 @@ const { Content } = await render(post);
     </section>
   </article>
 
-  <div>
-    <nav class="adjacent">
-      <div class="prev">
-        {
-          prevPost && (
-            <a href={getPostUrl(prevPost.id)}>
-              <span>← 上一篇</span>
-              <strong>{prevPost.data.title}</strong>
-            </a>
-          )
-        }
-      </div>
-      <div class="next">
-        {
-          nextPost && (
-            <a href={getPostUrl(nextPost.id)}>
-              <span>下一篇 →</span>
-              <strong>{nextPost.data.title}</strong>
-            </a>
-          )
-        }
-      </div>
-    </nav>
-  </div>
+  <AdjacentNav {prev} {next} />
 </Base>
