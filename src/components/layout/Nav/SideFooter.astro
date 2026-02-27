@@ -1,0 +1,57 @@
+---
+const links: {
+  url: string;
+  name: string;
+  icon: string;
+}[] = [
+  {
+    url: "https://github.com/KeqingMoe",
+    name: "GitHub",
+    icon: "i-mdi:github",
+  },
+];
+
+if (Astro.site) {
+  links.push({
+    url: "/rss.xml",
+    name: "RSS",
+    icon: "i-mdi:rss",
+  });
+}
+---
+
+<footer
+  relative
+  z-1
+  m="t-3 x-1 b-1"
+  pt="3.6"
+  border-t="~ base-content/10"
+  flex
+  items-center
+  justify-center
+  gap-2.2
+>
+  <div flex items-center gap-2.2>
+    {
+      links.map(({ url, name, icon }) => (
+        <a
+          href={url}
+          aria-label={name}
+          inline-flex
+          items-center
+          justify-center
+          w-8
+          h-8
+          rounded-full
+          bg-neutral-50
+          border="~ base-content/10"
+          transition-all
+          duration-200
+          hover="translate-y--1px text-primary border-primary"
+        >
+          <div class={icon} />
+        </a>
+      ))
+    }
+  </div>
+</footer>

@@ -1,0 +1,112 @@
+---
+import NavLink from "./NavLink.astro";
+import SideFooter from "./SideFooter.astro";
+
+const links: {
+  url: string;
+  name: string;
+  icon: string;
+}[] = [
+  {
+    url: "/",
+    name: "文章",
+    icon: "i-mdi:file-document-multiple-outline",
+  },
+  {
+    url: "/archive",
+    name: "归档",
+    icon: "i-mdi:archive-arrow-down-outline",
+  },
+  {
+    url: "/about",
+    name: "关于",
+    icon: "i-mdi:alert-box-outline",
+  },
+];
+---
+
+<side-nav contents>
+  <aside
+    sticky
+    top-0
+    h-100dvh
+    overflow-hidden
+    shrink-0
+    text="base-content/70"
+    z-100
+    transition-transform
+    duration-200
+    p-4
+    bg-base-200
+    flex="~ col"
+    max-md="fixed left-0 top-0 bottom-0 h-auto w-max max-w-full -translate-x-full"
+  >
+    <a
+      href="/"
+      relative
+      z-1
+      grid
+      gap-1
+      m-1
+      p="y-3.5 x-4"
+      transition-all
+      duration-200
+      hover:translate-y--1px
+    >
+      <span text="3 base-content/60" uppercase> Komorebi Blog </span>
+      <h1
+        text="transparent 2rem"
+        leading-1em
+        font-300
+        bg-linear-to-r
+        from-blue
+        to-red
+        bg-clip-text
+      >
+        木漏れ日
+      </h1>
+      <p m-0 text="3.5 base-content/60">思考、记录、归档</p>
+    </a>
+
+    <hr class="color-base-content/10" />
+
+    <div relative z-1 grow mt="4" p="2">
+      <nav flex="~ col" grow gap-1.8 h-full aria-label="主导航">
+        {links.map((props) => <NavLink {...props} />)}
+      </nav>
+    </div>
+
+    <SideFooter />
+  </aside>
+</side-nav>
+
+<script>
+  import { isNavExpand } from "./nav-store";
+
+  class SideNav extends HTMLElement {
+    private sidebar: HTMLElement | null = null;
+    private cancel: () => void = () => {};
+
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      this.sidebar = this.querySelector("aside");
+      this.cancel = isNavExpand.subscribe((expand) => {
+        if (!this.sidebar) return;
+        if (expand) {
+          this.sidebar.style.translate = "0";
+        } else {
+          this.sidebar.style.translate = "";
+        }
+      });
+    }
+
+    disconnectedCallback() {
+      this.cancel();
+    }
+  }
+
+  customElements.define("side-nav", SideNav);
+</script>

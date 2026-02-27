@@ -1,6 +1,4 @@
 ---
-import Footer from "../components/layout/Footer.astro";
-import Header from "../components/layout/Header.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -29,13 +27,7 @@ const { title = "木漏れ日 Blog" } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body flex="~ col" justify-between min-h-100dvh>
-    <Header />
-
-    <main flex-1 lg:col-span-3 mx="4 sm:7 lg:10">
-      <slot />
-    </main>
-
-    <Footer />
+  <body>
+    <slot />
   </body>
 </html>

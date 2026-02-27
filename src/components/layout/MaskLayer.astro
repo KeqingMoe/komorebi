@@ -1,0 +1,49 @@
+<mask-layer>
+  <div max-md:hidden md:hidden bg="#0003" fixed z-99 inset-0></div>
+</mask-layer>
+
+<style>
+  .expand {
+    @apply max-md:block;
+  }
+</style>
+
+<script>
+  import { isNavExpand } from "./Nav/nav-store";
+
+  class MaskLayer extends HTMLElement {
+    private mask: HTMLDivElement | null = null;
+    private cancel: () => void = () => {};
+    private onMaskClick = () => {
+      isNavExpand.set(false);
+    };
+
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      this.mask = this.querySelector("div");
+      this.mask?.addEventListener("click", this.onMaskClick);
+
+      this.cancel = isNavExpand.subscribe((expand) => this.syncMask(expand));
+      this.syncMask(isNavExpand.get());
+    }
+
+    private syncMask(expand: boolean) {
+      if (!this.mask) return;
+      if (expand) {
+        this.mask.classList.add('expand');
+      } else {
+        this.mask.classList.remove('expand');
+      }
+    }
+
+    disconnectedCallback() {
+      this.cancel();
+      this.mask?.removeEventListener("click", this.onMaskClick);
+    }
+  }
+
+  customElements.define("mask-layer", MaskLayer);
+</script>

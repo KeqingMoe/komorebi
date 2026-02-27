@@ -1,0 +1,41 @@
+<nav-toggle>
+  <button
+    type="button"
+    aria-label="切换侧边栏"
+    inline-flex
+    items-center
+    justify-center
+    w-12
+    h-12
+    rounded-full
+    border="~ base-content/10"
+    bg-neutral-50
+    transition-all
+    duration-200
+    hover="translate-y--1px border-primary text-primary"
+  >
+    <div text-5 class="i-mdi:page-layout-sidebar-left"></div>
+  </button>
+</nav-toggle>
+
+<script>
+  import { toggleNav } from "./nav-store";
+
+  class NavToggle extends HTMLElement {
+    private btn: HTMLButtonElement | null = null;
+
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      this.btn = this.querySelector("button");
+
+      this.btn?.addEventListener("click", () => {
+        toggleNav();
+      });
+    }
+  }
+
+  customElements.define("nav-toggle", NavToggle);
+</script>

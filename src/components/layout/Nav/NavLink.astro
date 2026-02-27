@@ -1,0 +1,30 @@
+---
+interface Props {
+  url: string;
+  name: string;
+  icon: string;
+}
+
+const { url, name, icon } = Astro.props;
+---
+
+<a
+  href={url}
+  class="group"
+  flex
+  items-center
+  gap-3
+  rounded-3
+  no-underline
+  text="base-content hover:primary"
+  p-4
+  py-3
+  duration-200
+  hover:bg-neutral-200
+>
+  <div text-4 class={icon}></div>
+  <span grow>
+    {name}
+  </span>
+  <div i-mdi:circle-medium text="transparent group-hover:primary"></div>
+</a>
