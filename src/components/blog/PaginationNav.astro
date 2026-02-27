@@ -6,99 +6,131 @@ interface Props {
   last: string | undefined;
   total: number;
   current: number;
-  posts: number;
 }
 
-const { first, prev, next, last, total, current, posts } = Astro.props;
+const { first, prev, next, last, total, current } = Astro.props;
 ---
 
-<div flex="~ col sm:row" sm:items-center sm:justify-between gap-4>
-  <div flex items-center gap-3 text="base base-content/70">
-    共 {posts} 篇文章
-  </div>
-  <nav flex="~ wrap" items-center gap-2 aria-label="分页导航">
-    {
-      first && first != prev && (
-        <a
-          href={first}
-          class="pagination-btn"
-          title="首页"
-          transition:name={`pagination-btn-1`}
-        >
-          1
-        </a>
-      )
-    }
+<nav
+  inline-flex
+  items-center
+  border="~ base-content/15"
+  rounded-lg
+  overflow-hidden
+  bg="base-100"
+  flex="~"
+  items-center
+  aria-label="分页导航"
+>
+  <a
+    href={prev}
+    class="pagination-btn"
+    title="上一页"
+    transition:name="pagination-prev"
+  >
+    <div i-mdi:skip-previous></div>
+  </a>
 
-    {current - 2 > 1 && <span class="pagination-dots">···</span>}
+  {
+    first && first != prev && (
+      <a
+        href={first}
+        class="pagination-btn"
+        title="首页"
+        transition:name={`pagination-btn-1`}
+      >
+        1
+      </a>
+    )
+  }
 
-    {
-      prev && (
-        <a
-          href={prev}
-          class="pagination-btn"
-          title="上一页"
-          transition:name={`pagination-btn-${current - 1}`}
-        >
-          {current - 1}
-        </a>
-      )
-    }
+  {
+    current - 2 > 1 && (
+      <span class="pagination-dots" transition:name="pagination-dots-l">
+        ···
+      </span>
+    )
+  }
 
-    <span
-      class="pagination-current"
-      transition:name={`pagination-btn-${current}`}
-    >
-      {current}
-    </span>
+  {
+    prev && (
+      <a
+        href={prev}
+        class="pagination-btn"
+        title="上一页"
+        transition:name={`pagination-btn-${current - 1}`}
+      >
+        {current - 1}
+      </a>
+    )
+  }
 
-    {
-      next && (
-        <a
-          href={next}
-          class="pagination-btn"
-          title="下一页"
-          transition:name={`pagination-btn-${current + 1}`}
-        >
-          {current + 1}
-        </a>
-      )
-    }
+  <span
+    class="pagination-current"
+    bg-primary-200
+    text-primary
+    transition:name={`pagination-btn-${current}`}
+  >
+    {current}
+  </span>
 
-    {current + 2 < total && <span class="pagination-dots">···</span>}
+  {
+    next && (
+      <a
+        href={next}
+        class="pagination-btn"
+        title="下一页"
+        transition:name={`pagination-btn-${current + 1}`}
+      >
+        {current + 1}
+      </a>
+    )
+  }
 
-    {
-      last && last != next && (
-        <a
-          href={last}
-          class="pagination-btn"
-          title="末页"
-          transition:name={`pagination-btn-${total}`}
-        >
-          {total}
-        </a>
-      )
-    }
-  </nav>
-</div>
+  {
+    current + 2 < total && (
+      <span class="pagination-dots" transition:name="pagination-dots-r">
+        ···
+      </span>
+    )
+  }
+
+  {
+    last && last != next && (
+      <a
+        href={last}
+        class="pagination-btn"
+        title="末页"
+        transition:name={`pagination-btn-${total}`}
+      >
+        {total}
+      </a>
+    )
+  }
+
+  <a
+    href={next}
+    class="pagination-btn"
+    title="下一页"
+    transition:name="pagination-next"
+  >
+    <div i-mdi:skip-next></div>
+  </a>
+</nav>
 
 <style>
   .pagination-btn,
   .pagination-current,
   .pagination-dots {
-    @apply w-10 h-10 flex items-center justify-center rounded-full;
+    @apply flex items-center justify-center leading-none px-4 py-2;
   }
 
   .pagination-btn {
-    @apply bg-transparent text-base-content/70 border border-base-content/10 
+    @apply text-base-content/70
            transition-all duration-200;
   }
   .pagination-btn:hover {
-    @apply bg-base-100 text-base-content border-base-content/30 shadow-sm;
-  }
-
-  .pagination-current {
-    @apply text-base-content font-bold shadow-lg scale-110 border border-base-content/30;
+    @apply bg-base-300 text-base-content;
   }
 
   .pagination-dots {

@@ -13,11 +13,11 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page } = Astro.props;
 const posts = page.data;
 
+const { url, size, lastPage: total, currentPage: current } = page;
 const props = {
-  ...page.url,
-  total: page.lastPage,
-  current: page.currentPage,
-  posts: page.total,
+  ...url,
+  total,
+  current,
 };
 ---
 
@@ -25,6 +25,14 @@ const props = {
   <div space-y-8>
     <section>
       <h1 mb-6 mt-6 text-3xl font-medium sm:mt-10>博客</h1>
+      <div flex="~ row" justify-between>
+        <span>
+          第 {current} 页 - 每页 {size} 篇，共 {total} 篇
+        </span>
+        <a hover:text-primary transition-colors duration-200 href="/archive"
+          >查看所有文章 →</a
+        >
+      </div>
     </section>
 
     <section space-y-6>
@@ -47,8 +55,8 @@ const props = {
       </ol>
     </section>
 
-    <section bg="base-200/40" border="~ base-content/10" rounded-2xl p="4 sm:6">
+    <div sticky bottom-8 flex justify-center>
       <PaginationNav {...props} />
-    </section>
+    </div>
   </div>
 </Layout>
