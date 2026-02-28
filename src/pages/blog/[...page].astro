@@ -36,23 +36,9 @@ const props = {
     </section>
 
     <section space-y-6>
-      <ol flex="~ col" gap-y-4 text-start>
-        {
-          posts.map((post) => (
-            <li
-              relative
-              rounded-2xl
-              border="~ base-content/10"
-              bg-base="200/40"
-              transition-colors
-              ease-in-out
-              hover:bg-neutral-100
-            >
-              <PostCard {post} />
-            </li>
-          ))
-        }
-      </ol>
+      <div flex="~ col" gap-y-4 text-start>
+        {posts.map((post) => <PostCard {post} />)}
+      </div>
     </section>
 
     <div sticky bottom-8 flex justify-center>
