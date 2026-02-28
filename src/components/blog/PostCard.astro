@@ -13,38 +13,39 @@ const { words, time: milliseconds } = post.readingStats;
 
 <a
   class="group"
-  w-full
   flex="~ col"
+  rounded-2xl
+  bg-base-100
+  shadow="sm"
+  hover:translate-y--1px
   transition-all
-  px-5
-  py-2.5
-  max-sm:px-4
-  sm:py-5
   href={getPostUrl(post.id)}
 >
-  <article flex="~ col" h-full>
-    <div flex items-start justify-between gap-3>
-      <div>
-        <h2 text-xl font-semibold group-hover:text-primary transition-colors>
-          {post.data.title}
-        </h2>
-        <p mt-2 text="sm base-content/70" leading-relaxed line-clamp="3">
-          {post.data.description}
-        </p>
+  <article flex="~ col" h-full p-4 gap-2>
+    <div
+      flex
+      justify-between
+      text-xl
+      group-hover:text-primary
+      transition-colors
+    >
+      <h2 font-semibold>
+        {post.data.title}
+      </h2>
+      <div h="1.5em" flex items-center>
+        <div text-xl font-semibold i-mdi:arrow-u-left-bottom></div>
       </div>
-      <time
-        shrink-0
-        rounded-xl
-        bg="primary/30"
-        text="primary xs"
-        font-medium
-        px-3
-        py-1
-      >
-        {post.data.pubDate.toLocaleDateString("zh-CN")}
-      </time>
     </div>
-    <div mt-6 flex items-center justify-between text="sm base-content/70">
+    <p text="base-content/70" leading-relaxed line-clamp-3>
+      {post.data.description}
+    </p>
+    <div flex="~ wrap" gap-4 text="sm base-content/70">
+      <span flex items-center gap-2>
+        <div i-mdi:calendar-month></div>
+        <time>
+          {post.data.pubDate.toLocaleDateString("zh-CN")}
+        </time>
+      </span>
       <span flex items-center gap-2>
         <WordsCount {words} />
       </span>
