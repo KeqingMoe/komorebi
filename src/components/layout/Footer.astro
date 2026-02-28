@@ -1,54 +1,6 @@
----
-const links: {
-  url: string;
-  name: string;
-  icon: string;
-}[] = [
-  {
-    url: "https://github.com/KeqingMoe",
-    name: "GitHub",
-    icon: "i-mdi:github",
-  },
-];
-
-if (Astro.site) {
-  links.push({
-    url: "/rss.xml",
-    name: "RSS",
-    icon: "i-mdi:rss",
-  });
-}
----
-
-<footer
-  mx="4 sm:6"
-  mt-10
-  mb-5
-  pt-5
-  border="t base-content/10"
-  flex="~ max-sm:col"
-  items-center
-  sm:justify-between
-  gap-y="3 sm:0"
->
-  <div text="base-content/70">
-    © 2026 時雨てる -
-    <a hover:text="base-content/80" href="https://github.com/KeqingMoe/komorebi"
-      >木漏れ日</a
-    >
-  </div>
-  <div flex="~ row" items-center gap-x-2>
-    {
-      links.map(({ url, name, icon }) => (
-        <a
-          inline-block
-          text="base-content/70 hover:base-content/80"
-          href={url}
-          aria-label={name}
-        >
-          <div text="1.5rem" class={icon} />
-        </a>
-      ))
-    }
-  </div>
+<footer mt-10 text="base-content/70" text-center gap-y="3 sm:0">
+  © 2026 時雨てる -
+  <a hover:text="base-content/80" href="https://github.com/KeqingMoe/komorebi"
+    >木漏れ日</a
+  >
 </footer>
