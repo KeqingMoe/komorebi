@@ -17,7 +17,9 @@ const { title } = Astro.props;
     <SideNav />
     <MaskLayer />
     <main mx-auto w-100% p-4>
-      <slot />
+      <div min-h-100dvh>
+        <slot />
+      </div>
       <Footer />
     </main>
     <div fixed right-4 bottom-4 z-100 md:hidden>

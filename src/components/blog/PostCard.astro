@@ -16,26 +16,16 @@ const { words, time: milliseconds } = post.readingStats;
   flex="~ col"
   rounded-2xl
   bg-base-100
-  shadow="sm"
+  shadow-xs
+  hover:shadow-md
   hover:translate-y--1px
   transition-all
   href={getPostUrl(post.id)}
 >
-  <article flex="~ col" h-full p-4 gap-2>
-    <div
-      flex
-      justify-between
-      text-xl
-      group-hover:text-primary
-      transition-colors
-    >
-      <h2 font-semibold>
-        {post.data.title}
-      </h2>
-      <div h="1.5em" flex items-center>
-        <div text-xl font-semibold i-mdi:arrow-u-left-bottom></div>
-      </div>
-    </div>
+  <article flex="~ col" h-full p-4 gap-1>
+    <h2 text-xl group-hover:text-primary transition-colors>
+      {post.data.title}
+    </h2>
     <p text="base-content/70" leading-relaxed line-clamp-3>
       {post.data.description}
     </p>

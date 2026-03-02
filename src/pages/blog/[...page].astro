@@ -22,26 +22,21 @@ const props = {
 ---
 
 <Layout title="文章列表">
-  <div space-y-8>
-    <section>
-      <h1 mb-6 mt-6 text-3xl font-medium sm:mt-10>博客</h1>
-      <div flex="~ row" justify-between>
-        <span>
-          第 {current} 页 - 每页 {size} 篇，共 {total} 篇
-        </span>
-        <a hover:text-primary transition-colors duration-200 href="/archive"
-          >查看所有文章 →</a
-        >
-      </div>
-    </section>
+  <div space-y-4 min-h-100dvh>
+    <div flex="~ row" justify-between>
+      <span>
+        第 {current} 页 - 每页 {size} 篇，共 {total} 篇
+      </span>
+      <a hover:text-primary transition-colors duration-200 href="/archive"
+        >查看所有文章 →</a
+      >
+    </div>
 
-    <section space-y-6>
-      <div flex="~ col" gap-y-4 text-start>
-        {posts.map((post) => <PostCard {post} />)}
-      </div>
-    </section>
+    <div flex="~ col" gap-y-4 text-start>
+      {posts.map((post) => <PostCard {post} />)}
+    </div>
 
-    <div sticky bottom-8 flex justify-center>
+    <div sticky bottom-8 pt-4 flex justify-center>
       <PaginationNav {...props} />
     </div>
   </div>
