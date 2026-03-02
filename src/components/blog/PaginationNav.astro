@@ -14,7 +14,8 @@ const { first, prev, next, last, total, current } = Astro.props;
 <nav
   inline-flex
   items-center
-  border="~ base-content/15"
+  border="~ base-content/10"
+  shadow-xs
   rounded-lg
   overflow-hidden
   bg="base-100"
@@ -28,7 +29,7 @@ const { first, prev, next, last, total, current } = Astro.props;
     title="上一页"
     transition:name="pagination-prev"
   >
-    <div i-mdi:skip-previous></div>
+    <div i-mdi:arrow-left-bold></div>
   </a>
 
   {
@@ -114,7 +115,7 @@ const { first, prev, next, last, total, current } = Astro.props;
     title="下一页"
     transition:name="pagination-next"
   >
-    <div i-mdi:skip-next></div>
+    <div i-mdi:arrow-right-bold></div>
   </a>
 </nav>
 
@@ -122,7 +123,7 @@ const { first, prev, next, last, total, current } = Astro.props;
   .pagination-btn,
   .pagination-current,
   .pagination-dots {
-    @apply flex items-center justify-center leading-none px-4 py-2;
+    @apply flex items-center justify-center leading-none w-3em py-2;
   }
 
   .pagination-btn {
