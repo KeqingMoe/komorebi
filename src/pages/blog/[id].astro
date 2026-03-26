@@ -1,59 +1,36 @@
 ---
 import type { GetStaticPaths } from "astro";
-import Base from "../../layouts/Base.astro";
+import Layout from "../../layouts/Layout.astro";
 import { render } from "astro:content";
-import { getSortedPosts, getPostUrl } from "../../lib/content";
+import { getSortedPosts } from "../../lib/content";
+import PostHeader from "../../components/post/PostHeader.astro";
+import AdjacentNav from "../../components/post/AdjacentNav.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getSortedPosts();
   return posts.map((post, i) => ({
     params: { id: post.id },
     props: {
-      prevPost: posts[i - 1],
+      prev: posts[i - 1],
       post,
-      nextPost: posts[i + 1],
+      next: posts[i + 1],
     },
   }));
 }) satisfies GetStaticPaths;
 
-const { prevPost, post, nextPost } = Astro.props;
-const { title, pubDate } = post.data;
+const { prev, post, next } = Astro.props;
+const { title, description, pubDate, updatedDate, draft } = post.data;
+const { readingStats } = post;
 const { Content } = await render(post);
 ---
 
-<Base title={title}>
-  <section>
-    <h1>{title}</h1>
-    <time>{pubDate.toLocaleDateString("zh-CN")}</time>
-    {post.data.draft && <span>这篇文章还是草稿，仅开发模式可见。</span>}
-  </section>
-
+<Layout title={title}>
   <article>
+    <PostHeader
+      {...{ title, description, pubDate, updatedDate, draft, readingStats }}
+    />
     <Content />
   </article>
 
-  <div>
-    <nav class="adjacent">
-      <div class="prev">
-        {
-          prevPost && (
-            <a href={getPostUrl(prevPost.id)}>
-              <span>← 上一篇</span>
-              <strong>{prevPost.data.title}</strong>
-            </a>
-          )
-        }
-      </div>
-      <div class="next">
-        {
-          nextPost && (
-            <a href={getPostUrl(nextPost.id)}>
-              <span>下一篇 →</span>
-              <strong>{nextPost.data.title}</strong>
-            </a>
-          )
-        }
-      </div>
-    </nav>
-  </div>
-</Base>
+  <AdjacentNav {prev} {next} />
+</Layout>

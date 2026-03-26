@@ -1,0 +1,26 @@
+---
+import { getPostUrl, type PostEntry } from "../../lib/content";
+import ReadingTime from "../widgets/ReadingTime.astro";
+import WordsCount from "../widgets/WordsCount.astro";
+
+interface Props {
+  post: PostEntry;
+}
+
+const { post } = Astro.props;
+const { words, time: milliseconds } = post.readingStats;
+---
+
+<a href={getPostUrl(post.id)}>
+  <article>
+    <h2>{post.data.title}</h2>
+    <p>
+      <time>{post.data.pubDate.toLocaleDateString("zh-CN")}</time>
+      <span> · </span>
+      <WordsCount {words} />
+      <span> · </span>
+      <ReadingTime {milliseconds} />
+    </p>
+    <p>{post.data.description}</p>
+  </article>
+</a>

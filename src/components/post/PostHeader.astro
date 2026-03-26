@@ -1,0 +1,44 @@
+---
+import type { ReadTimeResults } from "reading-time";
+import WordsCount from "../widgets/WordsCount.astro";
+import ReadingTime from "../widgets/ReadingTime.astro";
+
+interface Props {
+  title: string;
+  description?: string | undefined;
+  pubDate?: Date | undefined;
+  updatedDate?: Date | undefined;
+  draft?: boolean | undefined;
+  readingStats?: ReadTimeResults | undefined;
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  draft = false,
+  readingStats,
+} = Astro.props;
+---
+
+<header>
+  {draft && <p>这篇文章还是草稿，仅开发模式可见。</p>}
+
+  <p>
+    {pubDate && <span>发布：<time>{pubDate.toLocaleDateString("zh-CN")}</time></span>}
+    {updatedDate && <span> · 更新：<time>{updatedDate.toLocaleDateString("zh-CN")}</time></span>}
+    {
+      readingStats && (
+        <>
+          <span> · <WordsCount words={Math.round(readingStats.words)} /></span>
+          <span> · <ReadingTime milliseconds={readingStats.time} /></span>
+        </>
+      )
+    }
+  </p>
+
+  <h1>{title}</h1>
+
+  {description && <p>{description}</p>}
+</header>

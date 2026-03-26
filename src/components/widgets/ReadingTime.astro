@@ -1,0 +1,24 @@
+---
+type Props =
+  | { minutes: number; milliseconds?: never; seconds?: never }
+  | { minutes?: never; milliseconds: number; seconds?: never }
+  | { minutes?: never; milliseconds?: never; seconds: number };
+
+const { minutes = 0, milliseconds = 0, seconds = 0 } = Astro.props as Props;
+
+let totalSeconds = 0;
+if (milliseconds) totalSeconds = Math.ceil(milliseconds / 1000);
+else if (minutes) totalSeconds = Math.ceil(minutes * 60);
+else totalSeconds = Math.ceil(seconds);
+
+const hours = Math.floor(totalSeconds / 3600);
+const mins = Math.floor((totalSeconds % 3600) / 60);
+const secs = totalSeconds % 60;
+---
+
+<span>
+  大约需要阅读
+  {hours > 0 && `${hours} 小时`}
+  {mins > 0 && `${mins} 分`}
+  {(secs > 0 || totalSeconds == 0) && `${secs} 秒`}
+</span>

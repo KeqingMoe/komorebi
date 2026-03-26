@@ -1,0 +1,9 @@
+---
+interface Props {
+  words: number;
+}
+
+const { words } = Astro.props;
+---
+
+<span>共 {Math.round(words)} 字/词</span>

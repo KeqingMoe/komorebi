@@ -1,6 +1,6 @@
 ---
 interface Props {
-  title?: string;
+  title?: string | undefined;
 }
 
 const { title = "木漏れ日 Blog" } = Astro.props;
@@ -32,6 +32,7 @@ const { title = "木漏れ日 Blog" } = Astro.props;
         <a href="/">首页</a>
         <a href="/archive">归档</a>
         <a href="/about">关于</a>
+        <a href="/rss.xml">RSS</a>
       </nav>
     </header>
 

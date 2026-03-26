@@ -1,0 +1,35 @@
+---
+import { getPostUrl, type PostEntry } from "../../lib/content";
+
+interface Props {
+  prev: PostEntry | undefined;
+  next: PostEntry | undefined;
+}
+
+const { prev, next } = Astro.props;
+---
+
+<nav aria-label="相邻文章导航">
+  {
+    prev && (
+      <a
+        href={getPostUrl(prev.id)}
+        aria-label={`上一篇：${prev.data.title}`}
+        rel="prev"
+      >
+        ← 上一篇：{prev.data.title}
+      </a>
+    )
+  }
+  {
+    next && (
+      <a
+        href={getPostUrl(next.id)}
+        aria-label={`下一篇：${next.data.title}`}
+        rel="next"
+      >
+        下一篇：{next.data.title} →
+      </a>
+    )
+  }
+</nav>
