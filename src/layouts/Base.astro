@@ -1,12 +1,16 @@
 ---
+import "../styles/global.css";
+import { siteTitle } from "../lib/site";
+
 interface Props {
   title?: string | undefined;
 }
 
-const { title = "木漏れ日 Blog" } = Astro.props;
+const { title } = Astro.props;
+const pageTitle = title ? `${title} · ${siteTitle}` : `${siteTitle} Blog`;
 ---
 
-<html lang="zh">
+<html lang="zh" class="scroll-smooth">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -23,21 +27,10 @@ const { title = "木漏れ日 Blog" } = Astro.props;
     }
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <meta name="theme-color" content="#f7f2ea" />
+    <title>{pageTitle}</title>
   </head>
-  <body>
-    <header>
-      <h1><a href="/">木漏れ日</a></h1>
-      <nav aria-label="主导航">
-        <a href="/">首页</a>
-        <a href="/archive">归档</a>
-        <a href="/about">关于</a>
-        <a href="/rss.xml">RSS</a>
-      </nav>
-    </header>
-
-    <main>
-      <slot />
-    </main>
+  <body class="min-h-dvh flex flex-col">
+    <slot />
   </body>
 </html>

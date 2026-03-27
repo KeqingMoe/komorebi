@@ -9,27 +9,266 @@ interface Props {
 const { prev, next } = Astro.props;
 ---
 
-<nav aria-label="相邻文章导航">
-  {
-    prev && (
-      <a
-        href={getPostUrl(prev.id)}
-        aria-label={`上一篇：${prev.data.title}`}
-        rel="prev"
-      >
-        ← 上一篇：{prev.data.title}
-      </a>
-    )
+{
+  (prev || next) && (
+    <>
+      <nav aria-label="相邻文章导航" class="mt-12 border-t border-zinc-200/80 pt-6">
+        <div
+          class:list={[
+            "grid gap-6",
+            prev && next && "md:grid-cols-2 md:gap-10",
+          ]}
+        >
+          {
+            prev && (
+              <a
+                href={getPostUrl(prev.id)}
+                aria-label={`上一篇：${prev.data.title}`}
+                rel="prev"
+                class="group block border-b border-zinc-200/80 pb-5 transition duration-200 hover:border-zinc-300"
+              >
+                <p class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-zinc-400">
+                  上一篇
+                </p>
+                <p class="mt-3 text-lg font-semibold tracking-tight text-zinc-950 transition duration-200 group-hover:text-rose-500">
+                  {prev.data.title}
+                </p>
+              </a>
+            )
+          }
+
+          {
+            next && (
+              <a
+                href={getPostUrl(next.id)}
+                aria-label={`下一篇：${next.data.title}`}
+                rel="next"
+                class="group block border-b border-zinc-200/80 pb-5 transition duration-200 hover:border-zinc-300 md:text-right"
+              >
+                <p class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-zinc-400">
+                  下一篇
+                </p>
+                <p class="mt-3 text-lg font-semibold tracking-tight text-zinc-950 transition duration-200 group-hover:text-rose-500">
+                  {next.data.title}
+                </p>
+              </a>
+            )
+          }
+        </div>
+      </nav>
+
+      <div aria-hidden="true" class="adjacent-edge-nav">
+        {
+          prev && (
+            <a
+              href={getPostUrl(prev.id)}
+              aria-label={`上一篇：${prev.data.title}`}
+              rel="prev"
+              class="adjacent-edge adjacent-edge-prev"
+            >
+              <span class="adjacent-edge__glow"></span>
+              <span class="adjacent-edge__panel">
+                <span class="adjacent-edge__eyebrow">上一篇</span>
+                <span class="adjacent-edge__title">{prev.data.title}</span>
+              </span>
+            </a>
+          )
+        }
+
+        {
+          next && (
+            <a
+              href={getPostUrl(next.id)}
+              aria-label={`下一篇：${next.data.title}`}
+              rel="next"
+              class="adjacent-edge adjacent-edge-next"
+            >
+              <span class="adjacent-edge__glow"></span>
+              <span class="adjacent-edge__panel">
+                <span class="adjacent-edge__eyebrow">下一篇</span>
+                <span class="adjacent-edge__title">{next.data.title}</span>
+              </span>
+            </a>
+          )
+        }
+      </div>
+    </>
+  )
+}
+
+<style>
+  .adjacent-edge-nav {
+    display: none;
   }
-  {
-    next && (
-      <a
-        href={getPostUrl(next.id)}
-        aria-label={`下一篇：${next.data.title}`}
-        rel="next"
-      >
-        下一篇：{next.data.title} →
-      </a>
-    )
+
+  @media (min-width: 1360px) {
+    .adjacent-edge-nav {
+      --page-width: 80rem;
+      --edge-width: clamp(2.75rem, calc((100vw - var(--page-width)) / 2 + 1rem), 5rem);
+      --panel-max-width: 16rem;
+      display: block;
+    }
+
+    .adjacent-edge {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      z-index: 15;
+      width: var(--edge-width);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+      text-decoration: none;
+      overflow: visible;
+    }
+
+    .adjacent-edge-prev {
+      left: 0;
+    }
+
+    .adjacent-edge-next {
+      right: 0;
+    }
+
+    .adjacent-edge__glow {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition:
+        opacity 180ms ease,
+        background 180ms ease;
+    }
+
+    .adjacent-edge-prev .adjacent-edge__glow {
+      background: linear-gradient(
+        90deg,
+        rgba(244, 63, 94, 0.12) 0%,
+        rgba(244, 63, 94, 0.06) 42%,
+        rgba(244, 63, 94, 0) 100%
+      );
+    }
+
+    .adjacent-edge-next .adjacent-edge__glow {
+      background: linear-gradient(
+        270deg,
+        rgba(251, 191, 36, 0.12) 0%,
+        rgba(251, 191, 36, 0.06) 42%,
+        rgba(251, 191, 36, 0) 100%
+      );
+    }
+
+    .adjacent-edge__panel {
+      position: absolute;
+      top: 50%;
+      width: max-content;
+      display: flex;
+      max-width: min(var(--panel-max-width), calc(100vw - 4rem));
+      min-width: 10.5rem;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 0.85rem 1rem 0.95rem;
+      border: 1px solid rgba(212, 212, 216, 0.58);
+      background: var(--panel-bg);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        opacity 180ms ease,
+        transform 360ms cubic-bezier(0.22, 0.86, 0.24, 1),
+        border-color 180ms ease,
+        background-color 180ms ease,
+        box-shadow 180ms ease;
+      box-shadow: 0 18px 34px -28px rgba(15, 23, 42, 0.18);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow: hidden;
+      will-change: transform, opacity;
+    }
+
+    .adjacent-edge__eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(113, 113, 122, 0.92);
+    }
+
+    .adjacent-edge__title {
+      display: -webkit-box;
+      overflow: hidden;
+      color: rgb(24, 24, 27);
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.65;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    .adjacent-edge-prev .adjacent-edge__panel {
+      --panel-bg: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.24) 18%,
+        rgba(255, 255, 255, 0.66) 36%,
+        rgba(255, 255, 255, 0.88) calc(var(--edge-width) + 0.35rem),
+        rgba(255, 255, 255, 0.94) 100%
+      );
+      left: 0;
+      transform: translate(calc(-100% + var(--edge-width) + 1.1rem), -50%);
+      padding-left: calc(var(--edge-width) + 1rem);
+      border-left: 0;
+      border-radius: 0 1rem 1rem 0;
+      text-align: left;
+    }
+
+    .adjacent-edge-next .adjacent-edge__panel {
+      --panel-bg: linear-gradient(
+        270deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.24) 18%,
+        rgba(255, 255, 255, 0.66) 36%,
+        rgba(255, 255, 255, 0.88) calc(var(--edge-width) + 0.35rem),
+        rgba(255, 255, 255, 0.94) 100%
+      );
+      right: 0;
+      transform: translate(calc(100% - var(--edge-width) - 1.1rem), -50%);
+      padding-right: calc(var(--edge-width) + 1rem);
+      border-right: 0;
+      border-radius: 1rem 0 0 1rem;
+      text-align: right;
+    }
+
+    .adjacent-edge:hover .adjacent-edge__glow,
+    .adjacent-edge:focus-visible .adjacent-edge__glow {
+      opacity: 1;
+    }
+
+    .adjacent-edge:hover .adjacent-edge__panel,
+    .adjacent-edge:focus-visible .adjacent-edge__panel {
+      opacity: 1;
+      border-color: rgba(212, 212, 216, 0.72);
+      box-shadow: 0 22px 38px -28px rgba(15, 23, 42, 0.2);
+    }
+
+    .adjacent-edge:hover .adjacent-edge__title,
+    .adjacent-edge:focus-visible .adjacent-edge__title {
+      color: rgb(225, 29, 72);
+    }
+
+    .adjacent-edge-prev:hover .adjacent-edge__panel,
+    .adjacent-edge-prev:focus-visible .adjacent-edge__panel {
+      transform: translate(0, -50%);
+    }
+
+    .adjacent-edge-next:hover .adjacent-edge__panel,
+    .adjacent-edge-next:focus-visible .adjacent-edge__panel {
+      transform: translate(0, -50%);
+    }
+
+    .adjacent-edge:focus-visible {
+      outline: none;
+    }
   }
-</nav>
+</style>

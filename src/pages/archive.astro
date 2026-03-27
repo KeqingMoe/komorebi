@@ -1,65 +1,21 @@
 ---
-import { getPostUrl, getSortedPosts } from "../lib/content";
-import Base from "../layouts/Base.astro";
+import ArchiveTimeline from "../components/archive/ArchiveTimeline.astro";
+import PageIntro from "../components/common/PageIntro.astro";
+import { buildArchiveYears } from "../lib/archive";
+import { getSortedPosts } from "../lib/content";
+import Layout from "../layouts/Layout.astro";
 
 const posts = await getSortedPosts();
-
-type DayPosts = typeof posts;
-type DayMap = Map<number, DayPosts>;
-type MonthMap = Map<number, DayMap>;
-
-const grouped = posts.reduce((acc, post) => {
-  const date = post.data.pubDate;
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-
-  if (!acc.has(year)) {
-    acc.set(year, new Map<number, DayMap>());
-  }
-  const monthMap = acc.get(year)!;
-
-  if (!monthMap.has(month)) {
-    monthMap.set(month, new Map<number, DayPosts>());
-  }
-  const dayMap = monthMap.get(month)!;
-
-  if (!dayMap.has(day)) {
-    dayMap.set(day, []);
-  }
-  dayMap.get(day)!.push(post);
-
-  return acc;
-}, new Map<number, MonthMap>());
+const archiveYears = buildArchiveYears(posts);
 ---
 
-<Base title="归档">
-  <section>
-    <h1>文章归档</h1>
-  </section>
-  
-  {Array.from(grouped.entries()).map(([year, monthMap]) => (
-    <section class="year-group">
-      <h2>{year} 年</h2>
-      
-      {Array.from(monthMap.entries()).map(([month, dayMap]) => (
-        <section class="month-group">
-          <h3>{month} 月</h3>
-          
-          {Array.from(dayMap.entries()).map(([day, dayPosts]) => (
-            <section class="day-group">
-              <h4>{day} 日</h4>
-              <ul>
-                {dayPosts.map((post) => (
-                  <li>
-                    <a href={getPostUrl(post.id)}>{post.data.title}</a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-        </section>
-      ))}
-    </section>
-  ))}
-</Base>
+<Layout title="归档">
+  <PageIntro
+    eyebrow="Archive"
+    title="文章归档"
+    description="按年、月、日回看所有文章，适合整理长期写作的时间线。"
+    titleClass="text-4xl font-black tracking-tight text-zinc-950 sm:text-5xl"
+  />
+
+  <ArchiveTimeline years={archiveYears} />
+</Layout>

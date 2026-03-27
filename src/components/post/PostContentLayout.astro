@@ -1,0 +1,55 @@
+---
+import type { ReadTimeResults } from "reading-time";
+import type { PostEntry } from "../../lib/content";
+import AdjacentNav from "./AdjacentNav.astro";
+import PostBody from "./PostBody.astro";
+import PostHeader from "./PostHeader.astro";
+import TOC from "./TOC.astro";
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  title: string;
+  description?: string | undefined;
+  pubDate?: Date | undefined;
+  updatedDate?: Date | undefined;
+  draft?: boolean | undefined;
+  readingStats?: ReadTimeResults | undefined;
+  headings?: Heading[] | undefined;
+  prev?: PostEntry | undefined;
+  next?: PostEntry | undefined;
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  draft,
+  readingStats,
+  headings = [],
+  prev,
+  next,
+} = Astro.props as Props;
+---
+
+<div class="grid gap-12 xl:grid-cols-[minmax(0,1fr)_18rem] 2xl:grid-cols-[minmax(0,1fr)_19rem]">
+  <div class="min-w-0">
+    <article class="max-w-4xl">
+      <PostHeader
+        {...{ title, description, pubDate, updatedDate, draft, readingStats }}
+      />
+      <PostBody>
+        <slot />
+      </PostBody>
+    </article>
+
+    {(prev || next) && <AdjacentNav {prev} {next} />}
+  </div>
+
+  <TOC {headings} />
+</div>

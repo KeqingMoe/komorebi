@@ -1,0 +1,249 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings?: Heading[];
+}
+
+const { headings = [] } = Astro.props as Props;
+const items = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
+---
+
+{
+  items.length > 0 && (
+    <aside class="hidden xl:block">
+      <div class="sticky top-20 w-72">
+        <p class="mb-[0.45rem] ml-[0.2rem] text-[0.74rem] font-semibold tracking-[0.08em] text-zinc-500/90">
+          本页目录
+        </p>
+
+        <nav aria-label="文章目录" class="max-h-[calc(100vh-7.5rem)] overflow-auto pr-1">
+          <ol class="toc-list m-0 list-none pl-[0.8rem] [--toc-rail-offset:0.6rem]">
+            {
+              items.map((item) => (
+                <li class:list={["toc-item", item.depth > 2 && "toc-item--nested"]}>
+                  <a href={`#${item.slug}`} data-toc-link class="toc-link">
+                    <span class="toc-link__text">{item.text}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+      </div>
+    </aside>
+  )
+}
+
+<style>
+  .toc-list {
+    position: relative;
+  }
+
+  .toc-list::before {
+    content: "";
+    position: absolute;
+    left: 0.2rem;
+    top: 0.15rem;
+    bottom: 0.15rem;
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      rgba(244, 63, 94, 0.12),
+      rgba(161, 161, 170, 0.2),
+      rgba(251, 191, 36, 0.1)
+    );
+  }
+
+  .toc-link {
+    --toc-progress: 0;
+    --toc-emphasis: calc(var(--toc-progress) * 1);
+    position: relative;
+    display: block;
+    width: calc(100% + var(--toc-rail-offset));
+    margin-left: calc(-1 * var(--toc-rail-offset));
+    overflow: hidden;
+    padding: 0.36rem 0.7rem 0.36rem calc(var(--toc-rail-offset) + 0.35rem);
+    color: rgba(82, 82, 91, 0.76);
+    font-size: 0.92rem;
+    line-height: 1.42;
+    transition: color 180ms ease;
+  }
+
+  .toc-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(255, 223, 231, 0.96), rgba(255, 239, 242, 0.72));
+    transform: scaleX(var(--toc-progress));
+    transform-origin: left center;
+    transition: transform 140ms linear;
+    will-change: transform;
+  }
+
+  .toc-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(244, 63, 94, calc(0.08 + var(--toc-emphasis) * 0.78));
+    transition: background-color 140ms linear;
+  }
+
+  .toc-link__text {
+    position: relative;
+    z-index: 1;
+    color: color-mix(
+      in srgb,
+      rgba(82, 82, 91, 0.8) calc(100% - var(--toc-emphasis) * 100%),
+      #be123c calc(var(--toc-emphasis) * 100%)
+    );
+    font-weight: calc(520 + var(--toc-emphasis) * 100);
+  }
+
+  .toc-link:hover {
+    color: #27272a;
+  }
+
+  .toc-item--nested .toc-link {
+    padding-left: calc(var(--toc-rail-offset) + 0.95rem);
+    font-size: 0.87rem;
+  }
+
+  .toc-item--nested .toc-link__text {
+    color: color-mix(
+      in srgb,
+      rgba(113, 113, 122, 0.74) calc(100% - var(--toc-emphasis) * 100%),
+      #be123c calc(var(--toc-emphasis) * 100%)
+    );
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toc-link,
+    .toc-link::before,
+    .toc-link::after {
+      transition: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  const links = Array.from(document.querySelectorAll('[data-toc-link]'));
+
+  if (links.length > 0) {
+    const activate = (progressMap) => {
+      links.forEach((link) => {
+        const href = link.getAttribute('href');
+        const id = href ? href.slice(1) : null;
+        const progress = id ? progressMap.get(id) ?? 0 : 0;
+        link.style.setProperty('--toc-progress', String(progress));
+        link.style.setProperty('--toc-emphasis', String(Math.min(1, progress * 1.15)));
+      });
+    };
+
+    const targets = links
+      .map((link) => {
+        const href = link.getAttribute('href');
+        const id = href ? href.slice(1) : null;
+        const element = id ? document.getElementById(id) : null;
+        return element ? { element, id } : null;
+      })
+      .filter(Boolean);
+
+    if (targets.length > 0) {
+      const headingElements = new Set(targets.map(({ element }) => element));
+      const sections = targets.map(({ element, id }) => {
+        const nodes = [element];
+        let sibling = element.nextElementSibling;
+
+        while (sibling && !headingElements.has(sibling)) {
+          nodes.push(sibling);
+          sibling = sibling.nextElementSibling;
+        }
+
+        return { id, nodes };
+      });
+
+      let frameId = null;
+
+      const collectProgress = () => {
+        const progressMap = new Map();
+
+        sections.forEach(({ id, nodes }) => {
+          let totalHeight = 0;
+          let visibleHeight = 0;
+
+          nodes.forEach((node) => {
+            const rect = node.getBoundingClientRect();
+
+            if (rect.height <= 0) {
+              return;
+            }
+
+            totalHeight += rect.height;
+            visibleHeight += Math.max(
+              0,
+              Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0),
+            );
+          });
+
+          if (totalHeight <= 0 || visibleHeight <= 0) {
+            return;
+          }
+
+          const denominator = Math.min(totalHeight, window.innerHeight);
+          const progress = denominator > 0 ? Math.min(1, visibleHeight / denominator) : 0;
+
+          if (progress > 0.002) {
+            progressMap.set(id, Number(progress.toFixed(4)));
+          }
+        });
+
+        if (progressMap.size > 0) {
+          return progressMap;
+        }
+
+        const fallback = [...targets]
+          .reverse()
+          .find(({ element }) => element.getBoundingClientRect().top <= 0) ?? targets[0];
+
+        progressMap.set(fallback.id, 1);
+        return progressMap;
+      };
+
+      const syncActive = () => {
+        frameId = null;
+        activate(collectProgress());
+      };
+
+      const scheduleSync = () => {
+        if (frameId !== null) {
+          return;
+        }
+
+        frameId = window.requestAnimationFrame(syncActive);
+      };
+
+      activate(collectProgress());
+
+      window.addEventListener('scroll', scheduleSync, { passive: true });
+      window.addEventListener('resize', scheduleSync, { passive: true });
+      window.addEventListener(
+        'hashchange',
+        () => {
+          scheduleSync();
+        },
+        { passive: true },
+      );
+    }
+  }
+</script>

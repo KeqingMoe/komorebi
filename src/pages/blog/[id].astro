@@ -1,10 +1,9 @@
 ---
 import type { GetStaticPaths } from "astro";
-import Layout from "../../layouts/Layout.astro";
 import { render } from "astro:content";
+import PostContentLayout from "../../components/post/PostContentLayout.astro";
 import { getSortedPosts } from "../../lib/content";
-import PostHeader from "../../components/post/PostHeader.astro";
-import AdjacentNav from "../../components/post/AdjacentNav.astro";
+import Layout from "../../layouts/Layout.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getSortedPosts();
@@ -21,16 +20,13 @@ export const getStaticPaths = (async () => {
 const { prev, post, next } = Astro.props;
 const { title, description, pubDate, updatedDate, draft } = post.data;
 const { readingStats } = post;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 ---
 
 <Layout title={title}>
-  <article>
-    <PostHeader
-      {...{ title, description, pubDate, updatedDate, draft, readingStats }}
-    />
+  <PostContentLayout
+    {...{ title, description, pubDate, updatedDate, draft, readingStats, headings, prev, next }}
+  >
     <Content />
-  </article>
-
-  <AdjacentNav {prev} {next} />
+  </PostContentLayout>
 </Layout>

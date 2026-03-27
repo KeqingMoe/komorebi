@@ -11,46 +11,175 @@ interface Props {
 const { first, prev, next, last, total, current } = Astro.props;
 ---
 
-<nav aria-label="分页导航">
-  {prev ? <a href={prev}>上一页</a> : <span>上一页</span>}
+<nav
+  aria-label="分页导航"
+  class="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-zinc-200/80 pt-5"
+>
+  <div class="flex items-center gap-3">
+    {
+      prev ? (
+        <a
+          href={prev}
+          class="pagination-link"
+        >
+          <span>←</span>
+          上一页
+        </a>
+      ) : (
+        <span class="pagination-link pagination-link--disabled">
+          <span>←</span>
+          上一页
+        </span>
+      )
+    }
 
-  {
-    first && first != prev && (
-      <a href={first} title="首页">1</a>
-    )
-  }
+    {
+      next ? (
+        <a
+          href={next}
+          class="pagination-link"
+        >
+          下一页
+          <span>→</span>
+        </a>
+      ) : (
+        <span class="pagination-link pagination-link--disabled">
+          下一页
+          <span>→</span>
+        </span>
+      )
+    }
+  </div>
 
-  {
-    current - 2 > 1 && (
-      <span>…</span>
-    )
-  }
+  <div class="flex flex-wrap items-center gap-1.5">
+    {
+      first && first != prev && (
+        <a
+          href={first}
+          title="首页"
+          class="pagination-page"
+        >
+          1
+        </a>
+      )
+    }
 
-  {
-    prev && (
-      <a href={prev} title="上一页">{current - 1}</a>
-    )
-  }
+    {
+      current - 2 > 1 && (
+        <span class="pagination-gap">
+          …
+        </span>
+      )
+    }
 
-  <span aria-current="page">{current}</span>
+    {
+      prev && (
+        <a
+          href={prev}
+          title="上一页"
+          class="pagination-page"
+        >
+          {current - 1}
+        </a>
+      )
+    }
 
-  {
-    next && (
-      <a href={next} title="下一页">{current + 1}</a>
-    )
-  }
+    <span
+      aria-current="page"
+      class="pagination-page pagination-page--current"
+    >
+      {current}
+    </span>
 
-  {
-    current + 2 < total && (
-      <span>…</span>
-    )
-  }
+    {
+      next && (
+        <a
+          href={next}
+          title="下一页"
+          class="pagination-page"
+        >
+          {current + 1}
+        </a>
+      )
+    }
 
-  {
-    last && last != next && (
-      <a href={last} title="末页">{total}</a>
-    )
-  }
+    {
+      current + 2 < total && (
+        <span class="pagination-gap">
+          …
+        </span>
+      )
+    }
 
-  {next ? <a href={next}>下一页</a> : <span>下一页</span>}
+    {
+      last && last != next && (
+        <a
+          href={last}
+          title="末页"
+          class="pagination-page"
+        >
+          {total}
+        </a>
+      )
+    }
+  </div>
 </nav>
+
+<style>
+  .pagination-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgb(113 113 122);
+    transition: color 180ms ease;
+  }
+
+  .pagination-link:hover {
+    color: rgb(9 9 11);
+  }
+
+  .pagination-link--disabled {
+    color: rgb(212 212 216);
+  }
+
+  .pagination-page,
+  .pagination-gap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.875rem;
+  }
+
+  .pagination-page {
+    border-radius: 999px;
+    font-weight: 500;
+    color: rgb(113 113 122);
+    transition:
+      background-color 180ms ease,
+      color 180ms ease;
+  }
+
+  .pagination-page:hover {
+    background: rgb(255 255 255 / 0.7);
+    color: rgb(9 9 11);
+  }
+
+  .pagination-page--current {
+    background: rgb(9 9 11);
+    font-weight: 600;
+    color: white;
+  }
+
+  .pagination-page--current:hover {
+    background: rgb(9 9 11);
+    color: white;
+  }
+
+  .pagination-gap {
+    color: rgb(161 161 170);
+  }
+</style>

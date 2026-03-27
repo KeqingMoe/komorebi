@@ -6,6 +6,12 @@ export type PostEntry = CollectionEntry<'blog'> & {
   readingStats: ReadTimeResults;
 };
 
+const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
 export async function getPosts(
   filter?: (entry: CollectionEntry<'blog'>) => boolean,
 ): Promise<PostEntry[]> {
@@ -45,4 +51,8 @@ export function getPostUrl(id: string) {
 export function computeReadingTime(body: string) {
   const plainText = removeMd(body);
   return getReadingTime(plainText);
+}
+
+export function formatDate(date: Date) {
+  return dateFormatter.format(date);
 }

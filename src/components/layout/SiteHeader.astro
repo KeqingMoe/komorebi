@@ -1,0 +1,64 @@
+---
+import DesktopNav from "./Nav/DesktopNav.astro";
+import MobileNav from "./Nav/MobileNav.astro";
+
+interface NavLink {
+  href: string;
+  label: string;
+  isActive: boolean;
+}
+
+const pathname = Astro.url.pathname;
+const navLinks = [
+  {
+    href: "/",
+    label: "首页",
+    isActive: pathname === "/",
+  },
+  {
+    href: "/blog",
+    label: "文章",
+    isActive: pathname.startsWith("/blog"),
+  },
+  {
+    href: "/archive",
+    label: "归档",
+    isActive: pathname.startsWith("/archive"),
+  },
+  {
+    href: "/about",
+    label: "关于",
+    isActive: pathname.startsWith("/about"),
+  },
+  {
+    href: "/rss.xml",
+    label: "RSS",
+    isActive: pathname === "/rss.xml",
+  },
+] satisfies NavLink[];
+
+interface Props {
+  siteTitle: string;
+  tagline: string;
+}
+const { siteTitle, tagline } = Astro.props as Props;
+---
+
+<header class="mx-auto w-full max-w-7xl px-6 pt-4 sm:px-8 sm:pt-6 lg:px-10 lg:pt-8">
+  <div class="border-b border-zinc-200/80 pb-4 sm:flex sm:items-end sm:justify-between sm:gap-5 sm:pb-5">
+    <div class="flex items-center justify-between gap-4 sm:block">
+      <a href="/" class="group flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-4">
+        <span class="text-2xl font-semibold tracking-tight text-zinc-950 transition duration-200 group-hover:text-zinc-700">
+          {siteTitle}
+        </span>
+        <span class="hidden text-sm text-zinc-500 sm:inline">
+          {tagline}
+        </span>
+      </a>
+
+      <MobileNav {navLinks} />
+    </div>
+
+    <DesktopNav {navLinks} />
+  </div>
+</header>

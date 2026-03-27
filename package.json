@@ -23,6 +23,7 @@
     "@unocss/preset-typography": "^66.6.0",
     "@unocss/preset-wind4": "^66.6.0",
     "@unocss/transformer-directives": "^66.6.0",
-    "unocss": "^66.6.0"
+    "unocss": "^66.6.0",
+    "wrangler": "^4.78.0"
   }
 }
