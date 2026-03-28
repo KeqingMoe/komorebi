@@ -24,21 +24,16 @@ function formatReadingTime(milliseconds: number) {
 }
 
 export const GET: APIRoute = async (context) => {
-  if (!context.site) {
-    return new Response('Site URL is not configured', {
-      status: 503,
-      headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
-        'Retry-After': '0',
-      },
-    });
+  let site = context.site;
+  if (!site) {
+    site = new URL(context.url.origin);
   }
 
   const blog = await getSortedPosts();
   return rss({
     title: '木漏れ日',
     description: '木漏れ日 Blog RSS',
-    site: context.site,
+    site,
     xmlns: {
       k: RSS_EXT_NS,
     },
