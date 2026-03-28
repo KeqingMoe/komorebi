@@ -1,0 +1,33 @@
+---
+interface NavLink {
+  href: string;
+  label: string;
+  isActive: boolean;
+}
+
+interface Props {
+  navLinks: NavLink[];
+}
+
+const { navLinks } = Astro.props as Props;
+---
+
+<nav
+  aria-label="主导航"
+  class="hidden flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-zinc-500 sm:flex"
+>
+  {
+    navLinks.map(({ href, label, isActive }) => (
+      <a
+        href={href}
+        aria-current={isActive ? "page" : undefined}
+        class:list={[
+          "border-b border-transparent pb-2 transition duration-200 hover:border-zinc-300 hover:text-zinc-950",
+          isActive && "border-zinc-950 text-zinc-950",
+        ]}
+      >
+        {label}
+      </a>
+    ))
+  }
+</nav>

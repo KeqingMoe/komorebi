@@ -1,0 +1,53 @@
+---
+import { formatArchiveDay, type ArchiveMonth } from "../../lib/archive";
+import { getPostUrl } from "../../lib/content";
+
+interface Props {
+  group: ArchiveMonth;
+}
+
+const { group } = Astro.props as Props;
+const { month, total, days } = group;
+---
+
+<section class="relative pl-6 sm:pl-8">
+  <div class="absolute bottom-0 left-0 top-2 w-px bg-zinc-200/80"></div>
+  <div class="absolute left-0 top-2 size-2 rounded-full bg-zinc-950"></div>
+
+  <div class="mb-5 flex flex-wrap items-center gap-x-3 gap-y-1">
+    <h3 class="text-2xl font-semibold tracking-tight text-zinc-950">
+      {month} 月
+    </h3>
+    <p class="text-sm text-zinc-400">{total} 篇</p>
+  </div>
+
+  <div class="space-y-5">
+    {
+      days.map(({ day, posts }) => (
+        <section class="grid gap-3 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-6">
+          <h4 class="pt-0.5 text-sm font-medium tabular-nums text-zinc-400">
+            {formatArchiveDay(day)} 日
+          </h4>
+
+          <ul class="space-y-1">
+            {posts.map((post) => (
+              <li class="border-b border-zinc-200/70 last:border-b-0">
+                <a
+                  href={getPostUrl(post.id)}
+                  class="group flex items-center justify-between gap-4 py-3 transition hover:text-zinc-950"
+                >
+                  <span class="font-medium text-zinc-700 transition group-hover:text-rose-500">
+                    {post.data.title}
+                  </span>
+                  <span class="shrink-0 text-sm text-zinc-300 transition duration-200 group-hover:translate-x-1 group-hover:text-rose-400">
+                    →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</section>

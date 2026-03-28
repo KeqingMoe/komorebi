@@ -1,7 +1,10 @@
 ---
 import type { GetStaticPaths } from "astro";
-import { getPostUrl, getSortedPosts } from "../../lib/content";
-import Base from "../../layouts/Base.astro";
+import PaginationNav from "../../components/blog/PaginationNav.astro";
+import PostCard from "../../components/blog/PostCard.astro";
+import PageIntro from "../../components/common/PageIntro.astro";
+import { getSortedPosts } from "../../lib/content";
+import Layout from "../../layouts/Layout.astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getSortedPosts();
@@ -10,37 +13,35 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 const { page } = Astro.props;
 const posts = page.data;
-const { first, prev, next, last } = page.url;
-const { lastPage: total, currentPage: current } = page;
+
+const { url, size, lastPage: total, currentPage: current } = page;
+const props = {
+  ...url,
+  total,
+  current,
+};
 ---
 
-<Base title="文章列表">
-  <section>
-    <h1>文章列表</h1>
-    {
-      posts.map((post) => (
-        <article>
-          <a href={getPostUrl(post.id)}>
-            <h2>{post.data.title}</h2>
-          </a>
-          <time>{post.data.pubDate.toLocaleDateString("zh-CN")}</time>
-          <p>{post.data.description}</p>
-        </article>
-      ))
-    }
+<Layout title="文章列表">
+  <PageIntro
+    eyebrow="Blog"
+    title="文章列表"
+    description="按发布时间浏览全部文章，保留清晰的信息层级和更轻的阅读节奏。"
+  >
+    <p slot="meta">第 {current} 页 · 共 {total} 页 · 每页 {size} 篇</p>
+    <span slot="meta" class="text-zinc-300">·</span>
+    <a
+      slot="meta"
+      href="/archive"
+      class="font-medium transition hover:text-zinc-950"
+    >
+      查看所有文章 →
+    </a>
+  </PageIntro>
+
+  <section class="mt-8 divide-y divide-zinc-200/80 border-y border-zinc-200/80">
+    {posts.map((post) => <PostCard {post} />)}
   </section>
 
-  {
-    total > 1 && (
-      <nav aria-label="分页导航">
-        {first && first != prev && <a href={first}>1</a>}
-        {current - 2 > 1 && <span>...</span>}
-        {prev && <a href={prev}>{current - 1}</a>}
-        <span>{current}</span>
-        {next && <a href={next}>{current + 1}</a>}
-        {current + 2 < total && <span>...</span>}
-        {last && last != next && <a href={last}>{total}</a>}
-      </nav>
-    )
-  }
-</Base>
+  {total > 1 && <PaginationNav {...props} />}
+</Layout>

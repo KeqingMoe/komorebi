@@ -1,3 +1,14 @@
 ---
-return Astro.rewrite("/blog");
+import LatestPosts from "../components/home/LatestPosts.astro";
+import HomeHero from "../components/home/HomeHero.astro";
+import Layout from "../layouts/Layout.astro";
+import { getSortedPosts } from "../lib/content";
+
+const posts = await getSortedPosts();
+const latestPosts = posts.slice(0, 5);
 ---
+
+<Layout title="首页">
+  <HomeHero />
+  <LatestPosts posts={latestPosts} />
+</Layout>

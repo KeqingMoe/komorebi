@@ -1,0 +1,14 @@
+---
+import type { ArchiveYear } from "../../lib/archive";
+import ArchiveYearSection from "./ArchiveYearSection.astro";
+
+interface Props {
+  years: ArchiveYear[];
+}
+
+const { years } = Astro.props as Props;
+---
+
+<div class="mt-10 space-y-12">
+  {years.map((group) => <ArchiveYearSection group={group} />)}
+</div>

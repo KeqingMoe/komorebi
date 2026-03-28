@@ -1,0 +1,24 @@
+---
+interface Props {
+  siteTitle: string;
+  repositoryUrl: string;
+  rssHref?: string | undefined;
+}
+
+const { siteTitle, repositoryUrl, rssHref = "/rss.xml" } = Astro.props as Props;
+---
+
+<footer
+  class="mx-auto w-full max-w-7xl px-6 pb-10 text-sm text-zinc-500 sm:px-8 lg:px-10 lg:pb-14"
+>
+  <div class="border-t border-zinc-200/80 pt-6">
+    <div
+      class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <a href={repositoryUrl} class="transition hover:text-zinc-950">
+        {siteTitle}
+      </a>
+      <a href={rssHref} class="transition hover:text-zinc-950">订阅 RSS</a>
+    </div>
+  </div>
+</footer>
