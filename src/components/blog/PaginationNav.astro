@@ -18,10 +18,7 @@ const { first, prev, next, last, total, current } = Astro.props;
   <div class="flex items-center gap-3">
     {
       prev ? (
-        <a
-          href={prev}
-          class="pagination-link"
-        >
+        <a href={prev} class="pagination-link">
           <span>←</span>
           上一页
         </a>
@@ -35,10 +32,7 @@ const { first, prev, next, last, total, current } = Astro.props;
 
     {
       next ? (
-        <a
-          href={next}
-          class="pagination-link"
-        >
+        <a href={next} class="pagination-link">
           下一页
           <span>→</span>
         </a>
@@ -54,70 +48,39 @@ const { first, prev, next, last, total, current } = Astro.props;
   <div class="flex flex-wrap items-center gap-1.5">
     {
       first && first != prev && (
-        <a
-          href={first}
-          title="首页"
-          class="pagination-page"
-        >
+        <a href={first} title="首页" class="pagination-page">
           1
         </a>
       )
     }
 
-    {
-      current - 2 > 1 && (
-        <span class="pagination-gap">
-          …
-        </span>
-      )
-    }
+    {current - 2 > 1 && <span class="pagination-gap">…</span>}
 
     {
       prev && (
-        <a
-          href={prev}
-          title="上一页"
-          class="pagination-page"
-        >
+        <a href={prev} title="上一页" class="pagination-page">
           {current - 1}
         </a>
       )
     }
 
-    <span
-      aria-current="page"
-      class="pagination-page pagination-page--current"
-    >
+    <span aria-current="page" class="pagination-page pagination-page--current">
       {current}
     </span>
 
     {
       next && (
-        <a
-          href={next}
-          title="下一页"
-          class="pagination-page"
-        >
+        <a href={next} title="下一页" class="pagination-page">
           {current + 1}
         </a>
       )
     }
 
-    {
-      current + 2 < total && (
-        <span class="pagination-gap">
-          …
-        </span>
-      )
-    }
+    {current + 2 < total && <span class="pagination-gap">…</span>}
 
     {
       last && last != next && (
-        <a
-          href={last}
-          title="末页"
-          class="pagination-page"
-        >
+        <a href={last} title="末页" class="pagination-page">
           {total}
         </a>
       )

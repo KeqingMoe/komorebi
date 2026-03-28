@@ -12,85 +12,80 @@ const { prev, next } = Astro.props;
 {
   (prev || next) && (
     <>
-      <nav aria-label="相邻文章导航" class="mt-12 border-t border-zinc-200/80 pt-6">
+      <nav
+        aria-label="相邻文章导航"
+        class="mt-12 border-t border-zinc-200/80 pt-6"
+      >
         <div
           class:list={[
             "grid gap-6",
             prev && next && "md:grid-cols-2 md:gap-10",
           ]}
         >
-          {
-            prev && (
-              <a
-                href={getPostUrl(prev.id)}
-                aria-label={`上一篇：${prev.data.title}`}
-                rel="prev"
-                class="group block border-b border-zinc-200/80 pb-5 transition duration-200 hover:border-zinc-300"
-              >
-                <p class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-zinc-400">
-                  上一篇
-                </p>
-                <p class="mt-3 text-lg font-semibold tracking-tight text-zinc-950 transition duration-200 group-hover:text-rose-500">
-                  {prev.data.title}
-                </p>
-              </a>
-            )
-          }
-
-          {
-            next && (
-              <a
-                href={getPostUrl(next.id)}
-                aria-label={`下一篇：${next.data.title}`}
-                rel="next"
-                class="group block border-b border-zinc-200/80 pb-5 transition duration-200 hover:border-zinc-300 md:text-right"
-              >
-                <p class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-zinc-400">
-                  下一篇
-                </p>
-                <p class="mt-3 text-lg font-semibold tracking-tight text-zinc-950 transition duration-200 group-hover:text-rose-500">
-                  {next.data.title}
-                </p>
-              </a>
-            )
-          }
-        </div>
-      </nav>
-
-      <div aria-hidden="true" class="adjacent-edge-nav">
-        {
-          prev && (
+          {prev && (
             <a
               href={getPostUrl(prev.id)}
               aria-label={`上一篇：${prev.data.title}`}
               rel="prev"
-              class="adjacent-edge adjacent-edge-prev"
+              class="group block border-b border-zinc-200/80 pb-5 transition duration-200 hover:border-zinc-300"
             >
-              <span class="adjacent-edge__glow"></span>
-              <span class="adjacent-edge__panel">
-                <span class="adjacent-edge__eyebrow">上一篇</span>
-                <span class="adjacent-edge__title">{prev.data.title}</span>
-              </span>
+              <p class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-zinc-400">
+                上一篇
+              </p>
+              <p class="mt-3 text-lg font-semibold tracking-tight text-zinc-950 transition duration-200 group-hover:text-rose-500">
+                {prev.data.title}
+              </p>
             </a>
-          )
-        }
+          )}
 
-        {
-          next && (
+          {next && (
             <a
               href={getPostUrl(next.id)}
               aria-label={`下一篇：${next.data.title}`}
               rel="next"
-              class="adjacent-edge adjacent-edge-next"
+              class="group block border-b border-zinc-200/80 pb-5 transition duration-200 hover:border-zinc-300 md:text-right"
             >
-              <span class="adjacent-edge__glow"></span>
-              <span class="adjacent-edge__panel">
-                <span class="adjacent-edge__eyebrow">下一篇</span>
-                <span class="adjacent-edge__title">{next.data.title}</span>
-              </span>
+              <p class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-zinc-400">
+                下一篇
+              </p>
+              <p class="mt-3 text-lg font-semibold tracking-tight text-zinc-950 transition duration-200 group-hover:text-rose-500">
+                {next.data.title}
+              </p>
             </a>
-          )
-        }
+          )}
+        </div>
+      </nav>
+
+      <div aria-hidden="true" class="adjacent-edge-nav">
+        {prev && (
+          <a
+            href={getPostUrl(prev.id)}
+            aria-label={`上一篇：${prev.data.title}`}
+            rel="prev"
+            class="adjacent-edge adjacent-edge-prev"
+          >
+            <span class="adjacent-edge__glow" />
+            <span class="adjacent-edge__panel">
+              <span class="adjacent-edge__eyebrow">上一篇</span>
+              <span class="adjacent-edge__title">{prev.data.title}</span>
+            </span>
+          </a>
+        )}
+
+        {next && (
+          <a
+            href={getPostUrl(next.id)}
+            aria-label={`下一篇：${next.data.title}`}
+            rel="next"
+            class="adjacent-edge adjacent-edge-next"
+          >
+            <span class="adjacent-edge__glow" />
+            <span class="adjacent-edge__panel">
+              <span class="adjacent-edge__eyebrow">下一篇</span>
+              <span class="adjacent-edge__title">{next.data.title}</span>
+            </span>
+          </a>
+        )}
       </div>
     </>
   )
@@ -104,7 +99,11 @@ const { prev, next } = Astro.props;
   @media (min-width: 1360px) {
     .adjacent-edge-nav {
       --page-width: 80rem;
-      --edge-width: clamp(2.75rem, calc((100vw - var(--page-width)) / 2 + 1rem), 5rem);
+      --edge-width: clamp(
+        2.75rem,
+        calc((100vw - var(--page-width)) / 2 + 1rem),
+        5rem
+      );
       --panel-max-width: 16rem;
       display: block;
     }

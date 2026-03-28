@@ -10,7 +10,9 @@ const { group } = Astro.props as Props;
 const { year, total, months } = group;
 ---
 
-<section class="grid gap-6 border-t border-zinc-200/80 pt-8 lg:grid-cols-[8rem_minmax(0,1fr)] lg:gap-12">
+<section
+  class="grid gap-6 border-t border-zinc-200/80 pt-8 lg:grid-cols-[8rem_minmax(0,1fr)] lg:gap-12"
+>
   <div class="lg:sticky lg:top-28 lg:self-start">
     <h2 class="text-4xl font-black tracking-tight text-zinc-950 sm:text-5xl">
       {year}

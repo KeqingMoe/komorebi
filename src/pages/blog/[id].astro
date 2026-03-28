@@ -25,7 +25,17 @@ const { Content, headings } = await render(post);
 
 <Layout title={title}>
   <PostContentLayout
-    {...{ title, description, pubDate, updatedDate, draft, readingStats, headings, prev, next }}
+    {...{
+      title,
+      description,
+      pubDate,
+      updatedDate,
+      draft,
+      readingStats,
+      headings,
+      prev,
+      next,
+    }}
   >
     <Content />
   </PostContentLayout>

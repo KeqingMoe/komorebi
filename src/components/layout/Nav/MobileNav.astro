@@ -131,7 +131,11 @@ const { navLinks } = Astro.props as Props;
     const button = root.querySelector("button");
     const panel = root.querySelector("nav");
 
-    if (!(button instanceof HTMLButtonElement) || !(panel instanceof HTMLElement)) continue;
+    if (
+      !(button instanceof HTMLButtonElement) ||
+      !(panel instanceof HTMLElement)
+    )
+      continue;
 
     const setOpen = (open) => {
       root.dataset.open = open ? "true" : "false";

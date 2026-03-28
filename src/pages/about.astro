@@ -15,7 +15,9 @@ const { Content, headings } = await render(about);
 ---
 
 <Layout title="关于">
-  <PostContentLayout {...{ title, description, pubDate, updatedDate, readingStats, headings }}>
+  <PostContentLayout
+    {...{ title, description, pubDate, updatedDate, readingStats, headings }}
+  >
     <Content />
   </PostContentLayout>
 </Layout>

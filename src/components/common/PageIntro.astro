@@ -28,7 +28,12 @@ const hasMeta = Astro.slots.has("meta");
     )
   }
 
-  <div class:list={["mt-4", hasActions && "flex flex-wrap items-start justify-between gap-4"]}>
+  <div
+    class:list={[
+      "mt-4",
+      hasActions && "flex flex-wrap items-start justify-between gap-4",
+    ]}
+  >
     <div>
       <h1 class={titleClass}>{title}</h1>
       {
@@ -40,7 +45,13 @@ const hasMeta = Astro.slots.has("meta");
       }
     </div>
 
-    {hasActions && <div class="pt-1"><slot name="actions" /></div>}
+    {
+      hasActions && (
+        <div class="pt-1">
+          <slot name="actions" />
+        </div>
+      )
+    }
   </div>
 
   {

@@ -61,7 +61,9 @@ const updatedLabel = updatedDate ? formatDate(updatedDate) : undefined;
             </span>
             <span class="post-meta__item">
               <span class="post-meta__label">阅读约</span>
-              <span class="post-meta__value"><ReadingTime milliseconds={readingStats.time} /></span>
+              <span class="post-meta__value">
+                <ReadingTime milliseconds={readingStats.time} />
+              </span>
             </span>
           </>
         )
@@ -70,7 +72,9 @@ const updatedLabel = updatedDate ? formatDate(updatedDate) : undefined;
   </div>
 
   <div class="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
-    <h1 class="max-w-4xl text-4xl font-black tracking-tight text-zinc-950 sm:text-5xl lg:text-[3.75rem] lg:leading-[1.1]">
+    <h1
+      class="max-w-4xl text-4xl font-black tracking-tight text-zinc-950 sm:text-5xl lg:text-[3.75rem] lg:leading-[1.1]"
+    >
       {title}
     </h1>
 

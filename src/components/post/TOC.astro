@@ -21,17 +21,20 @@ const items = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
           本页目录
         </p>
 
-        <nav aria-label="文章目录" class="max-h-[calc(100vh-7.5rem)] overflow-auto pr-1">
+        <nav
+          aria-label="文章目录"
+          class="max-h-[calc(100vh-7.5rem)] overflow-auto pr-1"
+        >
           <ol class="toc-list m-0 list-none pl-[0.8rem] [--toc-rail-offset:0.6rem]">
-            {
-              items.map((item) => (
-                <li class:list={["toc-item", item.depth > 2 && "toc-item--nested"]}>
-                  <a href={`#${item.slug}`} data-toc-link class="toc-link">
-                    <span class="toc-link__text">{item.text}</span>
-                  </a>
-                </li>
-              ))
-            }
+            {items.map((item) => (
+              <li
+                class:list={["toc-item", item.depth > 2 && "toc-item--nested"]}
+              >
+                <a href={`#${item.slug}`} data-toc-link class="toc-link">
+                  <span class="toc-link__text">{item.text}</span>
+                </a>
+              </li>
+            ))}
           </ol>
         </nav>
       </div>
@@ -81,7 +84,11 @@ const items = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
     top: 0;
     bottom: 0;
     width: 100%;
-    background: linear-gradient(90deg, rgba(255, 223, 231, 0.96), rgba(255, 239, 242, 0.72));
+    background: linear-gradient(
+      90deg,
+      rgba(255, 223, 231, 0.96),
+      rgba(255, 239, 242, 0.72)
+    );
     transform: scaleX(var(--toc-progress));
     transform-origin: left center;
     transition: transform 140ms linear;
@@ -137,22 +144,25 @@ const items = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
 </style>
 
 <script is:inline>
-  const links = Array.from(document.querySelectorAll('[data-toc-link]'));
+  const links = Array.from(document.querySelectorAll("[data-toc-link]"));
 
   if (links.length > 0) {
     const activate = (progressMap) => {
       links.forEach((link) => {
-        const href = link.getAttribute('href');
+        const href = link.getAttribute("href");
         const id = href ? href.slice(1) : null;
-        const progress = id ? progressMap.get(id) ?? 0 : 0;
-        link.style.setProperty('--toc-progress', String(progress));
-        link.style.setProperty('--toc-emphasis', String(Math.min(1, progress * 1.15)));
+        const progress = id ? (progressMap.get(id) ?? 0) : 0;
+        link.style.setProperty("--toc-progress", String(progress));
+        link.style.setProperty(
+          "--toc-emphasis",
+          String(Math.min(1, progress * 1.15)),
+        );
       });
     };
 
     const targets = links
       .map((link) => {
-        const href = link.getAttribute('href');
+        const href = link.getAttribute("href");
         const id = href ? href.slice(1) : null;
         const element = id ? document.getElementById(id) : null;
         return element ? { element, id } : null;
@@ -201,7 +211,8 @@ const items = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
           }
 
           const denominator = Math.min(totalHeight, window.innerHeight);
-          const progress = denominator > 0 ? Math.min(1, visibleHeight / denominator) : 0;
+          const progress =
+            denominator > 0 ? Math.min(1, visibleHeight / denominator) : 0;
 
           if (progress > 0.002) {
             progressMap.set(id, Number(progress.toFixed(4)));
@@ -212,9 +223,11 @@ const items = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
           return progressMap;
         }
 
-        const fallback = [...targets]
-          .reverse()
-          .find(({ element }) => element.getBoundingClientRect().top <= 0) ?? targets[0];
+        const fallback =
+          [...targets]
+            .reverse()
+            .find(({ element }) => element.getBoundingClientRect().top <= 0) ??
+          targets[0];
 
         progressMap.set(fallback.id, 1);
         return progressMap;
@@ -235,10 +248,10 @@ const items = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
 
       activate(collectProgress());
 
-      window.addEventListener('scroll', scheduleSync, { passive: true });
-      window.addEventListener('resize', scheduleSync, { passive: true });
+      window.addEventListener("scroll", scheduleSync, { passive: true });
+      window.addEventListener("resize", scheduleSync, { passive: true });
       window.addEventListener(
-        'hashchange',
+        "hashchange",
         () => {
           scheduleSync();
         },

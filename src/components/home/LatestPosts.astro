@@ -27,11 +27,17 @@ const { posts } = Astro.props as Props;
   {
     posts.length > 0 ? (
       <div class="mt-8 divide-y divide-zinc-200/80 border-y border-zinc-200/80">
-        {posts.map((post) => <LatestPost {post} />)}
+        {posts.map((post) => (
+          <LatestPost {post} />
+        ))}
       </div>
     ) : (
       <div class="mt-8 rounded-[24px] border border-dashed border-zinc-300 bg-white/55 p-8 text-zinc-500">
-        暂时还没有公开文章，先去 <a href="/about" class="font-medium text-rose-500">关于页面</a> 看看吧。
+        暂时还没有公开文章，先去{" "}
+        <a href="/about" class="font-medium text-rose-500">
+          关于页面
+        </a>{" "}
+        看看吧。
       </div>
     )
   }
