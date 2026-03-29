@@ -82,7 +82,9 @@ export function resolveThemeOptions(
   return {
     title: options.title ?? "木漏れ日",
     tagline: options.tagline ?? "轻盈排版、安静阅读与持续写作。",
-    repositoryUrl: options.repositoryUrl,
+    ...(options.repositoryUrl !== undefined
+      ? { repositoryUrl: options.repositoryUrl }
+      : {}),
     locale: options.locale ?? "zh-CN",
     pagination: {
       pageSize: options.pagination?.pageSize ?? 10,
