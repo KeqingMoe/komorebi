@@ -2,9 +2,16 @@
   "name": "komorebi-theme",
   "type": "module",
   "version": "0.1.0",
+  "files": [
+    "src",
+    "README.md",
+    "virtual.d.ts"
+  ],
   "exports": {
     ".": "./src/index.ts",
-    "./content": "./src/content/index.ts"
+    "./collections": "./src/content/collections.ts",
+    "./loaders": "./src/content/loaders.ts",
+    "./schema": "./src/content/schema.ts"
   },
   "peerDependencies": {
     "astro": "^5.17.1"

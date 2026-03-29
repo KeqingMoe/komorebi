@@ -1,4 +1,1 @@
-import type { ResolvedKomorebiThemeOptions } from "../options";
-import rawConfig from "virtual:komorebi-theme/config";
-
-export const themeConfig = rawConfig as ResolvedKomorebiThemeOptions;
+export { default as themeConfig } from "virtual:komorebi-theme/config";

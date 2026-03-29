@@ -1,3 +1,9 @@
+/**
+ * This triple-slash directive ensures the virtual module declarations are loaded when consumers
+ * import the integration entrypoint in their Astro config, matching Starlight's package pattern.
+ */
+/// <reference path="../virtual.d.ts" />
+
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
@@ -12,6 +18,47 @@ import {
 import { createKomorebiUnoOptions } from "./unocss";
 
 const THEME_CONFIG_MODULE_ID = "virtual:komorebi-theme/config";
+const THEME_ROUTE_DEFINITIONS = [
+  {
+    enabledBy: "home",
+    pattern: "/",
+    entrypoint: new URL("./routes/index.astro", import.meta.url),
+  },
+  {
+    enabledBy: "blog",
+    pattern: "/blog/[id]",
+    entrypoint: new URL("./routes/blog/[id].astro", import.meta.url),
+  },
+  {
+    enabledBy: "blog",
+    pattern: "/blog/[...page]",
+    entrypoint: new URL("./routes/blog/[...page].astro", import.meta.url),
+  },
+  {
+    enabledBy: "archive",
+    pattern: "/archive",
+    entrypoint: new URL("./routes/archive.astro", import.meta.url),
+  },
+  {
+    enabledBy: "about",
+    pattern: "/about",
+    entrypoint: new URL("./routes/about.astro", import.meta.url),
+  },
+  {
+    enabledBy: "rss",
+    pattern: "/rss.xml",
+    entrypoint: new URL("./routes/rss.xml.ts", import.meta.url),
+  },
+  {
+    enabledBy: "rss",
+    pattern: "/rss/styles.xsl",
+    entrypoint: new URL("./routes/rss/styles.xsl.ts", import.meta.url),
+  },
+] satisfies ReadonlyArray<{
+  enabledBy: keyof KomorebiThemeRoutes;
+  pattern: string;
+  entrypoint: URL;
+}>;
 
 export type {
   KomorebiThemeLabels,
@@ -24,12 +71,10 @@ export default function komorebi(
   options: KomorebiThemeOptions = {},
 ): AstroIntegration {
   const resolved = resolveThemeOptions(options);
-  const runtimeDir = normalizeGlobDir(
+  const themeContentGlobs = createThemeContentGlobs([
     fileURLToPath(new URL("./runtime", import.meta.url)),
-  );
-  const routesDir = normalizeGlobDir(
     fileURLToPath(new URL("./routes", import.meta.url)),
-  );
+  ]);
 
   return {
     name: "komorebi-theme",
@@ -45,12 +90,7 @@ export default function komorebi(
 
         updateConfig({
           integrations: [
-            UnoCSS(
-              createKomorebiUnoOptions([
-                `${runtimeDir}/**/*.{astro,ts}`,
-                `${routesDir}/**/*.{astro,ts}`,
-              ]),
-            ),
+            UnoCSS(createKomorebiUnoOptions(themeContentGlobs)),
           ],
           markdown: {
             shikiConfig: {
@@ -66,64 +106,30 @@ export default function komorebi(
           },
         });
 
-        if (resolved.routes.home) {
-          injectRoute({
-            pattern: "/",
-            entrypoint: new URL("./routes/index.astro", import.meta.url),
-          });
-        }
-
-        if (resolved.routes.blog) {
-          injectRoute({
-            pattern: "/blog/[id]",
-            entrypoint: new URL("./routes/blog/[id].astro", import.meta.url),
-          });
-          injectRoute({
-            pattern: "/blog/[...page]",
-            entrypoint: new URL(
-              "./routes/blog/[...page].astro",
-              import.meta.url,
-            ),
-          });
-        }
-
-        if (resolved.routes.archive) {
-          injectRoute({
-            pattern: "/archive",
-            entrypoint: new URL("./routes/archive.astro", import.meta.url),
-          });
-        }
-
-        if (resolved.routes.about) {
-          injectRoute({
-            pattern: "/about",
-            entrypoint: new URL("./routes/about.astro", import.meta.url),
-          });
-        }
-
-        if (resolved.routes.rss) {
-          injectRoute({
-            pattern: "/rss.xml",
-            entrypoint: new URL("./routes/rss.xml.ts", import.meta.url),
-          });
-          injectRoute({
-            pattern: "/rss/styles.xsl",
-            entrypoint: new URL("./routes/rss/styles.xsl.ts", import.meta.url),
-          });
-        }
-      },
-      "astro:config:done": ({ injectTypes }) => {
-        injectTypes({
-          filename: "komorebi-theme.d.ts",
-          content: `declare module "virtual:komorebi-theme/config" {
-  const config: any;
-  export default config;
-}
-`,
-        });
+        injectEnabledRoutes(injectRoute, resolved.routes);
       },
     },
   };
+}
+
+function createThemeContentGlobs(dirs: string[]) {
+  return dirs.map((dir) => `${normalizeGlobDir(dir)}/**/*.{astro,ts}`);
+}
+
+function injectEnabledRoutes(
+  injectRoute: (route: { pattern: string; entrypoint: URL }) => void,
+  routes: KomorebiThemeRoutes,
+) {
+  for (const route of THEME_ROUTE_DEFINITIONS) {
+    if (!routes[route.enabledBy]) {
+      continue;
+    }
+
+    injectRoute({
+      pattern: route.pattern,
+      entrypoint: route.entrypoint,
+    });
+  }
 }
 
 function normalizeGlobDir(dir: string) {

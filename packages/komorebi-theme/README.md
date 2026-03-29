@@ -16,9 +16,15 @@ export default defineConfig({
 
 ```ts
 // src/content.config.ts
-import { komorebiCollections } from "komorebi-theme/content";
+import { defineCollection } from "astro:content";
+import { blogConfig, specialConfig } from "komorebi-theme/collections";
 
-export const collections = komorebiCollections();
+export const collections = {
+  blog: defineCollection(blogConfig()),
+  special: defineCollection(specialConfig()),
+};
 ```
+
+If you need more control, `komorebi-theme/loaders` and `komorebi-theme/schema` are also exported separately.
 
 See `examples/basic` in this repository for a working consumer project.

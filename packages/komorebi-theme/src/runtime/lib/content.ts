@@ -1,9 +1,16 @@
-import { getCollection, type CollectionEntry } from "astro:content";
+import {
+  getCollection,
+  getEntry,
+  type CollectionEntry,
+} from "astro:content";
 import getReadingTime, { type ReadTimeResults } from "reading-time";
 import removeMd from "remove-markdown";
 import { siteLocale } from "./site";
 
-export type PostEntry = CollectionEntry<'blog'> & {
+export type BlogEntry = CollectionEntry<"blog">;
+export type SpecialEntry = CollectionEntry<"special">;
+
+export type PostEntry = BlogEntry & {
   readingStats: ReadTimeResults;
 };
 
@@ -14,9 +21,9 @@ const dateFormatter = new Intl.DateTimeFormat(siteLocale, {
 });
 
 export async function getPosts(
-  filter?: (entry: CollectionEntry<'blog'>) => boolean,
+  filter?: (entry: BlogEntry) => boolean,
 ): Promise<PostEntry[]> {
-  const posts = await getCollection('blog', entry => {
+  const posts = await getCollection("blog", (entry) => {
     if (/^\d+$/.test(entry.id)) {
       throw new Error(
         `Invalid blog post id ${entry.id}: numeric-only ids are reserved for pagination routes (/blog/:page).`,
@@ -27,18 +34,22 @@ export async function getPosts(
     }
     return filter ? filter(entry) : true;
   });
-  return posts.map(post => ({
+  return posts.map((post) => ({
     ...post,
     readingStats: computeReadingTime(post.body ?? ""),
   }));
 }
 
 export async function getSortedPosts(
-  filter?: (entry: CollectionEntry<'blog'>) => boolean,
-) {
+  filter?: (entry: BlogEntry) => boolean,
+): Promise<PostEntry[]> {
   const posts = await getPosts(filter);
   sortByPubDate(posts);
   return posts;
+}
+
+export async function getSpecialEntry(id: string): Promise<SpecialEntry | undefined> {
+  return await getEntry("special", id);
 }
 
 export function sortByPubDate<T extends { data: { pubDate: Date } }>(posts: T[]) {
