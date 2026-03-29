@@ -1,0 +1,15 @@
+{
+  "name": "komorebi-theme-example-basic",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "astro": "^5.17.1",
+    "komorebi-theme": "workspace:*"
+  },
+  "scripts": {
+    "check": "astro check",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  }
+}

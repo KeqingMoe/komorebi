@@ -1,0 +1,45 @@
+---
+import type { PostEntry } from "../../lib/content";
+import { siteLabels } from "../../lib/site";
+import LatestPost from "./LatestPost.astro";
+
+interface Props {
+  posts: PostEntry[];
+}
+
+const { posts } = Astro.props as Props;
+---
+
+<section class="mt-16 max-w-5xl">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <h2 class="text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
+        {siteLabels.latestPostsHeading}
+      </h2>
+    </div>
+    <a
+      href="/blog"
+      class="text-sm font-semibold text-zinc-500 transition hover:text-zinc-950"
+    >
+      {siteLabels.latestPostsMore}
+    </a>
+  </div>
+
+  {
+    posts.length > 0 ? (
+      <div class="mt-8 divide-y divide-zinc-200/80 border-y border-zinc-200/80">
+        {posts.map((post) => (
+          <LatestPost {post} />
+        ))}
+      </div>
+    ) : (
+      <div class="mt-8 rounded-[24px] border border-dashed border-zinc-300 bg-white/55 p-8 text-zinc-500">
+        {siteLabels.latestPostsEmptyPrefix}{" "}
+        <a href="/about" class="font-medium text-rose-500">
+          {siteLabels.latestPostsEmptyLink}
+        </a>{" "}
+        {siteLabels.latestPostsEmptySuffix}
+      </div>
+    )
+  }
+</section>
