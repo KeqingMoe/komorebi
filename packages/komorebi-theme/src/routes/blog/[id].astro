@@ -1,0 +1,42 @@
+---
+import type { GetStaticPaths } from "astro";
+import { render } from "astro:content";
+import PostContentLayout from "../../runtime/components/post/PostContentLayout.astro";
+import { getSortedPosts } from "../../runtime/lib/content";
+import Layout from "../../runtime/layouts/Layout.astro";
+
+export const getStaticPaths = (async () => {
+  const posts = await getSortedPosts();
+  return posts.map((post, i) => ({
+    params: { id: post.id },
+    props: {
+      prev: posts[i - 1],
+      post,
+      next: posts[i + 1],
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { prev, post, next } = Astro.props;
+const { title, description, pubDate, updatedDate, draft } = post.data;
+const { readingStats } = post;
+const { Content, headings } = await render(post);
+---
+
+<Layout title={title}>
+  <PostContentLayout
+    {...{
+      title,
+      description,
+      pubDate,
+      updatedDate,
+      draft,
+      readingStats,
+      headings,
+      prev,
+      next,
+    }}
+  >
+    <Content />
+  </PostContentLayout>
+</Layout>

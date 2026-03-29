@@ -1,0 +1,23 @@
+---
+import { getEntry } from "astro:content";
+import { render } from "astro:content";
+import PostContentLayout from "../runtime/components/post/PostContentLayout.astro";
+import Layout from "../runtime/layouts/Layout.astro";
+import { computeReadingTime } from "../runtime/lib/content";
+
+const about = await getEntry("special", "about");
+if (!about) {
+  return Astro.redirect("/404");
+}
+const { title, description, pubDate, updatedDate } = about.data;
+const readingStats = computeReadingTime(about?.body ?? "");
+const { Content, headings } = await render(about);
+---
+
+<Layout title="关于">
+  <PostContentLayout
+    {...{ title, description, pubDate, updatedDate, readingStats, headings }}
+  >
+    <Content />
+  </PostContentLayout>
+</Layout>

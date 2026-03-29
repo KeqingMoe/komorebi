@@ -1,0 +1,14 @@
+---
+import LatestPosts from "../runtime/components/home/LatestPosts.astro";
+import HomeHero from "../runtime/components/home/HomeHero.astro";
+import Layout from "../runtime/layouts/Layout.astro";
+import { getSortedPosts } from "../runtime/lib/content";
+
+const posts = await getSortedPosts();
+const latestPosts = posts.slice(0, 5);
+---
+
+<Layout title="首页">
+  <HomeHero />
+  <LatestPosts posts={latestPosts} />
+</Layout>

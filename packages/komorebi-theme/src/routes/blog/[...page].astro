@@ -1,0 +1,48 @@
+---
+import type { GetStaticPaths } from "astro";
+import PaginationNav from "../../runtime/components/blog/PaginationNav.astro";
+import PostCard from "../../runtime/components/blog/PostCard.astro";
+import PageIntro from "../../runtime/components/common/PageIntro.astro";
+import { getSortedPosts } from "../../runtime/lib/content";
+import { sitePagination } from "../../runtime/lib/site";
+import Layout from "../../runtime/layouts/Layout.astro";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getSortedPosts();
+  return paginate(posts, { pageSize: sitePagination.pageSize });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const posts = page.data;
+
+const { url, size, lastPage: total, currentPage: current } = page;
+const props = {
+  ...url,
+  total,
+  current,
+};
+---
+
+<Layout title="文章列表">
+  <PageIntro
+    eyebrow="Blog"
+    title="文章列表"
+    description="按发布时间浏览全部文章，保留清晰的信息层级和更轻的阅读节奏。"
+  >
+    <p slot="meta">第 {current} 页 · 共 {total} 页 · 每页 {size} 篇</p>
+    <span slot="meta" class="text-zinc-300">·</span>
+    <a
+      slot="meta"
+      href="/archive"
+      class="font-medium transition hover:text-zinc-950"
+    >
+      查看所有文章 →
+    </a>
+  </PageIntro>
+
+  <section class="mt-8 divide-y divide-zinc-200/80 border-y border-zinc-200/80">
+    {posts.map((post) => <PostCard {post} />)}
+  </section>
+
+  {total > 1 && <PaginationNav {...props} />}
+</Layout>
