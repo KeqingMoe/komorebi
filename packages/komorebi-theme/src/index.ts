@@ -26,8 +26,8 @@ const THEME_ROUTE_DEFINITIONS = [
   },
   {
     enabledBy: "blog",
-    pattern: "/blog/[id]",
-    entrypoint: new URL("./routes/blog/[id].astro", import.meta.url),
+    pattern: "/blog/[...id]",
+    entrypoint: new URL("./routes/blog/[...id].astro", import.meta.url),
   },
   {
     enabledBy: "blog",

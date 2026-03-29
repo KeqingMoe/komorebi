@@ -25,9 +25,10 @@ export async function getPosts(
 ): Promise<PostEntry[]> {
   const posts = await getCollection("blog", (entry) => {
     if (/^\d+$/.test(entry.id)) {
-      throw new Error(
-        `Invalid blog post id ${entry.id}: numeric-only ids are reserved for pagination routes (/blog/:page).`,
+      console.warn(
+        `[komorebi-theme] Ignoring blog post with numeric-only id "${entry.id}" because numeric routes are reserved for pagination (/blog/:page).`,
       );
+      return false;
     }
     if (import.meta.env.PROD && entry.data.draft) {
       return false;
