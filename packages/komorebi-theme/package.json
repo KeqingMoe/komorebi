@@ -9,6 +9,7 @@
   ],
   "exports": {
     ".": "./src/index.ts",
+    "./collections": "./src/content/collections.ts",
     "./loaders": "./src/content/loaders.ts",
     "./schema": "./src/content/schema.ts"
   },
