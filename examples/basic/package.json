@@ -4,7 +4,7 @@
   "type": "module",
   "dependencies": {
     "astro": "^5.17.1",
-    "komorebi-theme": "workspace:*"
+    "komorebi-theme": "*"
   },
   "scripts": {
     "check": "astro check",
