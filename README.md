@@ -105,7 +105,6 @@ komorebi({
   nav: navLinks(),
   friends: [],
   labels: {},
-  routes: {},
 });
 ```
 
@@ -166,18 +165,6 @@ komorebi({
 | `latestPostsEmptyLink` | `"关于页面"` |
 | `latestPostsEmptySuffix` | `"看看吧。"` |
 | `footerRss` | `"订阅 RSS"` |
-
-### `routes`
-
-`Partial<KomorebiThemeRoutes>` — 控制内置页面的注入。设为 `false` 可禁用对应页面：
-
-| 字段 | 默认值 | 对应路由 |
-| - | - | - |
-| `home` | `true` | `/` |
-| `blog` | `true` | `/blog` |
-| `archive` | `true` | `/archive` |
-| `about` | `true` | `/about` |
-| `friends` | `true` | `/friends` |
 
 ## 导航配置
 
