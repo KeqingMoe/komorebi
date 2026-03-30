@@ -31,7 +31,7 @@ const TEMPLATE_TEXT_FILES = [
   'README.md',
   'package.json',
   'astro.config.ts',
-  'tsconfig.json',
+  'tsconfig.json.txt',
   'src/content.config.ts',
   'src/content/about.md',
   'src/content/blog/hello-world.md',
@@ -39,6 +39,7 @@ const TEMPLATE_TEXT_FILES = [
 
 const RENAME_MAP = {
   gitignore: '.gitignore',
+  'tsconfig.json.txt': 'tsconfig.json',
 } as const;
 
 const ASCII_LOGO = [
@@ -99,11 +100,11 @@ async function main() {
 
   const replacements = {
     ...getReadmeCommandReplacements(packageManager),
-    __PROJECT_NAME__: projectName,
+    project_name__: projectName,
     __SITE_TITLE__: answers.siteTitle,
-    __SITE_TITLE_JSON__: JSON.stringify(answers.siteTitle),
-    __SITE_URL_BLOCK__: answers.siteUrl
-      ? `\n  site: ${JSON.stringify(answers.siteUrl)},`
+    "'__SITE_TITLE_JSON__'": JSON.stringify(answers.siteTitle),
+    '/* __SITE_URL_BLOCK__ */': answers.siteUrl
+      ? `site: ${JSON.stringify(answers.siteUrl)},`
       : '',
     __CONTENT_DATE__: createdDate,
     __ABOUT_TITLE_YAML__: JSON.stringify(`关于 ${answers.siteTitle}`),
