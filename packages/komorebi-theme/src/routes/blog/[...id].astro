@@ -1,9 +1,9 @@
 ---
-import type { GetStaticPaths } from "astro";
-import { render } from "astro:content";
-import PostContentLayout from "../../runtime/components/post/PostContentLayout.astro";
-import { getSortedPosts } from "../../runtime/lib/content";
-import Layout from "../../runtime/layouts/Layout.astro";
+import { render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import PostContentLayout from '../../runtime/components/post/PostContentLayout.astro';
+import Layout from '../../runtime/layouts/Layout.astro';
+import { getSortedPosts } from '../../runtime/lib/content';
 
 export const getStaticPaths = (async () => {
   const posts = await getSortedPosts();

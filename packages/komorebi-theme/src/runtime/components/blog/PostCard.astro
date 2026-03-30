@@ -1,7 +1,7 @@
 ---
-import { formatDate, getPostUrl, type PostEntry } from "../../lib/content";
-import ReadingTime from "../widgets/ReadingTime.astro";
-import WordsCount from "../widgets/WordsCount.astro";
+import { formatDate, getPostUrl, type PostEntry } from '../../lib/content';
+import ReadingTime from '../widgets/ReadingTime.astro';
+import WordsCount from '../widgets/WordsCount.astro';
 
 interface Props {
   post: PostEntry;
@@ -10,7 +10,9 @@ interface Props {
 const { post } = Astro.props;
 const { words, time: milliseconds } = post.readingStats;
 const publishedLabel = formatDate(post.data.pubDate);
-const updatedLabel = post.data.updatedDate ? formatDate(post.data.updatedDate) : undefined;
+const updatedLabel = post.data.updatedDate
+  ? formatDate(post.data.updatedDate)
+  : undefined;
 ---
 
 <a href={getPostUrl(post.id)} class="group block">

@@ -1,5 +1,5 @@
 {
-  "name": "__PROJECT_NAME__",
+  "name": "project_name__",
   "private": true,
   "type": "module",
   "scripts": {

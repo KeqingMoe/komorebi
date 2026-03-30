@@ -1,4 +1,4 @@
-import { themeConfig } from "../config";
+import { themeConfig } from '../config';
 
 export const siteTitle = themeConfig.title;
 export const siteTagline = themeConfig.tagline;
@@ -10,4 +10,4 @@ export const siteFriends = themeConfig.friends;
 export const siteLabels = themeConfig.labels;
 export const sitePagination = themeConfig.pagination;
 
-export const komorebiRepository = "https://github.com/KeqingMoe/komorebi";
+export const komorebiRepository = 'https://github.com/KeqingMoe/komorebi';

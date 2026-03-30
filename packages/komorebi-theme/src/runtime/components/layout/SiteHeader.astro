@@ -1,7 +1,7 @@
 ---
-import DesktopNav from "./Nav/DesktopNav.astro";
-import MobileNav from "./Nav/MobileNav.astro";
-import { siteNav } from "../../lib/site";
+import { siteNav } from '../../lib/site';
+import DesktopNav from './Nav/DesktopNav.astro';
+import MobileNav from './Nav/MobileNav.astro';
 
 interface NavLink {
   href: string;
@@ -14,7 +14,7 @@ const navLinks: NavLink[] = siteNav.map((link) => ({
   href: link.href,
   label: link.label,
   isActive:
-    link.href === "/" ? pathname === "/" : pathname.startsWith(link.href),
+    link.href === '/' ? pathname === '/' : pathname.startsWith(link.href),
 }));
 
 interface Props {

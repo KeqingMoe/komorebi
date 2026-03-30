@@ -1,9 +1,9 @@
 ---
-import ArchiveTimeline from "../runtime/components/archive/ArchiveTimeline.astro";
-import PageIntro from "../runtime/components/common/PageIntro.astro";
-import { buildArchiveYears } from "../runtime/lib/archive";
-import { getSortedPosts } from "../runtime/lib/content";
-import Layout from "../runtime/layouts/Layout.astro";
+import ArchiveTimeline from '../runtime/components/archive/ArchiveTimeline.astro';
+import PageIntro from '../runtime/components/common/PageIntro.astro';
+import Layout from '../runtime/layouts/Layout.astro';
+import { buildArchiveYears } from '../runtime/lib/archive';
+import { getSortedPosts } from '../runtime/lib/content';
 
 const posts = await getSortedPosts();
 const archiveYears = buildArchiveYears(posts);

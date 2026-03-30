@@ -13,7 +13,7 @@ else totalSeconds = Math.ceil(seconds);
 
 const hours = Math.floor(totalSeconds / 3600);
 const mins = Math.floor((totalSeconds % 3600) / 60);
-let label = "1 分钟";
+let label = '1 分钟';
 
 if (hours > 0) {
   label = mins > 0 ? `${hours} 小时 ${mins} 分钟` : `${hours} 小时`;

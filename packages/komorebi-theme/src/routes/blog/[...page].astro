@@ -1,11 +1,11 @@
 ---
-import type { GetStaticPaths } from "astro";
-import PaginationNav from "../../runtime/components/blog/PaginationNav.astro";
-import PostCard from "../../runtime/components/blog/PostCard.astro";
-import PageIntro from "../../runtime/components/common/PageIntro.astro";
-import { getSortedPosts } from "../../runtime/lib/content";
-import { sitePagination } from "../../runtime/lib/site";
-import Layout from "../../runtime/layouts/Layout.astro";
+import type { GetStaticPaths } from 'astro';
+import PaginationNav from '../../runtime/components/blog/PaginationNav.astro';
+import PostCard from '../../runtime/components/blog/PostCard.astro';
+import PageIntro from '../../runtime/components/common/PageIntro.astro';
+import Layout from '../../runtime/layouts/Layout.astro';
+import { getSortedPosts } from '../../runtime/lib/content';
+import { sitePagination } from '../../runtime/lib/site';
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getSortedPosts();

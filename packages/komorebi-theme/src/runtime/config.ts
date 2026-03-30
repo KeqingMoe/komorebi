@@ -1,1 +1,1 @@
-export { default as themeConfig } from "virtual:komorebi-theme/config";
+export { default as themeConfig } from 'virtual:komorebi-theme/config';

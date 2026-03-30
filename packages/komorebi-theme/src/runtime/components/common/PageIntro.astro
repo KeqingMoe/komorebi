@@ -11,12 +11,12 @@ const {
   eyebrow,
   title,
   description,
-  containerClass = "max-w-4xl",
-  titleClass = "text-4xl font-black tracking-tight text-zinc-950 sm:text-[3.5rem]",
+  containerClass = 'max-w-4xl',
+  titleClass = 'text-4xl font-black tracking-tight text-zinc-950 sm:text-[3.5rem]',
 } = Astro.props as Props;
 
-const hasActions = Astro.slots.has("actions");
-const hasMeta = Astro.slots.has("meta");
+const hasActions = Astro.slots.has('actions');
+const hasMeta = Astro.slots.has('meta');
 ---
 
 <section class={containerClass}>

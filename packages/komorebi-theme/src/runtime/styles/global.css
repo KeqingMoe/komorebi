@@ -21,16 +21,9 @@ body {
   margin: 0;
   color: var(--text-main);
   font-family:
-    "SF Pro Display",
-    "Inter",
-    "PingFang SC",
-    "Hiragino Sans GB",
-    "Microsoft YaHei",
-    "Noto Sans CJK SC",
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
+    "SF Pro Display", "Inter", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Noto Sans CJK SC", system-ui, -apple-system,
+    BlinkMacSystemFont, sans-serif;
 }
 
 a {
@@ -47,16 +40,8 @@ img {
 code,
 pre {
   font-family:
-    "SFMono-Regular",
-    "JetBrains Mono",
-    "Fira Code",
-    "Cascadia Code",
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
+    "SFMono-Regular", "JetBrains Mono", "Fira Code", "Cascadia Code",
+    ui-monospace, Menlo, Monaco, Consolas, monospace;
 }
 
 ::selection {

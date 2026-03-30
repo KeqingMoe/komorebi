@@ -1,8 +1,8 @@
 import rss from '@astrojs/rss';
 import type { APIRoute } from 'astro';
+import { escapeUTF8 } from 'entities';
 import { getPostUrl, getSortedPosts } from '../runtime/lib/content';
 import { siteLocale, siteTitle } from '../runtime/lib/site';
-import { escapeUTF8 } from 'entities';
 
 const RSS_EXT_NS = 'https://komorebi.keqing.moe/rss-ext';
 
@@ -38,7 +38,7 @@ export const GET: APIRoute = async (context) => {
     xmlns: {
       k: RSS_EXT_NS,
     },
-    items: blog.map(post => {
+    items: blog.map((post) => {
       const pubDateLabel = formatDateForFeed(post.data.pubDate);
       const updatedAt = post.data.updatedDate;
       const words = Math.round(post.readingStats.words);

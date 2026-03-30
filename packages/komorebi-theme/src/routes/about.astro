@@ -1,15 +1,15 @@
 ---
-import { render } from "astro:content";
-import PostContentLayout from "../runtime/components/post/PostContentLayout.astro";
-import Layout from "../runtime/layouts/Layout.astro";
-import { computeReadingTime, getSpecialEntry } from "../runtime/lib/content";
+import { render } from 'astro:content';
+import PostContentLayout from '../runtime/components/post/PostContentLayout.astro';
+import Layout from '../runtime/layouts/Layout.astro';
+import { computeReadingTime, getSpecialEntry } from '../runtime/lib/content';
 
-const about = await getSpecialEntry("about");
+const about = await getSpecialEntry('about');
 if (!about) {
-  return Astro.redirect("/404");
+  return Astro.redirect('/404');
 }
 const { title, description, pubDate, updatedDate } = about.data;
-const readingStats = computeReadingTime(about.body ?? "");
+const readingStats = computeReadingTime(about.body ?? '');
 const { Content, headings } = await render(about);
 ---
 

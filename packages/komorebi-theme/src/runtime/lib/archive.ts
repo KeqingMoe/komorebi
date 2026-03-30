@@ -1,4 +1,4 @@
-import type { PostEntry } from "./content";
+import type { PostEntry } from './content';
 
 export interface ArchiveDay {
   day: number;
@@ -30,17 +30,24 @@ export function buildArchiveYears(posts: PostEntry[]): ArchiveYear[] {
     if (!acc.has(year)) {
       acc.set(year, new Map<number, DayMap>());
     }
-    const monthMap = acc.get(year)!;
-
-    if (!monthMap.has(month)) {
-      monthMap.set(month, new Map<number, PostEntry[]>());
+    let monthMap = acc.get(year);
+    if (!monthMap) {
+      monthMap = new Map<number, DayMap>();
+      acc.set(year, monthMap);
     }
-    const dayMap = monthMap.get(month)!;
 
-    if (!dayMap.has(day)) {
-      dayMap.set(day, []);
+    let dayMap = monthMap.get(month);
+    if (!dayMap) {
+      dayMap = new Map<number, PostEntry[]>();
+      monthMap.set(month, dayMap);
     }
-    dayMap.get(day)!.push(post);
+
+    let dayPosts = dayMap.get(day);
+    if (!dayPosts) {
+      dayPosts = [];
+      dayMap.set(day, dayPosts);
+    }
+    dayPosts.push(post);
 
     return acc;
   }, new Map<number, MonthMap>());
@@ -49,12 +56,19 @@ export function buildArchiveYears(posts: PostEntry[]): ArchiveYear[] {
     year,
     total: Array.from(monthMap.values()).reduce(
       (sum, dayMap) =>
-        sum + Array.from(dayMap.values()).reduce((inner, dayPosts) => inner + dayPosts.length, 0),
+        sum +
+        Array.from(dayMap.values()).reduce(
+          (inner, dayPosts) => inner + dayPosts.length,
+          0,
+        ),
       0,
     ),
     months: Array.from(monthMap.entries()).map(([month, dayMap]) => ({
       month,
-      total: Array.from(dayMap.values()).reduce((sum, dayPosts) => sum + dayPosts.length, 0),
+      total: Array.from(dayMap.values()).reduce(
+        (sum, dayPosts) => sum + dayPosts.length,
+        0,
+      ),
       days: Array.from(dayMap.entries()).map(([day, dayPosts]) => ({
         day,
         posts: dayPosts,
@@ -64,5 +78,5 @@ export function buildArchiveYears(posts: PostEntry[]): ArchiveYear[] {
 }
 
 export function formatArchiveDay(value: number) {
-  return String(value).padStart(2, "0");
+  return String(value).padStart(2, '0');
 }
