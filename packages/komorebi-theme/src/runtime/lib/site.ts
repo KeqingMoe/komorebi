@@ -9,3 +9,5 @@ export const siteNav = themeConfig.nav;
 export const siteFriends = themeConfig.friends;
 export const siteLabels = themeConfig.labels;
 export const sitePagination = themeConfig.pagination;
+
+export const komorebiRepository = "https://github.com/KeqingMoe/komorebi";
