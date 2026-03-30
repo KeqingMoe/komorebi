@@ -54,53 +54,41 @@ export interface InstallHints {
 const RUNTIME_PACKAGES = ['astro@^5', 'komorebi-theme'];
 const DEV_PACKAGES = ['@astrojs/check', 'typescript'];
 
+interface PackageManagerMeta {
+  base: string;
+  devFlag: string;
+}
+
+function getPackageManagerMeta(packageManager: string): PackageManagerMeta {
+  switch (packageManager) {
+    case 'bun':
+      return { base: 'add', devFlag: '-d' };
+    case 'npm':
+      return { base: 'install', devFlag: '-D' };
+    default:
+      return { base: 'add', devFlag: '-D' };
+  }
+}
+
 export function getInstallCommands(packageManager: string): InstallArgs {
-  if (packageManager === 'bun') {
-    return {
-      runtime: ['add', ...RUNTIME_PACKAGES],
-      dev: ['add', '-d', ...DEV_PACKAGES],
-    };
-  }
-
-  if (packageManager === 'npm') {
-    return {
-      runtime: ['install', ...RUNTIME_PACKAGES],
-      dev: ['install', '-D', ...DEV_PACKAGES],
-    };
-  }
-
+  const { base, devFlag } = getPackageManagerMeta(packageManager);
   return {
-    runtime: ['add', ...RUNTIME_PACKAGES],
-    dev: ['add', '-D', ...DEV_PACKAGES],
+    runtime: [base, ...RUNTIME_PACKAGES],
+    dev: [base, devFlag, ...DEV_PACKAGES],
   };
 }
 
 export function getManualInstallHints(packageManager: string): InstallHints {
-  if (packageManager === 'bun') {
-    return {
-      runtime: `bun add ${RUNTIME_PACKAGES.join(' ')}`,
-      dev: `bun add -d ${DEV_PACKAGES.join(' ')}`,
-    };
-  }
-
-  const cmd =
-    packageManager === 'npm' ? 'npm install' : `${packageManager} add`;
+  const { base, devFlag } = getPackageManagerMeta(packageManager);
+  const cmd = `${packageManager} ${base}`;
   return {
     runtime: `${cmd} ${RUNTIME_PACKAGES.join(' ')}`,
-    dev: `${cmd} -D ${DEV_PACKAGES.join(' ')}`,
+    dev: `${cmd} ${devFlag} ${DEV_PACKAGES.join(' ')}`,
   };
 }
 
 export function getDevCommand(packageManager: string) {
-  if (packageManager === 'pnpm' || packageManager === 'yarn') {
-    return `${packageManager} dev`;
-  }
-
-  if (packageManager === 'bun') {
-    return 'bun run dev';
-  }
-
-  return 'npm run dev';
+  return packageManager === 'npm' ? 'npm run dev' : `${packageManager} run dev`;
 }
 
 export function getErrorMessage(error: unknown) {
