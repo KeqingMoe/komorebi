@@ -45,16 +45,6 @@ const THEME_ROUTE_DEFINITIONS = [
     pattern: "/about",
     entrypoint: new URL("./routes/about.astro", import.meta.url),
   },
-  {
-    enabledBy: "rss",
-    pattern: "/rss.xml",
-    entrypoint: new URL("./routes/rss.xml.ts", import.meta.url),
-  },
-  {
-    enabledBy: "rss",
-    pattern: "/rss/styles.xsl",
-    entrypoint: new URL("./routes/rss/styles.xsl.ts", import.meta.url),
-  },
 ] satisfies ReadonlyArray<{
   enabledBy: keyof KomorebiThemeRoutes;
   pattern: string;

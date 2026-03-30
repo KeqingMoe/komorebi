@@ -36,11 +36,6 @@ const navLinks = [
     label: link.label,
     isActive: pathname.startsWith(link.href),
   })),
-  siteRoutes.rss && {
-    href: "/rss.xml",
-    label: siteLabels.navRss,
-    isActive: pathname === "/rss.xml",
-  },
 ].filter((link): link is NavLink => Boolean(link));
 
 interface Props {

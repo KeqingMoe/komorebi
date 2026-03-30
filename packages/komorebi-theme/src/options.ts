@@ -3,7 +3,6 @@ export interface KomorebiThemeRoutes {
   blog: boolean;
   archive: boolean;
   about: boolean;
-  rss: boolean;
 }
 
 export interface KomorebiThemeLabels {
@@ -11,7 +10,6 @@ export interface KomorebiThemeLabels {
   navBlog: string;
   navArchive: string;
   navAbout: string;
-  navRss: string;
   latestPostsHeading: string;
   latestPostsMore: string;
   latestPostsEmptyPrefix: string;
@@ -66,7 +64,6 @@ const defaultLabels: KomorebiThemeLabels = {
   navBlog: "文章",
   navArchive: "归档",
   navAbout: "关于",
-  navRss: "RSS",
   latestPostsHeading: "最近写了什么",
   latestPostsMore: "查看全部 →",
   latestPostsEmptyPrefix: "暂时还没有公开文章，先去",
@@ -80,7 +77,6 @@ const defaultRoutes: KomorebiThemeRoutes = {
   blog: true,
   archive: true,
   about: true,
-  rss: true,
 };
 
 export function resolveThemeOptions(
