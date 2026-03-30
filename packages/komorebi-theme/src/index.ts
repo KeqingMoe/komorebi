@@ -51,6 +51,14 @@ const THEME_ROUTES: ReadonlyArray<{ pattern: string; entrypoint: URL }> = [
     pattern: "/friends",
     entrypoint: new URL("./routes/friends.astro", import.meta.url),
   },
+  {
+    pattern: "/rss.xml",
+    entrypoint: new URL("./routes/rss.xml.ts", import.meta.url),
+  },
+  {
+    pattern: "/rss/styles.xsl",
+    entrypoint: new URL("./routes/rss/styles.xsl.ts", import.meta.url),
+  },
 ];
 
 export {
