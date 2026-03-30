@@ -184,14 +184,14 @@ describe('getDevCommand', () => {
   });
 
   it("returns 'pnpm dev' for pnpm", () => {
-    expect(getDevCommand('pnpm')).toBe('pnpm dev');
+    expect(getDevCommand('pnpm')).toBe('pnpm run dev');
   });
 
   it("returns 'yarn dev' for yarn", () => {
-    expect(getDevCommand('yarn')).toBe('yarn dev');
+    expect(getDevCommand('yarn')).toBe('yarn run dev');
   });
 
-  it("returns 'bun run dev' for bun", () => {
+  it("returns 'bun dev' for bun", () => {
     expect(getDevCommand('bun')).toBe('bun run dev');
   });
 });

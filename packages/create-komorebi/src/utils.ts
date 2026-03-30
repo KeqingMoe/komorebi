@@ -88,7 +88,7 @@ export function getManualInstallHints(packageManager: string): InstallHints {
 }
 
 export function getDevCommand(packageManager: string) {
-  return packageManager === 'npm' ? 'npm run dev' : `${packageManager} run dev`;
+  return `${packageManager} run dev`;
 }
 
 export function getErrorMessage(error: unknown) {
