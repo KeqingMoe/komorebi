@@ -3,21 +3,28 @@ export interface KomorebiThemeRoutes {
   blog: boolean;
   archive: boolean;
   about: boolean;
-  rss: boolean;
+  friends: boolean;
 }
 
 export interface KomorebiThemeLabels {
-  navHome: string;
-  navBlog: string;
-  navArchive: string;
-  navAbout: string;
-  navRss: string;
   latestPostsHeading: string;
   latestPostsMore: string;
   latestPostsEmptyPrefix: string;
   latestPostsEmptyLink: string;
   latestPostsEmptySuffix: string;
   footerRss: string;
+}
+
+export interface KomorebiNavLink {
+  href: string;
+  label: string;
+}
+
+export interface KomorebiFriend {
+  name: string;
+  url: string;
+  avatar: string;
+  description: string;
 }
 
 export interface KomorebiThemeOptions {
@@ -33,6 +40,8 @@ export interface KomorebiThemeOptions {
     title?: string;
     description?: string;
   };
+  nav?: KomorebiNavLink[];
+  friends?: KomorebiFriend[];
   labels?: Partial<KomorebiThemeLabels>;
   routes?: Partial<KomorebiThemeRoutes>;
 }
@@ -50,16 +59,13 @@ export interface ResolvedKomorebiThemeOptions {
     title: string;
     description: string;
   };
+  nav: KomorebiNavLink[];
+  friends: KomorebiFriend[];
   labels: KomorebiThemeLabels;
   routes: KomorebiThemeRoutes;
 }
 
 const defaultLabels: KomorebiThemeLabels = {
-  navHome: "首页",
-  navBlog: "文章",
-  navArchive: "归档",
-  navAbout: "关于",
-  navRss: "RSS",
   latestPostsHeading: "最近写了什么",
   latestPostsMore: "查看全部 →",
   latestPostsEmptyPrefix: "暂时还没有公开文章，先去",
@@ -73,15 +79,58 @@ const defaultRoutes: KomorebiThemeRoutes = {
   blog: true,
   archive: true,
   about: true,
-  rss: true,
+  friends: true,
 };
+
+export function homeLink(label?: string): KomorebiNavLink {
+  return { href: "/", label: label ?? "首页" };
+}
+
+export function blogLink(label?: string): KomorebiNavLink {
+  return { href: "/blog", label: label ?? "文章" };
+}
+
+export function archiveLink(label?: string): KomorebiNavLink {
+  return { href: "/archive", label: label ?? "归档" };
+}
+
+export function aboutLink(label?: string): KomorebiNavLink {
+  return { href: "/about", label: label ?? "关于" };
+}
+
+export function friendsLink(label?: string): KomorebiNavLink {
+  return { href: "/friends", label: label ?? "友链" };
+}
+
+export function navLinks(extra?: KomorebiNavLink[]): KomorebiNavLink[] {
+  return [
+    homeLink(),
+    blogLink(),
+    archiveLink(),
+    friendsLink(),
+    ...(extra ?? []),
+    aboutLink(),
+  ];
+}
 
 export function resolveThemeOptions(
   options: KomorebiThemeOptions = {},
 ): ResolvedKomorebiThemeOptions {
+  const labels: KomorebiThemeLabels = {
+    ...defaultLabels,
+    ...options.labels,
+  };
+
+  const routes: KomorebiThemeRoutes = {
+    ...defaultRoutes,
+    ...options.routes,
+  };
+
+  const nav = options.nav ?? navLinks();
+
   return {
     title: options.title ?? "木漏れ日",
-    tagline: options.tagline ?? "轻盈排版、安静阅读与持续写作。",
+    tagline: options.tagline ?? "",
     ...(options.repositoryUrl !== undefined
       ? { repositoryUrl: options.repositoryUrl }
       : {}),
@@ -96,13 +145,9 @@ export function resolveThemeOptions(
         options.home?.description ??
         "欢迎来到我的博客，希望你能在这里读到一些值得停留下来的内容。",
     },
-    labels: {
-      ...defaultLabels,
-      ...options.labels,
-    },
-    routes: {
-      ...defaultRoutes,
-      ...options.routes,
-    },
+    nav,
+    friends: options.friends ?? [],
+    labels,
+    routes,
   };
 }

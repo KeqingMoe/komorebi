@@ -1,13 +1,11 @@
 ---
-import { siteLabels } from "../../lib/site";
+import { komorebiRepository, siteLabels } from "../../lib/site";
 
 interface Props {
-  siteTitle: string;
-  repositoryUrl?: string | undefined;
   rssHref?: string | undefined;
 }
 
-const { siteTitle, repositoryUrl, rssHref = "/rss.xml" } = Astro.props as Props;
+const { rssHref = "/rss.xml" } = Astro.props as Props;
 ---
 
 <footer
@@ -17,16 +15,12 @@ const { siteTitle, repositoryUrl, rssHref = "/rss.xml" } = Astro.props as Props;
     <div
       class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
     >
-      {
-        repositoryUrl ? (
-          <a href={repositoryUrl} class="transition hover:text-zinc-950">
-            {siteTitle}
-          </a>
-        ) : (
-          <span>{siteTitle}</span>
-        )
-      }
-      <a href={rssHref} class="transition hover:text-zinc-950">{siteLabels.footerRss}</a>
+      <a href={komorebiRepository} class="transition hover:text-zinc-950">
+        木漏れ日
+      </a>
+      <a href={rssHref} class="transition hover:text-zinc-950"
+        >{siteLabels.footerRss}</a
+      >
     </div>
   </div>
 </footer>

@@ -10,6 +10,14 @@ import type { AstroIntegration } from "astro";
 import UnoCSS from "@unocss/astro";
 import {
   resolveThemeOptions,
+  navLinks,
+  homeLink,
+  blogLink,
+  archiveLink,
+  aboutLink,
+  friendsLink,
+  type KomorebiNavLink,
+  type KomorebiFriend,
   type KomorebiThemeLabels,
   type KomorebiThemeOptions,
   type KomorebiThemeRoutes,
@@ -26,8 +34,8 @@ const THEME_ROUTE_DEFINITIONS = [
   },
   {
     enabledBy: "blog",
-    pattern: "/blog/[id]",
-    entrypoint: new URL("./routes/blog/[id].astro", import.meta.url),
+    pattern: "/blog/[...id]",
+    entrypoint: new URL("./routes/blog/[...id].astro", import.meta.url),
   },
   {
     enabledBy: "blog",
@@ -45,14 +53,9 @@ const THEME_ROUTE_DEFINITIONS = [
     entrypoint: new URL("./routes/about.astro", import.meta.url),
   },
   {
-    enabledBy: "rss",
-    pattern: "/rss.xml",
-    entrypoint: new URL("./routes/rss.xml.ts", import.meta.url),
-  },
-  {
-    enabledBy: "rss",
-    pattern: "/rss/styles.xsl",
-    entrypoint: new URL("./routes/rss/styles.xsl.ts", import.meta.url),
+    enabledBy: "friends",
+    pattern: "/friends",
+    entrypoint: new URL("./routes/friends.astro", import.meta.url),
   },
 ] satisfies ReadonlyArray<{
   enabledBy: keyof KomorebiThemeRoutes;
@@ -60,7 +63,18 @@ const THEME_ROUTE_DEFINITIONS = [
   entrypoint: URL;
 }>;
 
+export {
+  navLinks,
+  homeLink,
+  blogLink,
+  archiveLink,
+  aboutLink,
+  friendsLink,
+};
+
 export type {
+  KomorebiNavLink,
+  KomorebiFriend,
   KomorebiThemeLabels,
   KomorebiThemeOptions,
   KomorebiThemeRoutes,

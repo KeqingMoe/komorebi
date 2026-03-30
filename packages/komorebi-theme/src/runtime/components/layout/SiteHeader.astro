@@ -1,7 +1,7 @@
 ---
 import DesktopNav from "./Nav/DesktopNav.astro";
 import MobileNav from "./Nav/MobileNav.astro";
-import { siteLabels, siteRoutes } from "../../lib/site";
+import { siteNav } from "../../lib/site";
 
 interface NavLink {
   href: string;
@@ -10,33 +10,12 @@ interface NavLink {
 }
 
 const pathname = Astro.url.pathname;
-const navLinks = [
-  siteRoutes.home && {
-    href: "/",
-    label: siteLabels.navHome,
-    isActive: pathname === "/",
-  },
-  siteRoutes.blog && {
-    href: "/blog",
-    label: siteLabels.navBlog,
-    isActive: pathname.startsWith("/blog"),
-  },
-  siteRoutes.archive && {
-    href: "/archive",
-    label: siteLabels.navArchive,
-    isActive: pathname.startsWith("/archive"),
-  },
-  siteRoutes.about && {
-    href: "/about",
-    label: siteLabels.navAbout,
-    isActive: pathname.startsWith("/about"),
-  },
-  siteRoutes.rss && {
-    href: "/rss.xml",
-    label: siteLabels.navRss,
-    isActive: pathname === "/rss.xml",
-  },
-].filter((link): link is NavLink => Boolean(link));
+const navLinks: NavLink[] = siteNav.map((link) => ({
+  href: link.href,
+  label: link.label,
+  isActive:
+    link.href === "/" ? pathname === "/" : pathname.startsWith(link.href),
+}));
 
 interface Props {
   siteTitle: string;

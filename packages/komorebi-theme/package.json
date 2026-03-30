@@ -1,7 +1,7 @@
 {
   "name": "komorebi-theme",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "files": [
     "src",
     "README.md",
@@ -11,7 +11,9 @@
     ".": "./src/index.ts",
     "./collections": "./src/content/collections.ts",
     "./loaders": "./src/content/loaders.ts",
-    "./schema": "./src/content/schema.ts"
+    "./schema": "./src/content/schema.ts",
+    "./components": "./src/runtime/components/components.ts",
+    "./layouts": "./src/runtime/layouts/layouts.ts"
   },
   "peerDependencies": {
     "astro": "^5.17.1"
