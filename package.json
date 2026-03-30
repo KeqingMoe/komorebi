@@ -10,10 +10,13 @@
     "dev": "npm --workspace examples/basic run dev",
     "build": "npm --workspace examples/basic run build",
     "check": "npm --workspace examples/basic run check",
-    "preview": "npm --workspace examples/basic run preview"
+    "preview": "npm --workspace examples/basic run preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^4.1.2"
   }
 }
