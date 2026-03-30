@@ -1,5 +1,9 @@
-import { blogLoader, specialLoader, type KomorebiCollectionsOptions } from "./loaders";
-import { blogSchema, specialSchema } from "./schema";
+import {
+  blogLoader,
+  type KomorebiCollectionsOptions,
+  specialLoader,
+} from './loaders';
+import { blogSchema, specialSchema } from './schema';
 
 export function blogConfig(options: KomorebiCollectionsOptions = {}) {
   return {

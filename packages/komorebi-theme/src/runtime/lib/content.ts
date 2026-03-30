@@ -1,29 +1,25 @@
-import {
-  getCollection,
-  getEntry,
-  type CollectionEntry,
-} from "astro:content";
-import getReadingTime, { type ReadTimeResults } from "reading-time";
-import removeMd from "remove-markdown";
-import { siteLocale } from "./site";
+import { type CollectionEntry, getCollection, getEntry } from 'astro:content';
+import getReadingTime, { type ReadTimeResults } from 'reading-time';
+import removeMd from 'remove-markdown';
+import { siteLocale } from './site';
 
-export type BlogEntry = CollectionEntry<"blog">;
-export type SpecialEntry = CollectionEntry<"special">;
+export type BlogEntry = CollectionEntry<'blog'>;
+export type SpecialEntry = CollectionEntry<'special'>;
 
 export type PostEntry = BlogEntry & {
   readingStats: ReadTimeResults;
 };
 
 const dateFormatter = new Intl.DateTimeFormat(siteLocale, {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
 });
 
 export async function getPosts(
   filter?: (entry: BlogEntry) => boolean,
 ): Promise<PostEntry[]> {
-  const posts = await getCollection("blog", (entry) => {
+  const posts = await getCollection('blog', (entry) => {
     if (/^\d+$/.test(entry.id)) {
       console.warn(
         `[komorebi-theme] Ignoring blog post with numeric-only id "${entry.id}" because numeric routes are reserved for pagination (/blog/:page).`,
@@ -37,7 +33,7 @@ export async function getPosts(
   });
   return posts.map((post) => ({
     ...post,
-    readingStats: computeReadingTime(post.body ?? ""),
+    readingStats: computeReadingTime(post.body ?? ''),
   }));
 }
 
@@ -49,11 +45,15 @@ export async function getSortedPosts(
   return posts;
 }
 
-export async function getSpecialEntry(id: string): Promise<SpecialEntry | undefined> {
-  return await getEntry("special", id);
+export async function getSpecialEntry(
+  id: string,
+): Promise<SpecialEntry | undefined> {
+  return await getEntry('special', id);
 }
 
-export function sortByPubDate<T extends { data: { pubDate: Date } }>(posts: T[]) {
+export function sortByPubDate<T extends { data: { pubDate: Date } }>(
+  posts: T[],
+) {
   posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 }
 

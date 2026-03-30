@@ -4,76 +4,68 @@
  */
 /// <reference path="../virtual.d.ts" />
 
-import { writeFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { resolve } from "node:path";
-import type { AstroIntegration } from "astro";
-import UnoCSS from "@unocss/astro";
+import { writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import UnoCSS from '@unocss/astro';
+import type { AstroIntegration } from 'astro';
 import {
-  resolveThemeOptions,
-  navLinks,
-  homeLink,
-  blogLink,
-  archiveLink,
   aboutLink,
+  archiveLink,
+  blogLink,
   friendsLink,
-  type KomorebiNavLink,
+  homeLink,
   type KomorebiFriend,
+  type KomorebiNavLink,
   type KomorebiThemeLabels,
   type KomorebiThemeOptions,
+  navLinks,
   type ResolvedKomorebiThemeOptions,
-} from "./options";
-import { createKomorebiUnoOptions } from "./unocss";
+  resolveThemeOptions,
+} from './options';
+import { createKomorebiUnoOptions } from './unocss';
 
-const THEME_CONFIG_MODULE_ID = "virtual:komorebi-theme/config";
-const USER_CSS_MODULE_ID = "virtual:komorebi-theme/user-css";
+const THEME_CONFIG_MODULE_ID = 'virtual:komorebi-theme/config';
+const USER_CSS_MODULE_ID = 'virtual:komorebi-theme/user-css';
 
-const routesDir = new URL("./routes/", import.meta.url);
+const routesDir = new URL('./routes/', import.meta.url);
 function route(pattern: string, file: string) {
   return { pattern, entrypoint: new URL(file, routesDir) };
 }
 
 const THEME_ROUTES = [
-  route("/", "index.astro"),
-  route("/blog/[...id]", "blog/[...id].astro"),
-  route("/blog/[...page]", "blog/[...page].astro"),
-  route("/archive", "archive.astro"),
-  route("/about", "about.astro"),
-  route("/friends", "friends.astro"),
-  route("/rss.xml", "rss.xml.ts"),
-  route("/rss/styles.xsl", "rss/styles.xsl.ts"),
+  route('/', 'index.astro'),
+  route('/blog/[...id]', 'blog/[...id].astro'),
+  route('/blog/[...page]', 'blog/[...page].astro'),
+  route('/archive', 'archive.astro'),
+  route('/about', 'about.astro'),
+  route('/friends', 'friends.astro'),
+  route('/rss.xml', 'rss.xml.ts'),
+  route('/rss/styles.xsl', 'rss/styles.xsl.ts'),
 ];
 
-export {
-  navLinks,
-  homeLink,
-  blogLink,
-  archiveLink,
-  aboutLink,
-  friendsLink,
-};
-
 export type {
-  KomorebiNavLink,
   KomorebiFriend,
+  KomorebiNavLink,
   KomorebiThemeLabels,
   KomorebiThemeOptions,
   ResolvedKomorebiThemeOptions,
 };
+export { aboutLink, archiveLink, blogLink, friendsLink, homeLink, navLinks };
 
 function userCssVitePlugin(customCss: string[], root: URL) {
   const resolvedId = `\0${USER_CSS_MODULE_ID}`;
   const code = customCss
     .map((id) => {
-      const resolved = id.startsWith(".")
+      const resolved = id.startsWith('.')
         ? resolve(fileURLToPath(root), id)
         : id;
       return `import ${JSON.stringify(resolved)};`;
     })
-    .join("\n");
+    .join('\n');
 
   return {
-    name: "komorebi-theme/user-css",
+    name: 'komorebi-theme/user-css',
     resolveId(id: string) {
       if (id === USER_CSS_MODULE_ID) return resolvedId;
       return undefined;
@@ -90,21 +82,21 @@ export default function komorebi(
 ): AstroIntegration {
   const resolved = resolveThemeOptions(options);
   const themeContentGlobs = createThemeContentGlobs([
-    fileURLToPath(new URL("./runtime", import.meta.url)),
-    fileURLToPath(new URL("./routes", import.meta.url)),
+    fileURLToPath(new URL('./runtime', import.meta.url)),
+    fileURLToPath(new URL('./routes', import.meta.url)),
   ]);
 
   return {
-    name: "komorebi-theme",
+    name: 'komorebi-theme',
     hooks: {
-      "astro:config:setup": ({
+      'astro:config:setup': ({
         config,
         createCodegenDir,
         injectRoute,
         updateConfig,
       }) => {
         const codegenDir = createCodegenDir();
-        const generatedConfigUrl = new URL("config.mjs", codegenDir);
+        const generatedConfigUrl = new URL('config.mjs', codegenDir);
         writeRuntimeConfig(generatedConfigUrl, resolved);
 
         const vitePlugins = [
@@ -112,12 +104,10 @@ export default function komorebi(
         ];
 
         updateConfig({
-          integrations: [
-            UnoCSS(createKomorebiUnoOptions(themeContentGlobs)),
-          ],
+          integrations: [UnoCSS(createKomorebiUnoOptions(themeContentGlobs))],
           markdown: {
             shikiConfig: {
-              theme: "github-light",
+              theme: 'github-light',
             },
           },
           vite: {
@@ -143,12 +133,13 @@ function createThemeContentGlobs(dirs: string[]) {
 }
 
 function normalizeGlobDir(dir: string) {
-  return dir.replace(/\\/g, "/");
+  return dir.replace(/\\/g, '/');
 }
 
-function writeRuntimeConfig(
-  file: URL,
-  config: ResolvedKomorebiThemeOptions,
-) {
-  writeFileSync(file, `export default ${JSON.stringify(config, null, 2)};\n`, "utf-8");
+function writeRuntimeConfig(file: URL, config: ResolvedKomorebiThemeOptions) {
+  writeFileSync(
+    file,
+    `export default ${JSON.stringify(config, null, 2)};\n`,
+    'utf-8',
+  );
 }

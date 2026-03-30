@@ -1,4 +1,4 @@
-import { z } from "astro/zod";
+import { z } from 'astro/zod';
 
 export function blogSchema() {
   return z.object({
