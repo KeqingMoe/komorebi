@@ -20,6 +20,11 @@ export interface KomorebiThemeLabels {
   footerRss: string;
 }
 
+export interface KomorebiNavLink {
+  href: string;
+  label: string;
+}
+
 export interface KomorebiThemeOptions {
   title?: string;
   tagline?: string;
@@ -33,6 +38,7 @@ export interface KomorebiThemeOptions {
     title?: string;
     description?: string;
   };
+  navLinks?: KomorebiNavLink[];
   labels?: Partial<KomorebiThemeLabels>;
   routes?: Partial<KomorebiThemeRoutes>;
 }
@@ -50,6 +56,7 @@ export interface ResolvedKomorebiThemeOptions {
     title: string;
     description: string;
   };
+  navLinks: KomorebiNavLink[];
   labels: KomorebiThemeLabels;
   routes: KomorebiThemeRoutes;
 }
@@ -96,6 +103,7 @@ export function resolveThemeOptions(
         options.home?.description ??
         "欢迎来到我的博客，希望你能在这里读到一些值得停留下来的内容。",
     },
+    navLinks: options.navLinks ?? [],
     labels: {
       ...defaultLabels,
       ...options.labels,

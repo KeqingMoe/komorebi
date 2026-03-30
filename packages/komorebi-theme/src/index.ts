@@ -10,6 +10,7 @@ import type { AstroIntegration } from "astro";
 import UnoCSS from "@unocss/astro";
 import {
   resolveThemeOptions,
+  type KomorebiNavLink,
   type KomorebiThemeLabels,
   type KomorebiThemeOptions,
   type KomorebiThemeRoutes,
@@ -61,6 +62,7 @@ const THEME_ROUTE_DEFINITIONS = [
 }>;
 
 export type {
+  KomorebiNavLink,
   KomorebiThemeLabels,
   KomorebiThemeOptions,
   KomorebiThemeRoutes,
