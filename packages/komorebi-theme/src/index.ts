@@ -20,48 +20,38 @@ import {
   type KomorebiFriend,
   type KomorebiThemeLabels,
   type KomorebiThemeOptions,
-  type KomorebiThemeRoutes,
   type ResolvedKomorebiThemeOptions,
 } from "./options";
 import { createKomorebiUnoOptions } from "./unocss";
 
 const THEME_CONFIG_MODULE_ID = "virtual:komorebi-theme/config";
-const THEME_ROUTE_DEFINITIONS = [
+
+const THEME_ROUTES: ReadonlyArray<{ pattern: string; entrypoint: URL }> = [
   {
-    enabledBy: "home",
     pattern: "/",
     entrypoint: new URL("./routes/index.astro", import.meta.url),
   },
   {
-    enabledBy: "blog",
     pattern: "/blog/[...id]",
     entrypoint: new URL("./routes/blog/[...id].astro", import.meta.url),
   },
   {
-    enabledBy: "blog",
     pattern: "/blog/[...page]",
     entrypoint: new URL("./routes/blog/[...page].astro", import.meta.url),
   },
   {
-    enabledBy: "archive",
     pattern: "/archive",
     entrypoint: new URL("./routes/archive.astro", import.meta.url),
   },
   {
-    enabledBy: "about",
     pattern: "/about",
     entrypoint: new URL("./routes/about.astro", import.meta.url),
   },
   {
-    enabledBy: "friends",
     pattern: "/friends",
     entrypoint: new URL("./routes/friends.astro", import.meta.url),
   },
-] satisfies ReadonlyArray<{
-  enabledBy: keyof KomorebiThemeRoutes;
-  pattern: string;
-  entrypoint: URL;
-}>;
+];
 
 export {
   navLinks,
@@ -77,7 +67,6 @@ export type {
   KomorebiFriend,
   KomorebiThemeLabels,
   KomorebiThemeOptions,
-  KomorebiThemeRoutes,
   ResolvedKomorebiThemeOptions,
 };
 
@@ -120,7 +109,9 @@ export default function komorebi(
           },
         });
 
-        injectEnabledRoutes(injectRoute, resolved.routes);
+        for (const route of THEME_ROUTES) {
+          injectRoute(route);
+        }
       },
     },
   };
@@ -128,22 +119,6 @@ export default function komorebi(
 
 function createThemeContentGlobs(dirs: string[]) {
   return dirs.map((dir) => `${normalizeGlobDir(dir)}/**/*.{astro,ts}`);
-}
-
-function injectEnabledRoutes(
-  injectRoute: (route: { pattern: string; entrypoint: URL }) => void,
-  routes: KomorebiThemeRoutes,
-) {
-  for (const route of THEME_ROUTE_DEFINITIONS) {
-    if (!routes[route.enabledBy]) {
-      continue;
-    }
-
-    injectRoute({
-      pattern: route.pattern,
-      entrypoint: route.entrypoint,
-    });
-  }
 }
 
 function normalizeGlobDir(dir: string) {

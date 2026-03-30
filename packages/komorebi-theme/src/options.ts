@@ -1,11 +1,3 @@
-export interface KomorebiThemeRoutes {
-  home: boolean;
-  blog: boolean;
-  archive: boolean;
-  about: boolean;
-  friends: boolean;
-}
-
 export interface KomorebiThemeLabels {
   latestPostsHeading: string;
   latestPostsMore: string;
@@ -43,7 +35,6 @@ export interface KomorebiThemeOptions {
   nav?: KomorebiNavLink[];
   friends?: KomorebiFriend[];
   labels?: Partial<KomorebiThemeLabels>;
-  routes?: Partial<KomorebiThemeRoutes>;
 }
 
 export interface ResolvedKomorebiThemeOptions {
@@ -62,7 +53,6 @@ export interface ResolvedKomorebiThemeOptions {
   nav: KomorebiNavLink[];
   friends: KomorebiFriend[];
   labels: KomorebiThemeLabels;
-  routes: KomorebiThemeRoutes;
 }
 
 const defaultLabels: KomorebiThemeLabels = {
@@ -72,14 +62,6 @@ const defaultLabels: KomorebiThemeLabels = {
   latestPostsEmptyLink: "关于页面",
   latestPostsEmptySuffix: "看看吧。",
   footerRss: "订阅 RSS",
-};
-
-const defaultRoutes: KomorebiThemeRoutes = {
-  home: true,
-  blog: true,
-  archive: true,
-  about: true,
-  friends: true,
 };
 
 export function homeLink(label?: string): KomorebiNavLink {
@@ -121,11 +103,6 @@ export function resolveThemeOptions(
     ...options.labels,
   };
 
-  const routes: KomorebiThemeRoutes = {
-    ...defaultRoutes,
-    ...options.routes,
-  };
-
   const nav = options.nav ?? navLinks();
 
   return {
@@ -148,6 +125,5 @@ export function resolveThemeOptions(
     nav,
     friends: options.friends ?? [],
     labels,
-    routes,
   };
 }
