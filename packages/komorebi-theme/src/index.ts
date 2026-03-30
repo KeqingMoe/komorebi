@@ -6,6 +6,7 @@
 
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 import type { AstroIntegration } from "astro";
 import UnoCSS from "@unocss/astro";
 import {
@@ -25,6 +26,7 @@ import {
 import { createKomorebiUnoOptions } from "./unocss";
 
 const THEME_CONFIG_MODULE_ID = "virtual:komorebi-theme/config";
+const USER_CSS_MODULE_ID = "virtual:komorebi-theme/user-css";
 
 const routesDir = new URL("./routes/", import.meta.url);
 function route(pattern: string, file: string) {
@@ -59,6 +61,30 @@ export type {
   ResolvedKomorebiThemeOptions,
 };
 
+function userCssVitePlugin(customCss: string[], root: URL) {
+  const resolvedId = `\0${USER_CSS_MODULE_ID}`;
+  const code = customCss
+    .map((id) => {
+      const resolved = id.startsWith(".")
+        ? resolve(fileURLToPath(root), id)
+        : id;
+      return `import ${JSON.stringify(resolved)};`;
+    })
+    .join("\n");
+
+  return {
+    name: "komorebi-theme/user-css",
+    resolveId(id: string) {
+      if (id === USER_CSS_MODULE_ID) return resolvedId;
+      return undefined;
+    },
+    load(id: string) {
+      if (id === resolvedId) return code;
+      return undefined;
+    },
+  };
+}
+
 export default function komorebi(
   options: KomorebiThemeOptions = {},
 ): AstroIntegration {
@@ -72,6 +98,7 @@ export default function komorebi(
     name: "komorebi-theme",
     hooks: {
       "astro:config:setup": ({
+        config,
         createCodegenDir,
         injectRoute,
         updateConfig,
@@ -79,6 +106,10 @@ export default function komorebi(
         const codegenDir = createCodegenDir();
         const generatedConfigUrl = new URL("config.mjs", codegenDir);
         writeRuntimeConfig(generatedConfigUrl, resolved);
+
+        const vitePlugins = [
+          userCssVitePlugin(resolved.customCss, config.root),
+        ];
 
         updateConfig({
           integrations: [
@@ -90,6 +121,7 @@ export default function komorebi(
             },
           },
           vite: {
+            plugins: vitePlugins,
             resolve: {
               alias: {
                 [THEME_CONFIG_MODULE_ID]: fileURLToPath(generatedConfigUrl),
