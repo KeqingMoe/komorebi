@@ -35,40 +35,38 @@ const updatedLabel = updatedDate ? formatDate(updatedDate) : undefined;
     )
   }
 
-  <div class="overflow-x-auto sm:overflow-visible">
-    <div class="post-meta">
-      {
-        publishedLabel && (
-          <span class="post-meta__item">
-            <span class="post-meta__label">发布于</span>
-            <time class="post-meta__value">{publishedLabel}</time>
+  <div class="post-meta">
+    {
+      publishedLabel && (
+        <span class="post-meta__item">
+          <span class="post-meta__label">发布于</span>
+          <time class="post-meta__value">{publishedLabel}</time>
+        </span>
+      )
+    }
+    {
+      updatedLabel && (
+        <span class="post-meta__item">
+          <span class="post-meta__label">更新于</span>
+          <time class="post-meta__value">{updatedLabel}</time>
+        </span>
+      )
+    }
+    {
+      readingStats && (
+        <>
+          <span class="post-meta__item post-meta__item--emphasis">
+            <WordsCount words={Math.round(readingStats.words)} />
           </span>
-        )
-      }
-      {
-        updatedLabel && (
           <span class="post-meta__item">
-            <span class="post-meta__label">更新于</span>
-            <time class="post-meta__value">{updatedLabel}</time>
+            <span class="post-meta__label">阅读约</span>
+            <span class="post-meta__value">
+              <ReadingTime milliseconds={readingStats.time} />
+            </span>
           </span>
-        )
-      }
-      {
-        readingStats && (
-          <>
-            <span class="post-meta__item post-meta__item--emphasis">
-              <WordsCount words={Math.round(readingStats.words)} />
-            </span>
-            <span class="post-meta__item">
-              <span class="post-meta__label">阅读约</span>
-              <span class="post-meta__value">
-                <ReadingTime milliseconds={readingStats.time} />
-              </span>
-            </span>
-          </>
-        )
-      }
-    </div>
+        </>
+      )
+    }
   </div>
 
   <div class="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
@@ -91,9 +89,10 @@ const updatedLabel = updatedDate ? formatDate(updatedDate) : undefined;
 <style>
   .post-meta {
     display: flex;
-    min-width: max-content;
-    align-items: center;
-    white-space: nowrap;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.75rem;
+    row-gap: 0.25rem;
     font-size: 0.75rem;
     line-height: 1.25rem;
     color: rgb(113 113 122 / 0.9);
@@ -103,12 +102,6 @@ const updatedLabel = updatedDate ? formatDate(updatedDate) : undefined;
     display: inline-flex;
     align-items: baseline;
     gap: 0.25rem;
-  }
-
-  .post-meta__item + .post-meta__item::before {
-    content: "·";
-    margin-inline: 0.375rem;
-    color: rgb(212 212 216);
   }
 
   .post-meta__label {
@@ -127,10 +120,6 @@ const updatedLabel = updatedDate ? formatDate(updatedDate) : undefined;
 
   @media (min-width: 640px) {
     .post-meta {
-      min-width: 0;
-      flex-wrap: wrap;
-      row-gap: 0.25rem;
-      white-space: normal;
       font-size: 0.875rem;
       line-height: 1.5rem;
     }
@@ -138,10 +127,6 @@ const updatedLabel = updatedDate ? formatDate(updatedDate) : undefined;
     .post-meta__item {
       align-items: center;
       gap: 0.375rem;
-    }
-
-    .post-meta__item + .post-meta__item::before {
-      margin-inline: 0.75rem;
     }
 
     .post-meta__label {
