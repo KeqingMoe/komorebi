@@ -153,6 +153,18 @@ komorebi({
 | `avatar` | `string` | 头像 URL |
 | `description` | `string` | 简介 |
 
+### `customCss`
+
+`string[]` — 自定义 CSS 文件列表。支持项目内的相对路径和 npm 包名：
+
+```ts
+komorebi({
+  customCss: ["./src/styles/custom.css", "@fontsource/noto-sans-sc"],
+});
+```
+
+相对路径会相对于项目根目录解析。CSS 会被 Vite 处理并注入到所有页面中。
+
 ### `labels`
 
 `Partial<KomorebiThemeLabels>` — 覆盖界面文案。可覆盖的字段：

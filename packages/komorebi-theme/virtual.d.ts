@@ -3,3 +3,5 @@ declare module "virtual:komorebi-theme/config" {
 
   export default config;
 }
+
+declare module "virtual:komorebi-theme/user-css" {}

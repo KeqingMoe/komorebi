@@ -34,6 +34,7 @@ export interface KomorebiThemeOptions {
   };
   nav?: KomorebiNavLink[];
   friends?: KomorebiFriend[];
+  customCss?: string[];
   labels?: Partial<KomorebiThemeLabels>;
 }
 
@@ -52,6 +53,7 @@ export interface ResolvedKomorebiThemeOptions {
   };
   nav: KomorebiNavLink[];
   friends: KomorebiFriend[];
+  customCss: string[];
   labels: KomorebiThemeLabels;
 }
 
@@ -124,6 +126,7 @@ export function resolveThemeOptions(
     },
     nav,
     friends: options.friends ?? [],
+    customCss: options.customCss ?? [],
     labels,
   };
 }
