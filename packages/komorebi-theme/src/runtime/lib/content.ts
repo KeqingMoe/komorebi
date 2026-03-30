@@ -19,19 +19,25 @@ const dateFormatter = new Intl.DateTimeFormat(siteLocale, {
 export async function getPosts(
   filter?: (entry: BlogEntry) => boolean,
 ): Promise<PostEntry[]> {
-  const posts = await getCollection('blog', (entry) => {
-    if (/^\d+$/.test(entry.id)) {
-      console.warn(
-        `[komorebi-theme] Ignoring blog post with numeric-only id "${entry.id}" because numeric routes are reserved for pagination (/blog/:page).`,
-      );
-      return false;
-    }
-    if (import.meta.env.PROD && entry.data.draft) {
-      return false;
-    }
-    return filter ? filter(entry) : true;
-  });
-  return posts.map((post) => ({
+  let entries: BlogEntry[] = [];
+  try {
+    entries = await getCollection('blog', (entry) => {
+      if (/^\d+$/.test(entry.id)) {
+        console.warn(
+          `[komorebi-theme] Ignoring blog post with numeric-only id "${entry.id}" because numeric routes are reserved for pagination (/blog/:page).`,
+        );
+        return false;
+      }
+      if (import.meta.env.PROD && entry.data.draft) {
+        return false;
+      }
+      return filter ? filter(entry) : true;
+    });
+  } catch (error) {
+    console.error('[komorebi-theme] Failed to load blog collection:', error);
+    return [];
+  }
+  return entries.map((post) => ({
     ...post,
     readingStats: computeReadingTime(post.body ?? ''),
   }));
@@ -48,7 +54,15 @@ export async function getSortedPosts(
 export async function getSpecialEntry(
   id: string,
 ): Promise<SpecialEntry | undefined> {
-  return await getEntry('special', id);
+  try {
+    return await getEntry('special', id);
+  } catch (error) {
+    console.error(
+      `[komorebi-theme] Failed to load special entry "${id}":`,
+      error,
+    );
+    return undefined;
+  }
 }
 
 export function sortByPubDate<T extends { data: { pubDate: Date } }>(
