@@ -26,39 +26,20 @@ import { createKomorebiUnoOptions } from "./unocss";
 
 const THEME_CONFIG_MODULE_ID = "virtual:komorebi-theme/config";
 
-const THEME_ROUTES: ReadonlyArray<{ pattern: string; entrypoint: URL }> = [
-  {
-    pattern: "/",
-    entrypoint: new URL("./routes/index.astro", import.meta.url),
-  },
-  {
-    pattern: "/blog/[...id]",
-    entrypoint: new URL("./routes/blog/[...id].astro", import.meta.url),
-  },
-  {
-    pattern: "/blog/[...page]",
-    entrypoint: new URL("./routes/blog/[...page].astro", import.meta.url),
-  },
-  {
-    pattern: "/archive",
-    entrypoint: new URL("./routes/archive.astro", import.meta.url),
-  },
-  {
-    pattern: "/about",
-    entrypoint: new URL("./routes/about.astro", import.meta.url),
-  },
-  {
-    pattern: "/friends",
-    entrypoint: new URL("./routes/friends.astro", import.meta.url),
-  },
-  {
-    pattern: "/rss.xml",
-    entrypoint: new URL("./routes/rss.xml.ts", import.meta.url),
-  },
-  {
-    pattern: "/rss/styles.xsl",
-    entrypoint: new URL("./routes/rss/styles.xsl.ts", import.meta.url),
-  },
+const routesDir = new URL("./routes/", import.meta.url);
+function route(pattern: string, file: string) {
+  return { pattern, entrypoint: new URL(file, routesDir) };
+}
+
+const THEME_ROUTES = [
+  route("/", "index.astro"),
+  route("/blog/[...id]", "blog/[...id].astro"),
+  route("/blog/[...page]", "blog/[...page].astro"),
+  route("/archive", "archive.astro"),
+  route("/about", "about.astro"),
+  route("/friends", "friends.astro"),
+  route("/rss.xml", "rss.xml.ts"),
+  route("/rss/styles.xsl", "rss/styles.xsl.ts"),
 ];
 
 export {
