@@ -84,7 +84,7 @@ describe('resolveThemeOptions', () => {
     const { nav } = resolveThemeOptions();
     expect(nav).toHaveLength(5);
     expect(nav[0].href).toBe('/');
-    expect(nav.at(-1)!.href).toBe('/about');
+    expect(nav[nav.length - 1].href).toBe('/about');
   });
 
   it('overrides title', () => {
