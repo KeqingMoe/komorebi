@@ -130,7 +130,7 @@ export function resolveThemeOptions(
 
   return {
     title: options.title ?? "木漏れ日",
-    tagline: options.tagline ?? "轻盈排版、安静阅读与持续写作。",
+    tagline: options.tagline ?? "",
     ...(options.repositoryUrl !== undefined
       ? { repositoryUrl: options.repositoryUrl }
       : {}),
