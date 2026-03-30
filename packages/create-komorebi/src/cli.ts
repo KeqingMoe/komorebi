@@ -15,6 +15,16 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import pc from "picocolors";
 import prompts from "prompts";
+import {
+  normalizeProjectName,
+  normalizeSiteUrl,
+  formatCurrentDate,
+  applyReplacements,
+  getInstallCommands,
+  getManualInstallHints,
+  getDevCommand,
+  getErrorMessage,
+} from "./utils.js";
 
 const TEMPLATE_TEXT_FILES = [
   "gitignore",
@@ -272,49 +282,6 @@ function copyTemplate(sourceDir: string, targetDir: string) {
   }
 }
 
-function normalizeProjectName(value: string) {
-  const normalized = value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9._-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-  return normalized || "komorebi-site";
-}
-
-function normalizeSiteUrl(value: string) {
-  let parsed;
-
-  try {
-    parsed = new URL(value);
-  } catch {
-    throw new Error(`站点地址无效：${value}`);
-  }
-
-  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-    throw new Error(`站点地址必须以 http:// 或 https:// 开头：${value}`);
-  }
-
-  return parsed.toString().replace(/\/$/, "");
-}
-
-function formatCurrentDate() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function applyReplacements(
-  content: string,
-  replacements: Record<string, string>,
-) {
-  let output = content;
-
-  for (const [token, value] of Object.entries(replacements)) {
-    output = output.replaceAll(token, value);
-  }
-
-  return output;
-}
-
 function detectPackageManager() {
   const userAgent = process.env.npm_config_user_agent ?? "";
 
@@ -363,34 +330,6 @@ function installDependencies(targetDir: string, packageManager: string) {
   return true;
 }
 
-function getInstallCommands(packageManager: string) {
-  if (packageManager === "pnpm") {
-    return {
-      runtime: ["add", "astro@^5", "komorebi-theme"],
-      dev: ["add", "-D", "@astrojs/check", "typescript"],
-    };
-  }
-
-  if (packageManager === "yarn") {
-    return {
-      runtime: ["add", "astro@^5", "komorebi-theme"],
-      dev: ["add", "-D", "@astrojs/check", "typescript"],
-    };
-  }
-
-  if (packageManager === "bun") {
-    return {
-      runtime: ["add", "astro@^5", "komorebi-theme"],
-      dev: ["add", "-d", "@astrojs/check", "typescript"],
-    };
-  }
-
-  return {
-    runtime: ["install", "astro@^5", "komorebi-theme"],
-    dev: ["install", "-D", "@astrojs/check", "typescript"],
-  };
-}
-
 function runCommand(
   command: string,
   args: string[],
@@ -436,46 +375,6 @@ function printSuccess(options: {
 
   console.log(`  ${devCommand}`);
   console.log("");
-}
-
-function getManualInstallHints(packageManager: string) {
-  if (packageManager === "pnpm") {
-    return {
-      runtime: "pnpm add astro@^5 komorebi-theme",
-      dev: "pnpm add -D @astrojs/check typescript",
-    };
-  }
-
-  if (packageManager === "yarn") {
-    return {
-      runtime: "yarn add astro@^5 komorebi-theme",
-      dev: "yarn add -D @astrojs/check typescript",
-    };
-  }
-
-  if (packageManager === "bun") {
-    return {
-      runtime: "bun add astro@^5 komorebi-theme",
-      dev: "bun add -d @astrojs/check typescript",
-    };
-  }
-
-  return {
-    runtime: "npm install astro@^5 komorebi-theme",
-    dev: "npm install -D @astrojs/check typescript",
-  };
-}
-
-function getDevCommand(packageManager: string) {
-  if (packageManager === "pnpm" || packageManager === "yarn") {
-    return `${packageManager} dev`;
-  }
-
-  if (packageManager === "bun") {
-    return "bun run dev";
-  }
-
-  return "npm run dev";
 }
 
 function getReadmeCommandReplacements(packageManager: string) {
@@ -544,14 +443,6 @@ function formatTargetDir(targetDir: string) {
   }
 
   return relativeTarget;
-}
-
-function getErrorMessage(error: unknown) {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return String(error);
 }
 
 function cancel(): never {
