@@ -31,6 +31,7 @@ const TEMPLATE_TEXT_FILES = [
   'README.md',
   'package.json',
   'astro.config.ts',
+  'komorebi.config.ts',
   'tsconfig.json.txt',
   'src/content.config.ts',
   'src/content/about.md',

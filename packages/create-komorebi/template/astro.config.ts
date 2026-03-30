@@ -1,11 +1,7 @@
 import { defineConfig } from 'astro/config';
-import komorebi from 'komorebi-theme';
+import komorebiConfig from "./komorebi.config";
 
 export default defineConfig({
   /* __SITE_URL_BLOCK__ */
-  integrations: [
-    komorebi({
-      title: '__SITE_TITLE_JSON__',
-    }),
-  ],
+  integrations: [komorebiConfig],
 });
