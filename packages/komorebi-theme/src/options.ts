@@ -3,6 +3,7 @@ export interface KomorebiThemeRoutes {
   blog: boolean;
   archive: boolean;
   about: boolean;
+  friends: boolean;
 }
 
 export interface KomorebiThemeLabels {
@@ -19,6 +20,13 @@ export interface KomorebiNavLink {
   label: string;
 }
 
+export interface KomorebiFriend {
+  name: string;
+  url: string;
+  avatar: string;
+  description: string;
+}
+
 export interface KomorebiThemeOptions {
   title?: string;
   tagline?: string;
@@ -33,6 +41,7 @@ export interface KomorebiThemeOptions {
     description?: string;
   };
   nav?: KomorebiNavLink[];
+  friends?: KomorebiFriend[];
   labels?: Partial<KomorebiThemeLabels>;
   routes?: Partial<KomorebiThemeRoutes>;
 }
@@ -51,6 +60,7 @@ export interface ResolvedKomorebiThemeOptions {
     description: string;
   };
   nav: KomorebiNavLink[];
+  friends: KomorebiFriend[];
   labels: KomorebiThemeLabels;
   routes: KomorebiThemeRoutes;
 }
@@ -69,6 +79,7 @@ const defaultRoutes: KomorebiThemeRoutes = {
   blog: true,
   archive: true,
   about: true,
+  friends: true,
 };
 
 export function homeLink(label?: string): KomorebiNavLink {
@@ -87,11 +98,16 @@ export function aboutLink(label?: string): KomorebiNavLink {
   return { href: "/about", label: label ?? "关于" };
 }
 
+export function friendsLink(label?: string): KomorebiNavLink {
+  return { href: "/friends", label: label ?? "友链" };
+}
+
 export function navLinks(extra?: KomorebiNavLink[]): KomorebiNavLink[] {
   return [
     homeLink(),
     blogLink(),
     archiveLink(),
+    friendsLink(),
     ...(extra ?? []),
     aboutLink(),
   ];
@@ -130,6 +146,7 @@ export function resolveThemeOptions(
         "欢迎来到我的博客，希望你能在这里读到一些值得停留下来的内容。",
     },
     nav,
+    friends: options.friends ?? [],
     labels,
     routes,
   };

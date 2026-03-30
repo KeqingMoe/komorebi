@@ -1,0 +1,44 @@
+---
+import PageIntro from "../runtime/components/common/PageIntro.astro";
+import Layout from "../runtime/layouts/Layout.astro";
+import { themeConfig } from "../runtime/config";
+
+const friends = themeConfig.friends;
+---
+
+<Layout title="友链">
+  <PageIntro
+    eyebrow="Friends"
+    title="友情链接"
+    description="这些是我的朋友们，推荐你也去看看。"
+    titleClass="text-4xl font-black tracking-tight text-zinc-950 sm:text-5xl"
+  />
+
+  <section class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      friends.map((friend) => (
+        <a
+          href={friend.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex items-start gap-4 rounded-[22px] border border-zinc-200/80 bg-white/50 p-5 transition duration-200 hover:border-zinc-300 hover:bg-white/70 hover:shadow-sm"
+        >
+          <img
+            src={friend.avatar}
+            alt={friend.name}
+            class="h-12 w-12 shrink-0 rounded-full border border-zinc-200/60 object-cover"
+            loading="lazy"
+          />
+          <div class="min-w-0">
+            <h2 class="text-lg font-semibold tracking-tight text-zinc-950 transition group-hover:text-rose-500">
+              {friend.name}
+            </h2>
+            <p class="mt-1.5 text-sm leading-6 text-zinc-500">
+              {friend.description}
+            </p>
+          </div>
+        </a>
+      ))
+    }
+  </section>
+</Layout>

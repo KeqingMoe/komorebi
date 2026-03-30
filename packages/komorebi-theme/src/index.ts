@@ -15,7 +15,9 @@ import {
   blogLink,
   archiveLink,
   aboutLink,
+  friendsLink,
   type KomorebiNavLink,
+  type KomorebiFriend,
   type KomorebiThemeLabels,
   type KomorebiThemeOptions,
   type KomorebiThemeRoutes,
@@ -50,6 +52,11 @@ const THEME_ROUTE_DEFINITIONS = [
     pattern: "/about",
     entrypoint: new URL("./routes/about.astro", import.meta.url),
   },
+  {
+    enabledBy: "friends",
+    pattern: "/friends",
+    entrypoint: new URL("./routes/friends.astro", import.meta.url),
+  },
 ] satisfies ReadonlyArray<{
   enabledBy: keyof KomorebiThemeRoutes;
   pattern: string;
@@ -62,10 +69,12 @@ export {
   blogLink,
   archiveLink,
   aboutLink,
+  friendsLink,
 };
 
 export type {
   KomorebiNavLink,
+  KomorebiFriend,
   KomorebiThemeLabels,
   KomorebiThemeOptions,
   KomorebiThemeRoutes,
