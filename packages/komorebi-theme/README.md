@@ -2,6 +2,8 @@
 
 `komorebi-theme` is an Astro blog theme distributed as an Astro integration.
 
+This package supports Astro 6 and requires Node `22.12.0` or later.
+
 ## Usage
 
 ```ts

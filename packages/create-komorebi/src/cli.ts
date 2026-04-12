@@ -164,7 +164,7 @@ function printBanner(packageManager: string) {
     console.log(pc.cyan(line));
   }
   console.log(pc.dim('  create-komorebi · 木漏れ日 Astro 博客初始化'));
-  console.log(pc.dim(`  ${packageManager} · astro@^5`));
+  console.log(pc.dim(`  ${packageManager} · astro@^6 · Node 22.12+`));
   console.log('');
 }
 
@@ -204,7 +204,7 @@ async function promptProjectAnswers(
           {
             title: '立即安装',
             description:
-              '安装 astro@^5、komorebi-theme、@astrojs/check、typescript',
+              '安装 astro@^6、komorebi-theme、@astrojs/check、typescript',
             value: 'install',
           },
           {

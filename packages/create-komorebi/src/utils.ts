@@ -51,7 +51,7 @@ export interface InstallHints {
   dev: string;
 }
 
-const RUNTIME_PACKAGES = ['astro@^5', 'komorebi-theme'];
+const RUNTIME_PACKAGES = ['astro@^6', 'komorebi-theme'];
 const DEV_PACKAGES = ['@astrojs/check', 'typescript'];
 
 interface PackageManagerMeta {
