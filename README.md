@@ -24,24 +24,30 @@ npm install astro@^6 komorebi-theme
 在 `astro.config.ts` 中注册主题：
 
 ```ts
-import { defineConfig } from "astro/config";
-import komorebi from "komorebi-theme";
+import { defineConfig } from 'astro/config';
+import komorebiConfig from './komorebi.config';
 
 export default defineConfig({
-  site: "https://example.com",
-  integrations: [
-    komorebi({
-      title: "我的博客",
-    }),
-  ],
+  site: 'https://example.com',
+  integrations: [komorebiConfig],
+});
+```
+
+在 `komorebi.config.ts` 中配置主题：
+
+```ts
+import komorebi from 'komorebi-theme';
+
+export default komorebi({
+  title: '我的博客',
 });
 ```
 
 然后配置内容集合。在 `src/content.config.ts` 中：
 
 ```ts
-import { defineCollection } from "astro:content";
-import { blogConfig, specialConfig } from "komorebi-theme/collections";
+import { defineCollection } from 'astro:content';
+import { blogConfig, specialConfig } from 'komorebi-theme/collections';
 
 export const collections = {
   blog: blogConfig(),
@@ -95,15 +101,15 @@ pubDate: 2026-3-30
 
 ```ts
 komorebi({
-  title: "木漏れ日",
-  tagline: "轻盈排版、安静阅读与持续写作。",
-  repositoryUrl: "https://github.com/user/repo",
-  locale: "zh-CN",
+  title: '木漏れ日',
+  tagline: '轻盈排版、安静阅读与持续写作。',
+  repositoryUrl: 'https://github.com/user/repo',
+  locale: 'zh-CN',
   pagination: { pageSize: 10 },
   home: {
-    eyebrow: "欢迎来到这里",
-    title: "Hi~",
-    description: "欢迎来到我的博客。",
+    eyebrow: '欢迎来到这里',
+    title: 'Hi~',
+    description: '欢迎来到我的博客。',
   },
   nav: navLinks(),
   friends: [],
@@ -162,7 +168,7 @@ komorebi({
 
 ```ts
 komorebi({
-  customCss: ["./src/styles/custom.css", "@fontsource/noto-sans-sc"],
+  customCss: ['./src/styles/custom.css', '@fontsource/noto-sans-sc'],
 });
 ```
 
@@ -188,7 +194,7 @@ komorebi({
 使用 `navLinks()` 快速引入所有内置页面链接：
 
 ```ts
-import komorebi, { navLinks } from "komorebi-theme";
+import komorebi, { navLinks } from 'komorebi-theme';
 
 komorebi({
   nav: navLinks(), // 首页、文章、归档、友链、关于
@@ -198,20 +204,20 @@ komorebi({
 传入额外链接会拼接到内置链接之后：
 
 ```ts
-nav: navLinks([{ label: "工具", href: "/tools" }]),
+nav: navLinks([{ label: '工具', href: '/tools' }]),
 // → 首页、文章、归档、友链、工具、关于
 ```
 
 也可以完全自定义：
 
 ```ts
-import komorebi, { homeLink, blogLink, aboutLink } from "komorebi-theme";
+import komorebi, { homeLink, blogLink, aboutLink } from 'komorebi-theme';
 
 komorebi({
   nav: [
     homeLink(),
-    blogLink("Posts"),
-    { label: "工具", href: "/tools" },
+    blogLink('Posts'),
+    { label: '工具', href: '/tools' },
     aboutLink(),
   ],
 });
