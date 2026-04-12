@@ -144,7 +144,7 @@ describe('getInstallCommands', () => {
 
   it('includes correct packages', () => {
     const cmd = getInstallCommands('npm');
-    expect(cmd.runtime).toContain('astro@^5');
+    expect(cmd.runtime).toContain('astro@^6');
     expect(cmd.runtime).toContain('komorebi-theme');
     expect(cmd.dev).toContain('@astrojs/check');
     expect(cmd.dev).toContain('typescript');

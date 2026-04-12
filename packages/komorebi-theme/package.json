@@ -16,10 +16,10 @@
     "./layouts": "./src/runtime/layouts/layouts.ts"
   },
   "peerDependencies": {
-    "astro": "^5.17.1"
+    "astro": "^6.0.0"
   },
   "dependencies": {
-    "@astrojs/rss": "^4.0.15",
+    "@astrojs/rss": "^4.0.18",
     "@unocss/astro": "^66.6.0",
     "@unocss/preset-attributify": "^66.6.0",
     "@unocss/preset-typography": "^66.6.0",

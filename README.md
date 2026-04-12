@@ -2,6 +2,8 @@
 
 一个基于 Astro 的博客主题，注重轻盈排版、安静阅读与持续写作。
 
+当前主线仅支持 Astro 6，并要求 Node `22.12.0` 或更高版本。
+
 ## 快速开始
 
 执行以下命令以用 komorebi 创建新项目：
@@ -11,11 +13,12 @@ npm create komorebi
 ```
 
 脚手架会通过交互式向导询问项目目录、博客标题、站点地址，以及是否立即安装依赖。
+生成的新项目默认使用 Astro 6，并带有 Node `22.12.0+` 的运行要求。
 
 ## 手动安装
 
 ```sh
-npm install komorebi-theme
+npm install astro@^6 komorebi-theme
 ```
 
 在 `astro.config.ts` 中注册主题：
@@ -233,6 +236,8 @@ komorebi({
 - `packages/komorebi-theme` — 主题包
 - `packages/create-komorebi` — 脚手架
 - `examples/basic` — 示例项目
+
+开发前请先确认本地 Node 版本不低于 `22.12.0`。
 
 ```sh
 npm run dev      # 启动开发服务器
