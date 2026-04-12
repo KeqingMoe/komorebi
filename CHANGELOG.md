@@ -2,6 +2,13 @@
 
 本文档记录本项目的所有重要变更。格式部分遵循 Keep a Changelog 规范，版本号遵循语义化版本号规范。
 
+## [0.4.0] - 2026-04-12
+
+- **feat**: 升级到 Astro 6，仅支持 Astro 6
+- **feat**: 运行环境要求提升到 Node 22.12+
+- **feat**: create-komorebi 默认生成 Astro 6 项目
+- **chore**: 示例、模板、CI 与文档同步到 Astro 6 / Node 22.12+
+
 ## [0.3.0] - 2026-03-30
 
 - **feat**: 自定义 CSS 支持：通过 `customCss` 配置项注入自定义样式
