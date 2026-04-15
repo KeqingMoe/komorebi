@@ -90,6 +90,7 @@ export default function komorebi(
     name: 'komorebi-theme',
     hooks: {
       'astro:config:setup': ({
+        addMiddleware,
         config,
         createCodegenDir,
         injectRoute,
@@ -123,6 +124,14 @@ export default function komorebi(
         for (const route of THEME_ROUTES) {
           injectRoute(route);
         }
+
+        addMiddleware({
+          entrypoint: new URL(
+            './middleware/external-links.ts',
+            import.meta.url,
+          ),
+          order: 'pre',
+        });
       },
     },
   };
