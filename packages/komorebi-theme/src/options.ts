@@ -32,6 +32,9 @@ export interface KomorebiThemeOptions {
     title?: string;
     description?: string;
   };
+  externalLinks?: {
+    autoTarget?: boolean;
+  };
   nav?: KomorebiNavLink[];
   friends?: KomorebiFriend[];
   customCss?: string[];
@@ -50,6 +53,9 @@ export interface ResolvedKomorebiThemeOptions {
     eyebrow: string;
     title: string;
     description: string;
+  };
+  externalLinks: {
+    autoTarget: boolean;
   };
   nav: KomorebiNavLink[];
   friends: KomorebiFriend[];
@@ -123,6 +129,9 @@ export function resolveThemeOptions(
       description:
         options.home?.description ??
         '欢迎来到我的博客，希望你能在这里读到一些值得停留下来的内容。',
+    },
+    externalLinks: {
+      autoTarget: options.externalLinks?.autoTarget ?? true,
     },
     nav,
     friends: options.friends ?? [],

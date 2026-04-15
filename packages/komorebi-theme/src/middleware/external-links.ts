@@ -1,6 +1,7 @@
 import type { APIContext, MiddlewareNext } from 'astro';
 import type { DefaultTreeAdapterTypes } from 'parse5';
 import { parse, serialize } from 'parse5';
+import { themeConfig } from '../runtime/config.js';
 
 type P5Element = DefaultTreeAdapterTypes.Element;
 type P5ChildNode = DefaultTreeAdapterTypes.ChildNode;
@@ -51,6 +52,10 @@ export const onRequest = async (
   context: APIContext,
   next: MiddlewareNext,
 ): Promise<Response> => {
+  if (!themeConfig.externalLinks.autoTarget) {
+    return next();
+  }
+
   const response = await next();
 
   const contentType = response.headers.get('content-type');
