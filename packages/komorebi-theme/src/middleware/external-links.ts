@@ -13,6 +13,8 @@ type P5Element = DefaultTreeAdapterTypes.Element;
 type P5ChildNode = DefaultTreeAdapterTypes.ChildNode;
 type P5Document = DefaultTreeAdapterTypes.Document;
 
+type ResolvedExternalLinks = Exclude<typeof themeConfig.externalLinks, false>;
+
 function isExternalLink(href: string, site: URL | undefined): boolean {
   if (!site) return false;
   try {
@@ -23,27 +25,26 @@ function isExternalLink(href: string, site: URL | undefined): boolean {
   }
 }
 
-function insertIndicator(node: P5Element): void {
-  const { indicator } = themeConfig.externalLinks;
-  if (indicator === false) return;
+function insertIndicator(node: P5Element, config: ResolvedExternalLinks): void {
+  if (config.indicator === false) return;
 
   const nodes: P5ChildNode[] =
-    typeof indicator === 'string'
+    typeof config.indicator === 'string'
       ? [
           defaultTreeAdapter.createElement('span', html.NS.HTML, [
-            { name: 'class', value: `i-${indicator}` },
+            { name: 'class', value: `i-${config.indicator}` },
             { name: 'aria-hidden', value: 'true' },
           ]),
         ]
-      : (parseFragment(indicator.html).childNodes as P5ChildNode[]);
+      : (parseFragment(config.indicator.html).childNodes as P5ChildNode[]);
 
   for (const n of nodes) {
     defaultTreeAdapter.appendChild(node, n);
   }
 }
 
-function applyAutoTarget(node: P5Element): void {
-  if (!themeConfig.externalLinks.autoTarget) return;
+function applyAutoTarget(node: P5Element, config: ResolvedExternalLinks): void {
+  if (!config.autoTarget) return;
 
   if (!node.attrs.some((a) => a.name === 'target')) {
     node.attrs.push({ name: 'target', value: '_blank' });
@@ -59,19 +60,23 @@ function applyAutoTarget(node: P5Element): void {
   }
 }
 
-function walk(node: P5Element | P5Document, site: URL | undefined): void {
+function walk(
+  node: P5Element | P5Document,
+  site: URL | undefined,
+  config: ResolvedExternalLinks,
+): void {
   if ('tagName' in node && node.tagName === 'a') {
     const href = node.attrs.find((a) => a.name === 'href');
     if (href && isExternalLink(href.value, site)) {
-      applyAutoTarget(node);
-      insertIndicator(node);
+      applyAutoTarget(node, config);
+      insertIndicator(node, config);
     }
   }
 
   if (node.childNodes) {
     for (const child of node.childNodes as P5ChildNode[]) {
       if ('tagName' in child) {
-        walk(child as P5Element, site);
+        walk(child as P5Element, site, config);
       }
     }
   }
@@ -81,9 +86,9 @@ export const onRequest = async (
   context: APIContext,
   next: MiddlewareNext,
 ): Promise<Response> => {
-  const { autoTarget, indicator } = themeConfig.externalLinks;
+  const { externalLinks } = themeConfig;
 
-  if (!autoTarget && indicator === false) {
+  if (externalLinks === false) {
     return next();
   }
 
@@ -96,7 +101,7 @@ export const onRequest = async (
 
   const html = await response.text();
   const doc = parse(html);
-  walk(doc, context.site);
+  walk(doc, context.site, externalLinks);
 
   return new Response(serialize(doc), {
     status: response.status,

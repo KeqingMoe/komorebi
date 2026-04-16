@@ -108,9 +108,10 @@ export default function komorebi(
           userCssVitePlugin(resolved.customCss, config.root),
         ];
 
-        const indicatorSafelist = computeIndicatorSafelist(
-          resolved.externalLinks.indicator,
-        );
+        const indicatorSafelist =
+          resolved.externalLinks === false
+            ? []
+            : computeIndicatorSafelist(resolved.externalLinks.indicator);
 
         updateConfig({
           integrations: [
