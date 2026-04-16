@@ -25,23 +25,33 @@ npm install astro@^6 komorebi-theme
 
 ```ts
 import { defineConfig } from 'astro/config';
-import komorebiConfig from './komorebi.config';
+import komorebi from 'komorebi-theme';
 
 export default defineConfig({
   site: 'https://example.com',
-  integrations: [komorebiConfig],
+  integrations: [komorebi()],
 });
 ```
 
 在 `komorebi.config.ts` 中配置主题：
 
 ```ts
-import komorebi from 'komorebi-theme';
+import { defineConfig } from 'komorebi-theme';
 
-export default komorebi({
+export default defineConfig({
   title: '我的博客',
 });
 ```
+
+> **向后兼容**：旧的内联配置方式仍然可用，适合需要动态生成配置的场景：
+>
+> ```ts
+> // astro.config.ts
+> import komorebi from 'komorebi-theme';
+> export default defineConfig({
+>   integrations: [komorebi({ title: '我的博客' })],
+> });
+> ```
 
 然后配置内容集合。在 `src/content.config.ts` 中：
 

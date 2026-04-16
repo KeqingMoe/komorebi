@@ -111,6 +111,12 @@ export function navLinks(extra?: KomorebiNavLink[]): KomorebiNavLink[] {
   ];
 }
 
+export function defineConfig(
+  options: KomorebiThemeOptions,
+): KomorebiThemeOptions {
+  return options;
+}
+
 export function resolveThemeOptions(
   options: KomorebiThemeOptions = {},
 ): ResolvedKomorebiThemeOptions {
