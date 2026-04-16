@@ -2,6 +2,13 @@
 
 本文档记录本项目的所有重要变更。格式部分遵循 Keep a Changelog 规范，版本号遵循语义化版本号规范。
 
+## [0.5.0] - 2026-04-16
+
+- **feat**: 外部链接转换：可以为外链配置指示器图标和是否要在新标签页打开
+- **feat**: 独立配置文件支持：新增 `defineConfig` 辅助函数，支持自动加载 `komorebi.config.ts`，支持开发时热重载（HMR）
+- **fix**: 锁定 vite ^7，修复 Astro 兼容性问题
+- **BREAKING**: 外链默认显示指示器图标且在新标签页打开，如需恢复旧行为请设置 `externalLinks: false`
+
 ## [0.4.0] - 2026-04-12
 
 - **feat**: 升级到 Astro 6，仅支持 Astro 6
@@ -41,6 +48,16 @@
 ---
 
 ## Upgrade Guide
+
+### 0.4.x → 0.5.x
+
+外链默认显示指示器图标。如需恢复旧行为（不显示图标），在配置中设置：
+
+```ts
+export default defineConfig({
+  externalLinks: false,
+});
+```
 
 ### 0.2.x → 0.3.x
 
