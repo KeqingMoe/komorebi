@@ -14,7 +14,10 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
@@ -22,6 +25,7 @@
     "astro": "^6.0.0",
     "typescript": "^5.9.2",
     "vite": "^7.0.0",
+    "vitepress": "^2.0.0-alpha.17",
     "vitest": "^4.1.2"
   },
   "engines": {
