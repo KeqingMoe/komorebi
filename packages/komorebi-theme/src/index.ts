@@ -11,10 +11,13 @@ import UnoCSS from '@unocss/astro';
 import type { AstroIntegration } from 'astro';
 import type { DefaultTreeAdapterTypes } from 'parse5';
 import { parseFragment } from 'parse5';
+import type { ViteDevServer } from 'vite';
+import { createRecoveryConfigLoader } from './config-loader';
 import {
   aboutLink,
   archiveLink,
   blogLink,
+  defineConfig,
   type ExternalLinkIndicator,
   friendsLink,
   homeLink,
@@ -55,7 +58,15 @@ export type {
   KomorebiThemeOptions,
   ResolvedKomorebiThemeOptions,
 };
-export { aboutLink, archiveLink, blogLink, friendsLink, homeLink, navLinks };
+export {
+  aboutLink,
+  archiveLink,
+  blogLink,
+  defineConfig,
+  friendsLink,
+  homeLink,
+  navLinks,
+};
 
 function userCssVitePlugin(customCss: string[], root: URL) {
   const resolvedId = `\0${USER_CSS_MODULE_ID}`;
@@ -82,9 +93,63 @@ function userCssVitePlugin(customCss: string[], root: URL) {
 }
 
 export default function komorebi(
-  options: KomorebiThemeOptions = {},
+  inlineOptions?: KomorebiThemeOptions,
 ): AstroIntegration {
-  const resolved = resolveThemeOptions(options);
+  let resolved: ResolvedKomorebiThemeOptions | undefined;
+  let configFileList: string[] = [];
+  let root: URL | undefined;
+  let generatedConfigUrl: URL | undefined;
+  const loadConfig = createRecoveryConfigLoader();
+
+  const hasInlineOptions =
+    inlineOptions !== undefined && Object.keys(inlineOptions).length > 0;
+
+  async function loadConfigOnce(configRoot: URL): Promise<void> {
+    if (hasInlineOptions) {
+      resolved = resolveThemeOptions(inlineOptions);
+      return;
+    }
+
+    const cwd = fileURLToPath(configRoot);
+    const result = await loadConfig(cwd);
+    resolved = resolveThemeOptions(result.config);
+    configFileList = result.sources;
+  }
+
+  async function reloadConfig(): Promise<void> {
+    if (!root || hasInlineOptions || !generatedConfigUrl) return;
+
+    const cwd = fileURLToPath(root);
+    const result = await loadConfig(cwd);
+    resolved = resolveThemeOptions(result.config);
+    configFileList = result.sources;
+    writeRuntimeConfig(generatedConfigUrl, resolved);
+  }
+
+  function getConfigHMRPlugin() {
+    return {
+      name: 'komorebi-theme:config-hmr',
+      configureServer(server: ViteDevServer) {
+        if (configFileList.length === 0) return;
+
+        server.watcher.add(configFileList);
+        server.watcher.on('change', async (path: string) => {
+          if (configFileList.includes(path)) {
+            await reloadConfig();
+
+            const module = server.moduleGraph.getModuleById(
+              THEME_CONFIG_MODULE_ID,
+            );
+            if (module) {
+              server.moduleGraph.invalidateModule(module);
+              server.reloadModule(module);
+            }
+          }
+        });
+      },
+    };
+  }
+
   const themeContentGlobs = createThemeContentGlobs([
     fileURLToPath(new URL('./runtime', import.meta.url)),
     fileURLToPath(new URL('./routes', import.meta.url)),
@@ -93,19 +158,27 @@ export default function komorebi(
   return {
     name: 'komorebi-theme',
     hooks: {
-      'astro:config:setup': ({
+      'astro:config:setup': async ({
         addMiddleware,
         config,
         createCodegenDir,
         injectRoute,
         updateConfig,
       }) => {
+        root = config.root;
+        await loadConfigOnce(config.root);
+
+        if (!resolved) {
+          resolved = resolveThemeOptions({});
+        }
+
         const codegenDir = createCodegenDir();
-        const generatedConfigUrl = new URL('config.mjs', codegenDir);
+        generatedConfigUrl = new URL('config.mjs', codegenDir);
         writeRuntimeConfig(generatedConfigUrl, resolved);
 
         const vitePlugins = [
           userCssVitePlugin(resolved.customCss, config.root),
+          getConfigHMRPlugin(),
         ];
 
         const indicatorSafelist =

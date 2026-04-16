@@ -1,5 +1,5 @@
-import komorebi from 'komorebi-theme';
+import { defineConfig } from 'komorebi-theme';
 
-export default komorebi({
+export default defineConfig({
   title: '__SITE_TITLE_JSON__',
 });
