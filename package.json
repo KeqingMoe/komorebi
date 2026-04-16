@@ -19,6 +19,8 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "@biomejs/biome": "2.4.10",
+    "@iconify-json/mdi": "^1.2.3",
+    "@unocss/preset-icons": "^66.6.8",
     "astro": "^6.0.0",
     "typescript": "^5.9.2",
     "vitest": "^4.1.2"

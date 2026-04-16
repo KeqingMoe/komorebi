@@ -19,6 +19,8 @@ export interface KomorebiFriend {
   description: string;
 }
 
+export type ExternalLinkIndicator = string | { html: string } | false;
+
 export interface KomorebiThemeOptions {
   title?: string;
   tagline?: string;
@@ -34,6 +36,7 @@ export interface KomorebiThemeOptions {
   };
   externalLinks?: {
     autoTarget?: boolean;
+    indicator?: ExternalLinkIndicator;
   };
   nav?: KomorebiNavLink[];
   friends?: KomorebiFriend[];
@@ -56,6 +59,7 @@ export interface ResolvedKomorebiThemeOptions {
   };
   externalLinks: {
     autoTarget: boolean;
+    indicator: ExternalLinkIndicator;
   };
   nav: KomorebiNavLink[];
   friends: KomorebiFriend[];
@@ -132,6 +136,7 @@ export function resolveThemeOptions(
     },
     externalLinks: {
       autoTarget: options.externalLinks?.autoTarget ?? true,
+      indicator: options.externalLinks?.indicator ?? 'mdi:launch',
     },
     nav,
     friends: options.friends ?? [],
