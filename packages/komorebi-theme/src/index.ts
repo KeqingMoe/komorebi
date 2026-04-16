@@ -9,10 +9,13 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import UnoCSS from '@unocss/astro';
 import type { AstroIntegration } from 'astro';
+import type { DefaultTreeAdapterTypes } from 'parse5';
+import { parseFragment } from 'parse5';
 import {
   aboutLink,
   archiveLink,
   blogLink,
+  type ExternalLinkIndicator,
   friendsLink,
   homeLink,
   type KomorebiFriend,
@@ -45,6 +48,7 @@ const THEME_ROUTES = [
 ];
 
 export type {
+  ExternalLinkIndicator,
   KomorebiFriend,
   KomorebiNavLink,
   KomorebiThemeLabels,
@@ -90,6 +94,7 @@ export default function komorebi(
     name: 'komorebi-theme',
     hooks: {
       'astro:config:setup': ({
+        addMiddleware,
         config,
         createCodegenDir,
         injectRoute,
@@ -103,8 +108,17 @@ export default function komorebi(
           userCssVitePlugin(resolved.customCss, config.root),
         ];
 
+        const indicatorSafelist =
+          resolved.externalLinks === false
+            ? []
+            : computeIndicatorSafelist(resolved.externalLinks.indicator);
+
         updateConfig({
-          integrations: [UnoCSS(createKomorebiUnoOptions(themeContentGlobs))],
+          integrations: [
+            UnoCSS(
+              createKomorebiUnoOptions(themeContentGlobs, indicatorSafelist),
+            ),
+          ],
           markdown: {
             shikiConfig: {
               theme: 'github-light',
@@ -123,6 +137,14 @@ export default function komorebi(
         for (const route of THEME_ROUTES) {
           injectRoute(route);
         }
+
+        addMiddleware({
+          entrypoint: new URL(
+            './middleware/external-links.ts',
+            import.meta.url,
+          ),
+          order: 'pre',
+        });
       },
     },
   };
@@ -142,4 +164,33 @@ function writeRuntimeConfig(file: URL, config: ResolvedKomorebiThemeOptions) {
     `export default ${JSON.stringify(config, null, 2)};\n`,
     'utf-8',
   );
+}
+
+function extractClasses(node: DefaultTreeAdapterTypes.Node): string[] {
+  const classes: string[] = [];
+  if ('attrs' in node) {
+    const classAttr = (node as DefaultTreeAdapterTypes.Element).attrs.find(
+      (a) => a.name === 'class',
+    );
+    if (classAttr) {
+      classes.push(...classAttr.value.split(/\s+/).filter(Boolean));
+    }
+  }
+  if ('childNodes' in node) {
+    for (const child of (
+      node as
+        | DefaultTreeAdapterTypes.DocumentFragment
+        | DefaultTreeAdapterTypes.Element
+    ).childNodes) {
+      classes.push(...extractClasses(child));
+    }
+  }
+  return classes;
+}
+
+function computeIndicatorSafelist(indicator: ExternalLinkIndicator): string[] {
+  if (indicator === false) return [];
+  if (typeof indicator === 'string') return [`i-${indicator}`];
+  const fragment = parseFragment(indicator.html);
+  return extractClasses(fragment);
 }

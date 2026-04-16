@@ -1,19 +1,34 @@
 import {
   presetAttributify,
+  presetIcons,
   presetTypography,
   presetWind4,
   transformerDirectives,
 } from 'unocss';
 
-export function createKomorebiUnoOptions(filesystem: string[]) {
+export function createKomorebiUnoOptions(
+  filesystem: string[],
+  safelist: string[] = [],
+) {
   return {
     injectReset: true,
     content: {
       filesystem,
     },
+    safelist,
     presets: [
       presetWind4(),
       presetAttributify(),
+      presetIcons({
+        extraProperties: {
+          display: 'inline-block',
+          'vertical-align': '-0.1em',
+          'margin-inline-start': '0.15em',
+          height: '1cap',
+          width: 'auto',
+          'aspect-ratio': '1',
+        },
+      }),
       presetTypography({
         cssExtend: {
           ':is(h2, h3, h4)[id]': {

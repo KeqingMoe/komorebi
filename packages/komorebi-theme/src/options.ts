@@ -19,6 +19,8 @@ export interface KomorebiFriend {
   description: string;
 }
 
+export type ExternalLinkIndicator = string | { html: string } | false;
+
 export interface KomorebiThemeOptions {
   title?: string;
   tagline?: string;
@@ -32,6 +34,12 @@ export interface KomorebiThemeOptions {
     title?: string;
     description?: string;
   };
+  externalLinks?:
+    | false
+    | {
+        autoTarget?: boolean;
+        indicator?: ExternalLinkIndicator;
+      };
   nav?: KomorebiNavLink[];
   friends?: KomorebiFriend[];
   customCss?: string[];
@@ -51,6 +59,12 @@ export interface ResolvedKomorebiThemeOptions {
     title: string;
     description: string;
   };
+  externalLinks:
+    | false
+    | {
+        autoTarget: boolean;
+        indicator: ExternalLinkIndicator;
+      };
   nav: KomorebiNavLink[];
   friends: KomorebiFriend[];
   customCss: string[];
@@ -124,6 +138,13 @@ export function resolveThemeOptions(
         options.home?.description ??
         '欢迎来到我的博客，希望你能在这里读到一些值得停留下来的内容。',
     },
+    externalLinks:
+      options.externalLinks === false
+        ? false
+        : {
+            autoTarget: options.externalLinks?.autoTarget ?? true,
+            indicator: options.externalLinks?.indicator ?? 'mdi:launch',
+          },
     nav,
     friends: options.friends ?? [],
     customCss: options.customCss ?? [],
