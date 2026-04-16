@@ -42,27 +42,28 @@ function insertIndicator(node: P5Element): void {
   }
 }
 
+function applyAutoTarget(node: P5Element): void {
+  if (!themeConfig.externalLinks.autoTarget) return;
+
+  if (!node.attrs.some((a) => a.name === 'target')) {
+    node.attrs.push({ name: 'target', value: '_blank' });
+  }
+  const rel = node.attrs.find((a) => a.name === 'rel');
+  if (rel) {
+    const vals = new Set(rel.value.split(/\s+/));
+    vals.add('noopener');
+    vals.add('noreferrer');
+    rel.value = [...vals].join(' ');
+  } else {
+    node.attrs.push({ name: 'rel', value: 'noopener noreferrer' });
+  }
+}
+
 function walk(node: P5Element | P5Document, site: URL | undefined): void {
   if ('tagName' in node && node.tagName === 'a') {
     const href = node.attrs.find((a) => a.name === 'href');
     if (href && isExternalLink(href.value, site)) {
-      if (themeConfig.externalLinks.autoTarget) {
-        if (!node.attrs.some((a) => a.name === 'target')) {
-          node.attrs.push({ name: 'target', value: '_blank' });
-        }
-        const rel = node.attrs.find((a) => a.name === 'rel');
-        if (rel) {
-          const vals = new Set(rel.value.split(/\s+/));
-          vals.add('noopener');
-          vals.add('noreferrer');
-          rel.value = [...vals].join(' ');
-        } else {
-          node.attrs.push({
-            name: 'rel',
-            value: 'noopener noreferrer',
-          });
-        }
-      }
+      applyAutoTarget(node);
       insertIndicator(node);
     }
   }
