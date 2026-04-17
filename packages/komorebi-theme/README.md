@@ -10,7 +10,7 @@
 npm create komorebi
 ```
 
-脚手架会通过交互式向导引导你完成初始配置。详见[快速开始](https://komorebi-docs.vercel.app/guide/getting-started)。
+脚手架会通过交互式向导引导你完成初始配置。详见[快速开始](https://komorebi.keqing.moe/guide/getting-started)。
 
 ## 手动安装
 
