@@ -1,7 +1,7 @@
 {
   "name": "komorebi-theme",
   "type": "module",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "files": [
     "src",
     "README.md",
