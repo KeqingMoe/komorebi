@@ -50,6 +50,7 @@ const THEME_ROUTES = [
   route('/friends', 'friends.astro'),
   route('/rss.xml', 'rss.xml.ts'),
   route('/rss/styles.xsl', 'rss/styles.xsl.ts'),
+  route('/giscus.css', 'giscus/styles.css.ts'),
 ];
 
 export type {
@@ -180,26 +181,26 @@ export default function komorebi(
         generatedConfigUrl = new URL('config.mjs', codegenDir);
         writeRuntimeConfig(generatedConfigUrl, resolved);
 
-        const comments = resolved.comments;
-        const giscusTheme =
-          comments && 'theme' in comments ? comments.theme : undefined;
-        const customCssText =
-          typeof giscusTheme === 'string' ? giscusTheme : undefined;
+        // const comments = resolved.comments;
+        // const giscusTheme =
+        //   comments && 'theme' in comments ? comments.theme : undefined;
+        // const customCssText =
+        //   typeof giscusTheme === 'string' ? giscusTheme : undefined;
 
-        let giscusCssEntrypoint: URL;
-        if (customCssText) {
-          const cssFile = new URL('giscus.css', codegenDir);
-          writeFileSync(cssFile, customCssText, 'utf-8');
-          giscusCssEntrypoint = new URL('giscus.css.ts', codegenDir);
-          writeFileSync(
-            giscusCssEntrypoint,
-            `import css from './giscus.css?raw';\n` +
-              `export const GET = () => new Response(css, { headers: { 'Content-Type': 'text/css; charset=utf-8' } });\n`,
-            'utf-8',
-          );
-        } else {
-          giscusCssEntrypoint = new URL('giscus/styles.css.ts', routesDir);
-        }
+        // let giscusCssEntrypoint: URL;
+        // if (customCssText) {
+        //   const cssFile = new URL('giscus.css', codegenDir);
+        //   writeFileSync(cssFile, customCssText, 'utf-8');
+        //   giscusCssEntrypoint = new URL('giscus.css.ts', codegenDir);
+        //   writeFileSync(
+        //     giscusCssEntrypoint,
+        //     `import css from './giscus.css?raw';\n` +
+        //       `export const GET = () => new Response(css, { headers: { 'Content-Type': 'text/css; charset=utf-8' } });\n`,
+        //     'utf-8',
+        //   );
+        // } else {
+        //   giscusCssEntrypoint = new URL('giscus/styles.css.ts', routesDir);
+        // }
 
         const vitePlugins = [
           userCssVitePlugin(resolved.customCss, config.root),
@@ -235,11 +236,6 @@ export default function komorebi(
         for (const route of THEME_ROUTES) {
           injectRoute(route);
         }
-
-        injectRoute({
-          pattern: '/giscus.css',
-          entrypoint: giscusCssEntrypoint,
-        });
 
         addMiddleware({
           entrypoint: new URL(
