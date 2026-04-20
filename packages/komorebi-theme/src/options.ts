@@ -1,3 +1,5 @@
+import type { Theme } from 'giscus';
+
 export interface KomorebiThemeLabels {
   latestPostsHeading: string;
   latestPostsMore: string;
@@ -21,6 +23,23 @@ export interface KomorebiFriend {
 
 export type ExternalLinkIndicator = string | { html: string } | false;
 
+export interface GiscusOptions {
+  repo: `${string}/${string}`;
+  repoId: string;
+  category?: string;
+  categoryId?: string;
+  mapping?: 'url' | 'pathname' | 'title' | 'og:title' | 'specific' | 'number';
+  term?: string;
+  strict?: boolean;
+  reactionsEnabled?: boolean;
+  emitMetadata?: boolean;
+  inputPosition?: 'top' | 'bottom';
+  lang?: string;
+  theme?: string | { preset: Theme };
+}
+
+export type CommentsConfig = false | GiscusOptions;
+
 export interface KomorebiThemeOptions {
   title?: string;
   tagline?: string;
@@ -43,6 +62,7 @@ export interface KomorebiThemeOptions {
   nav?: KomorebiNavLink[];
   friends?: KomorebiFriend[];
   customCss?: string[];
+  comments?: CommentsConfig;
   labels?: Partial<KomorebiThemeLabels>;
 }
 
@@ -68,6 +88,7 @@ export interface ResolvedKomorebiThemeOptions {
   nav: KomorebiNavLink[];
   friends: KomorebiFriend[];
   customCss: string[];
+  comments: false | GiscusOptions;
   labels: KomorebiThemeLabels;
 }
 
@@ -154,6 +175,17 @@ export function resolveThemeOptions(
     nav,
     friends: options.friends ?? [],
     customCss: options.customCss ?? [],
+    comments: resolveComments(options.comments),
     labels,
+  };
+}
+
+function resolveComments(
+  comments: CommentsConfig | undefined,
+): false | GiscusOptions {
+  if (!comments) return false;
+  return {
+    ...comments,
+    mapping: comments.mapping ?? 'pathname',
   };
 }
