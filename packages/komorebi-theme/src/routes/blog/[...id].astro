@@ -1,7 +1,10 @@
 ---
 import { render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
+import type { GiscusOptions } from '../../options';
 import PostContentLayout from '../../runtime/components/post/PostContentLayout.astro';
+import GiscusComments from '../../runtime/components/widgets/GiscusComments.astro';
+import { themeConfig } from '../../runtime/config';
 import Layout from '../../runtime/layouts/Layout.astro';
 import { getSortedPosts } from '../../runtime/lib/content';
 
@@ -21,6 +24,18 @@ const { prev, post, next } = Astro.props;
 const { title, description, pubDate, updatedDate, draft } = post.data;
 const { readingStats } = post;
 const { Content, headings } = await render(post);
+
+const comments = themeConfig.comments;
+
+const processComments = (comments: GiscusOptions) => {
+  const { theme, ...rest } = comments;
+  const giscusTheme = theme
+    ? {
+        theme: typeof theme === 'object' ? theme.preset : theme,
+      }
+    : {};
+  return { ...rest, ...giscusTheme };
+};
 ---
 
 <Layout title={title}>
@@ -38,5 +53,13 @@ const { Content, headings } = await render(post);
     }}
   >
     <Content />
+    {
+      comments && (
+        <>
+          <hr />
+          <GiscusComments {...processComments(comments)} />
+        </>
+      )
+    }
   </PostContentLayout>
 </Layout>
