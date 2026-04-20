@@ -191,6 +191,46 @@ main {
 }
 ```
 
+## 启用评论
+
+komorebi 内置 [giscus](https://giscus.app/zh-CN) 评论系统，可以将 GitHub Discussions 作为博客的评论区。
+
+以下简单介绍 giscus 配置方式，一切请以 giscus 官方教程为准。
+
+### 前置条件
+
+1. 在 GitHub 仓库中[启用 Discussions](https://docs.github.com/zh/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/enabling-or-disabling-github-discussions-for-a-repository)
+2. 安装 [giscus GitHub App](https://github.com/apps/giscus) 并授权该仓库
+3. 访问 [giscus.app](https://giscus.app/)，填入仓库地址后生成配置参数（`repoId`、`categoryId` 等）
+
+### 最小配置
+
+将 giscus.app 生成的参数填入 `comments` 配置即可启用：
+
+```ts
+// komorebi.config.ts
+export default defineConfig({
+  comments: {
+    repo: 'user/repo',
+    repoId: 'R_kgDOXXXXXX',
+    category: 'Announcements',
+    categoryId: 'DIC_kwDOXXXXXX',
+  },
+});
+```
+
+启用后，每篇文章底部会自动出现评论区。评论以 GitHub Discussion 的形式存储在你的仓库中。
+
+### 跨域说明
+
+giscus 评论区本身由 giscus.app 的脚本注入，不涉及跨域问题。默认主题 CSS 通过 jsdelivr CDN 提供，同样是公共资源，无需额外配置 CORS。
+
+如果你传入自定义 CSS 字符串作为 `theme`，主题会将其作为 `/giscus.css` 路由提供。此时 giscus（从 giscus.app 域名加载）访问该 CSS 会触发跨域，需要你在部署平台配置相应的 CORS 头部。建议优先使用 `{ preset: '...' }` 的预设主题来避免这个问题。
+
+### 更多配置
+
+完整的字段说明、映射方式、主题切换等，参见[配置选项 — comments](/reference/configuration#comments)。
+
 ## 配置 Markdown 扩展
 
 Astro 的 `markdown` 配置不需要 komorebi 代理——直接在 `astro.config.ts` 中设置即可。以下是一些常见场景。
