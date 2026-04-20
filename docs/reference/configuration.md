@@ -271,26 +271,6 @@ export default defineConfig({
 });
 ```
 
-以下简单介绍 giscus 配置方式，一切请以 giscus 官方教程为准。
-
-### 启用 giscus
-
-1. 在 GitHub 仓库中[启用 Discussions](https://docs.github.com/zh/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/enabling-or-disabling-github-discussions-for-a-repository)
-2. 安装 [giscus GitHub App](https://github.com/apps/giscus) 并授权仓库
-3. 在 [giscus.app](https://giscus.app/) 生成配置参数
-4. 填入 `comments` 配置：
-
-```ts
-export default defineConfig({
-  comments: {
-    repo: 'user/repo',
-    repoId: 'R_kgDOXXXXXX',
-    category: 'Announcements',
-    categoryId: 'DIC_kwDOXXXXXX',
-  },
-});
-```
-
 ### `GiscusOptions` 字段
 
 | 字段 | 类型 | 必填 | 默认值 | 说明 |
@@ -337,7 +317,7 @@ export default defineConfig({
 });
 ```
 
-可用的预设主题：`light`、`light_high_contrast`、`light_protanopia`、`light_tritanopia`、`dark`、`dark_high_contrast`、`dark_protanopia`、`dark_tritanopia`、`dark_dimmed`、`preferred_color_scheme`、`transparent_dark`、`noborder_light`、`noborder_dark`、`noborder_gray`、`cobalt`、`purple_dark`、`gruvbox`、`gruvbox_dark`、`gruvbox_light`、`catppuccin_latte`、`catppuccin_frappe`、`catppuccin_macchiato`、`catppuccin_mocha` 等。
+可用的预设主题：`light`、`light_high_contrast`、`light_protanopia`、`light_tritanopia`、`dark`、`dark_high_contrast`、`dark_protanopia`、`dark_tritanopia`、`dark_dimmed`、`preferred_color_scheme`、`transparent_dark`、`noborder_light`、`noborder_dark`、`noborder_gray`、`cobalt`、`purple_dark`、`gruvbox`、`gruvbox_dark`、`gruvbox_light`、`catppuccin_latte`、`catppuccin_frappe`、`catppuccin_macchiato`、`catppuccin_mocha` 等，或填入具体 URL。
 
 **使用自定义 CSS：**
 
