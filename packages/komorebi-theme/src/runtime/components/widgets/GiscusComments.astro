@@ -20,7 +20,8 @@ function resolveTheme(t: string): string {
 
 function resolveProps(props: Props) {
   const { theme, ...rest } = props;
-  const resolvedTheme = resolveTheme(theme ?? '/giscus.css');
+  const defaultTheme = `https://cdn.jsdelivr.net/npm/komorebi-theme@${__KOMOREBI_THEME_VERSION__}/src/routes/giscus/styles.css`;
+  const resolvedTheme = resolveTheme(theme ?? defaultTheme);
   return {
     ...rest,
     theme: resolvedTheme,

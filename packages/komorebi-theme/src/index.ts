@@ -12,6 +12,7 @@ import type { AstroIntegration } from 'astro';
 import type { DefaultTreeAdapterTypes } from 'parse5';
 import { parseFragment } from 'parse5';
 import type { ViteDevServer } from 'vite';
+import pkg from '../package.json' with { type: 'json' };
 import { createRecoveryConfigLoader } from './config-loader';
 import {
   aboutLink,
@@ -224,6 +225,9 @@ export default function komorebi(
             },
           },
           vite: {
+            define: {
+              __KOMOREBI_THEME_VERSION__: `'${pkg.version}'`,
+            },
             plugins: vitePlugins,
             resolve: {
               alias: {
