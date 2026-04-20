@@ -257,6 +257,143 @@ export default defineConfig({
 
 相对路径会相对于项目根目录解析。这允许你覆盖主题的任何样式，而无需修改主题源码。
 
+## `comments`
+
+`false | GiscusOptions` — 评论区配置。
+
+通过 [giscus](https://giscus.app/zh-CN) 将 GitHub Discussions 作为评论系统。默认关闭。
+
+- 默认值：`false`
+
+```ts
+export default defineConfig({
+  comments: false,
+});
+```
+
+以下简单介绍 giscus 配置方式，一切请以 giscus 官方教程为准。
+
+### 启用 giscus
+
+1. 在 GitHub 仓库中[启用 Discussions](https://docs.github.com/zh/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/enabling-or-disabling-github-discussions-for-a-repository)
+2. 安装 [giscus GitHub App](https://github.com/apps/giscus) 并授权仓库
+3. 在 [giscus.app](https://giscus.app/) 生成配置参数
+4. 填入 `comments` 配置：
+
+```ts
+export default defineConfig({
+  comments: {
+    repo: 'user/repo',
+    repoId: 'R_kgDOXXXXXX',
+    category: 'Announcements',
+    categoryId: 'DIC_kwDOXXXXXX',
+  },
+});
+```
+
+### `GiscusOptions` 字段
+
+| 字段 | 类型 | 必填 | 默认值 | 说明 |
+| - | - | - | - | - |
+| `repo` | `` `${string}/${string}` `` | 是 | — | GitHub 仓库，格式 `owner/repo` |
+| `repoId` | `string` | 是 | — | 仓库 ID（从 giscus.app 获取） |
+| `category` | `string` | 否 | — | Discussion 分类名称 |
+| `categoryId` | `string` | 否 | — | 分类 ID（从 giscus.app 获取） |
+| `mapping` | `string` | 否 | `'pathname'` | 页面与 Discussion 的映射方式 |
+| `term` | `string` | 否 | — | 搜索关键词（`mapping` 为 `specific` 时使用） |
+| `strict` | `boolean` | 否 | — | 是否启用严格标题匹配 |
+| `reactionsEnabled` | `boolean` | 否 | — | 是否启用主帖表情回应 |
+| `emitMetadata` | `boolean` | 否 | — | 是否定期发送 discussion 元数据 |
+| `inputPosition` | `'top' \| 'bottom'` | 否 | — | 评论框位置 |
+| `lang` | `string` | 否 | — | 界面语言，如 `'zh-CN'` |
+| `theme` | `string \| { preset: Theme }` | 否 | 内置主题 | 评论区主题，详见下文 |
+
+`mapping` 支持的值：
+
+| 值 | 说明 |
+| - | - |
+| `'pathname'` | 按页面路径匹配（推荐） |
+| `'url'` | 按完整 URL 匹配 |
+| `'title'` | 按页面标题匹配 |
+| `'og:title'` | 按 Open Graph 标题匹配 |
+| `'specific'` | 按 `term` 指定的关键词匹配 |
+| `'number'` | 按 Discussion 编号匹配 |
+
+### 主题配置
+
+`theme` 控制评论区的外观。
+
+**使用预设主题：**
+
+传入 `{ preset }` 对象，值为 giscus 内置主题名：
+
+```ts
+export default defineConfig({
+  comments: {
+    repo: 'user/repo',
+    repoId: 'R_kgDOXXXXXX',
+    theme: { preset: 'preferred_color_scheme' },
+  },
+});
+```
+
+可用的预设主题：`light`、`light_high_contrast`、`light_protanopia`、`light_tritanopia`、`dark`、`dark_high_contrast`、`dark_protanopia`、`dark_tritanopia`、`dark_dimmed`、`preferred_color_scheme`、`transparent_dark`、`noborder_light`、`noborder_dark`、`noborder_gray`、`cobalt`、`purple_dark`、`gruvbox`、`gruvbox_dark`、`gruvbox_light`、`catppuccin_latte`、`catppuccin_frappe`、`catppuccin_macchiato`、`catppuccin_mocha` 等。
+
+**使用自定义 CSS：**
+
+传入 CSS 文本字符串，主题会自动将其作为 `/giscus.css` 路由提供给 giscus 加载：
+
+```ts
+export default defineConfig({
+  comments: {
+    repo: 'user/repo',
+    repoId: 'R_kgDOXXXXXX',
+    theme: `
+      main {
+        --color-canvas-default: transparent;
+        --color-fg-default: #18181b;
+        --color-accent-fg: #f43f5e;
+      }
+    `,
+  },
+});
+```
+
+CSS 通过 giscus 的 CSS 变量控制评论区内部样式。完整的变量列表可参考 [giscus 主题源码](https://github.com/giscus/giscus/tree/main/styles/themes)。
+
+**不指定主题：**
+
+不设置 `theme` 时，使用主题内置的默认样式（与 komorebi 暖色调设计一致）。
+
+```ts
+export default defineConfig({
+  comments: {
+    repo: 'user/repo',
+    repoId: 'R_kgDOXXXXXX',
+    // 不设置 theme，使用内置默认样式
+  },
+});
+```
+
+### 完整示例
+
+```ts
+export default defineConfig({
+  comments: {
+    repo: 'user/repo',
+    repoId: 'R_kgDOXXXXXX',
+    category: 'Announcements',
+    categoryId: 'DIC_kwDOXXXXXX',
+    mapping: 'pathname',
+    reactionsEnabled: true,
+    emitMetadata: true,
+    inputPosition: 'top',
+    theme: { preset: 'preferred_color_scheme' },
+    lang: 'zh-CN',
+  },
+});
+```
+
 ## `labels`
 
 `Partial<KomorebiThemeLabels>` — 覆盖界面文案。
