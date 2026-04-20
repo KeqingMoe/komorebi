@@ -48,6 +48,7 @@ const THEME_ROUTES = [
   route('/friends', 'friends.astro'),
   route('/rss.xml', 'rss.xml.ts'),
   route('/rss/styles.xsl', 'rss/styles.xsl.ts'),
+  route('/giscus.css', 'giscus/styles.css.ts'),
 ];
 
 export type {

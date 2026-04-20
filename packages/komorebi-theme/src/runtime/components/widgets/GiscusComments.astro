@@ -1,0 +1,37 @@
+---
+import type { ISetConfigMessage, Mapping } from 'giscus';
+
+type GiscusConfig = ISetConfigMessage['setConfig'];
+
+interface Props extends GiscusConfig {
+  mapping?: Mapping;
+}
+
+const { repo, repoId, category, categoryId, mapping, strict, reactionsEnabled, emitMetadata, inputPosition, theme, lang } = Astro.props;
+
+function toKebab(s: string): string {
+  return s.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
+}
+
+function resolveTheme(t: string | undefined): string | undefined {
+  if (!t || !t.startsWith('/')) return t;
+  const base = Astro.site?.origin ?? Astro.url.origin;
+  return `${base}${t}`;
+}
+
+const resolvedTheme = resolveTheme(theme);
+
+const attrs = Object.fromEntries(
+  Object.entries({ repo, repoId, category, categoryId, mapping, strict, reactionsEnabled, emitMetadata, inputPosition, theme: resolvedTheme, lang })
+    .filter(([, v]) => v !== undefined)
+    .map(([k, v]) => [toKebab(k), String(v)]),
+);
+---
+
+<giscus-widget {...attrs}>
+  <p>Loading comments...</p>
+</giscus-widget>
+
+<script>
+  import 'giscus';
+</script>
