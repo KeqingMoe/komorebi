@@ -2,6 +2,13 @@
 
 本文档记录本项目的所有重要变更。格式部分遵循 Keep a Changelog 规范，版本号遵循语义化版本号规范。
 
+## [0.6.0] - 2026-04-20
+
+- **feat**: Giscus 评论系统支持：新增 `giscus` 配置项，支持通过 GitHub Discussions 为文章添加评论功能
+- **fix**: 添加 `env.d.ts` 以解决 LSP 类型提示问题
+- **docs**: 新增 VitePress 文档站点，精简包内 README
+- **chore**: 修复 npm audit 安全问题
+
 ## [0.5.2] - 2026-04-17
 
 - **fix**: 修复外链图标不显示的 bug
