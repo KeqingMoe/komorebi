@@ -5,3 +5,5 @@ declare module 'virtual:komorebi-theme/config' {
 }
 
 declare module 'virtual:komorebi-theme/user-css' {}
+
+declare const __KOMOREBI_THEME_VERSION__: string;
