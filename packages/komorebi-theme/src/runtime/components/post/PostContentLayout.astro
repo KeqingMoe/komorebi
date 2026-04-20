@@ -1,6 +1,9 @@
 ---
 import type { ReadTimeResults } from 'reading-time';
+import type { GiscusOptions } from '../../../options';
+import { themeConfig } from '../../../runtime/config';
 import type { PostEntry } from '../../lib/content';
+import GiscusComments from '../widgets/GiscusComments.astro';
 import AdjacentNav from './AdjacentNav.astro';
 import PostBody from './PostBody.astro';
 import PostHeader from './PostHeader.astro';
@@ -35,6 +38,18 @@ const {
   prev,
   next,
 } = Astro.props as Props;
+
+const comments = themeConfig.comments;
+
+const processComments = (comments: GiscusOptions) => {
+  const { theme, ...rest } = comments;
+  const giscusTheme = theme
+    ? {
+        theme: typeof theme === 'object' ? theme.preset : theme,
+      }
+    : {};
+  return { ...rest, ...giscusTheme };
+};
 ---
 
 <div
@@ -51,6 +66,15 @@ const {
     </article>
 
     {(prev || next) && <AdjacentNav {prev} {next} />}
+
+    {
+      comments && (
+        <>
+          <div class="h-50px" />
+          <GiscusComments {...processComments(comments)} />
+        </>
+      )
+    }
   </div>
 
   <TOC {headings} />
