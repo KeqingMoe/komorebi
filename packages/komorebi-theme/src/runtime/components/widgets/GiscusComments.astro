@@ -30,14 +30,15 @@ function resolveProps(props: Props) {
 const attrs = Object.fromEntries(
   Object.entries(resolveProps(Astro.props))
     .filter(([, v]) => v !== undefined)
-    .map(([k, v]) => [toKebab(k), String(v)]),
+    .map(([k, v]) => [`data-${toKebab(k)}`, String(v)]),
 );
 ---
 
-<giscus-widget {...attrs}>
-  <p>Loading comments...</p>
-</giscus-widget>
+<div class="giscus"></div>
 
-<script>
-  import 'giscus';
-</script>
+<script
+  src="https://giscus.app/client.js"
+  {...attrs}
+  crossorigin="anonymous"
+  async
+></script>
