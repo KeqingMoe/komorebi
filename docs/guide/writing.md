@@ -129,3 +129,34 @@ export function greet(name: string): string {
 }
 ```
 ````
+
+## Markdown 扩展
+
+komorebi 默认开启少量写作扩展，用来覆盖博客里最常见的增强排版。若你想关闭这些能力，可以在 `komorebi.config.ts` 中设置 [`markdownExtensions`](/reference/configuration#markdownextensions)。
+
+### 提示框
+
+提示框使用紧贴类型名的三冒号语法：
+
+````md
+:::tip
+这里可以继续写 **Markdown**。
+:::
+
+:::note[自定义标题]
+- 列表
+- `inline code`
+:::
+````
+
+支持的类型包括 `note`、`tip`、`important`、`warning`、`caution`、`danger`、`info`、`success`。目前不支持 GitHub Alert 的 `> [!TIP]` 语法，也不支持 `::: tip 标题` 这种带空格标题的写法。
+
+### GitHub 仓库卡片
+
+使用 `owner/repo` 形式声明仓库：
+
+```md
+::github{repo="KeqingMoe/komorebi"}
+```
+
+页面会先输出可点击的静态卡片；浏览器能访问 GitHub API 时，再补充描述、语言、Stars 和 License。接口失败不会影响页面阅读。

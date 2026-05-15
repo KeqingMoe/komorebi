@@ -14,6 +14,9 @@ import { parseFragment } from 'parse5';
 import type { ViteDevServer } from 'vite';
 import pkg from '../package.json' with { type: 'json' };
 import { createRecoveryConfigLoader } from './config-loader';
+import rehypeAdmonitions from './markdown/rehype-admonitions';
+import remarkAdmonitions from './markdown/remark-admonitions';
+import remarkGitHubCard from './markdown/remark-github-card';
 import {
   aboutLink,
   archiveLink,
@@ -28,6 +31,8 @@ import {
   type KomorebiNavLink,
   type KomorebiThemeLabels,
   type KomorebiThemeOptions,
+  type MarkdownExtensionsConfig,
+  type MarkdownExtensionsOptions,
   navLinks,
   type ResolvedKomorebiThemeOptions,
   resolveThemeOptions,
@@ -36,6 +41,8 @@ import { createKomorebiUnoOptions } from './unocss';
 
 const THEME_CONFIG_MODULE_ID = 'virtual:komorebi-theme/config';
 const USER_CSS_MODULE_ID = 'virtual:komorebi-theme/user-css';
+const GITHUB_CARD_CLIENT_MODULE_ID =
+  'virtual:komorebi-theme/github-card-client';
 
 const routesDir = new URL('./routes/', import.meta.url);
 function route(pattern: string, file: string) {
@@ -62,6 +69,8 @@ export type {
   KomorebiNavLink,
   KomorebiThemeLabels,
   KomorebiThemeOptions,
+  MarkdownExtensionsConfig,
+  MarkdownExtensionsOptions,
   ResolvedKomorebiThemeOptions,
 };
 export {
@@ -93,6 +102,26 @@ function userCssVitePlugin(customCss: string[], root: URL) {
     },
     load(id: string) {
       if (id === resolvedId) return code;
+      return undefined;
+    },
+  };
+}
+
+function githubCardClientVitePlugin() {
+  const resolvedId = `\0${GITHUB_CARD_CLIENT_MODULE_ID}`;
+  const clientEntrypoint = fileURLToPath(
+    new URL('./markdown/github-card.client.ts', import.meta.url),
+  );
+
+  return {
+    name: 'komorebi-theme/github-card-client',
+    resolveId(id: string) {
+      if (id === GITHUB_CARD_CLIENT_MODULE_ID) return resolvedId;
+      return undefined;
+    },
+    load(id: string) {
+      if (id === resolvedId)
+        return `import ${JSON.stringify(clientEntrypoint)};`;
       return undefined;
     },
   };
@@ -168,6 +197,7 @@ export default function komorebi(
         addMiddleware,
         config,
         createCodegenDir,
+        injectScript,
         injectRoute,
         updateConfig,
       }) => {
@@ -208,10 +238,32 @@ export default function komorebi(
           getConfigHMRPlugin(),
         ];
 
+        if (resolved.markdownExtensions.githubCards) {
+          vitePlugins.push(githubCardClientVitePlugin());
+          injectScript(
+            'page',
+            `import ${JSON.stringify(GITHUB_CARD_CLIENT_MODULE_ID)};`,
+          );
+        }
+
         const indicatorSafelist =
           resolved.externalLinks === false
             ? []
             : computeIndicatorSafelist(resolved.externalLinks.indicator);
+
+        // Remark keeps callout content as real Markdown. Rehype catches
+        // documents whose fences survive until HTML time.
+        const remarkPlugins = [
+          ...(resolved.markdownExtensions.admonitions
+            ? [remarkAdmonitions]
+            : []),
+          ...(resolved.markdownExtensions.githubCards
+            ? [remarkGitHubCard]
+            : []),
+        ];
+        const rehypePlugins = resolved.markdownExtensions.admonitions
+          ? [rehypeAdmonitions]
+          : [];
 
         updateConfig({
           integrations: [
@@ -220,6 +272,8 @@ export default function komorebi(
             ),
           ],
           markdown: {
+            remarkPlugins,
+            rehypePlugins,
             shikiConfig: {
               theme: 'github-light',
             },

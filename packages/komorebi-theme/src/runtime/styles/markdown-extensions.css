@@ -1,0 +1,182 @@
+.admonition {
+  --admonition-accent: #e11d48;
+  --admonition-mark: "i";
+  position: relative;
+  margin: 1.75rem 0;
+  padding: 1rem 1.1rem 1rem 1.25rem;
+  border: 1px solid rgb(228 228 231 / 0.82);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 0.64);
+  box-shadow: 0 18px 46px -40px rgb(15 23 42 / 0.28);
+  color: #3f3f46;
+}
+
+.admonition::before {
+  content: "";
+  position: absolute;
+  top: 0.9rem;
+  bottom: 0.9rem;
+  left: 0;
+  width: 3px;
+  border-radius: 0 999px 999px 0;
+  background: var(--admonition-accent);
+}
+
+.admonition__title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.5rem;
+  color: #18181b;
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.admonition__title::before {
+  content: var(--admonition-mark);
+  display: inline-grid;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--admonition-accent) 24%, white);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--admonition-accent) 8%, white);
+  color: var(--admonition-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.admonition > :last-child {
+  margin-bottom: 0;
+}
+
+.admonition > :where(p, ul, ol, pre, blockquote) {
+  margin-top: 0.65rem;
+  margin-bottom: 0;
+}
+
+.admonition > .admonition__title + :where(p, ul, ol, pre, blockquote) {
+  margin-top: 0;
+}
+
+.admonition :where(p, li) {
+  color: #3f3f46;
+  line-height: 1.75;
+}
+
+.admonition > p {
+  white-space: pre-line;
+}
+
+.admonition :where(code) {
+  background: rgb(244 244 245 / 0.82);
+  color: #18181b;
+}
+
+.admonition--tip,
+.admonition--success {
+  --admonition-accent: #16a34a;
+  --admonition-mark: "+";
+}
+
+.admonition--info,
+.admonition--note {
+  --admonition-accent: #e11d48;
+  --admonition-mark: "i";
+}
+
+.admonition--important {
+  --admonition-accent: #7c3aed;
+  --admonition-mark: "!";
+}
+
+.admonition--warning {
+  --admonition-accent: #d97706;
+  --admonition-mark: "!";
+}
+
+.admonition--danger,
+.admonition--caution {
+  --admonition-accent: #dc2626;
+  --admonition-mark: "!";
+}
+
+.gh-card {
+  display: block;
+  margin: 1.5rem 0 0;
+  padding: 1.25rem;
+  border: 1px solid rgb(228 228 231 / 0.82);
+  border-radius: 22px;
+  background: rgb(255 255 255 / 0.62);
+  box-shadow: 0 18px 48px -38px rgba(15, 23, 42, 0.36);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.gh-card:hover {
+  border-color: rgb(251 113 133 / 0.52);
+  background: rgb(255 255 255 / 0.78);
+  box-shadow: 0 22px 56px -38px rgba(244, 63, 94, 0.42);
+  transform: translateY(-1px);
+}
+
+.gh-card .gh-card__link {
+  display: block;
+  text-decoration: none;
+}
+
+.gh-card__topline,
+.gh-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.38rem;
+}
+
+.gh-card__mark {
+  display: inline-flex;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: rgb(24 24 27);
+}
+
+.gh-card__mark svg {
+  width: 100%;
+  height: 100%;
+}
+
+.gh-card__owner,
+.gh-card__slash,
+.gh-card__repo {
+  color: rgb(24 24 27);
+  font-size: 1.06rem;
+  line-height: 1.4;
+}
+
+.gh-card__owner,
+.gh-card__repo {
+  font-weight: 700;
+}
+
+.gh-card__slash {
+  color: rgb(161 161 170);
+}
+
+.gh-card__description {
+  display: block;
+  margin-top: 0.85rem;
+  color: rgb(82 82 91);
+  line-height: 1.75;
+}
+
+.gh-card__meta {
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  color: rgb(113 113 122);
+  font-size: 0.92rem;
+}

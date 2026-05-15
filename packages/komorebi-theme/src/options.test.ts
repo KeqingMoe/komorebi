@@ -64,6 +64,10 @@ describe('resolveThemeOptions', () => {
     expect(resolved.repositoryUrl).toBeUndefined();
     expect(resolved.friends).toEqual([]);
     expect(resolved.customCss).toEqual([]);
+    expect(resolved.markdownExtensions).toEqual({
+      admonitions: true,
+      githubCards: true,
+    });
   });
 
   it('returns default home content', () => {
@@ -165,5 +169,27 @@ describe('resolveThemeOptions', () => {
       customCss: ['./custom.css'],
     });
     expect(resolved.customCss).toEqual(['./custom.css']);
+  });
+
+  it('disables all markdown extensions', () => {
+    const resolved = resolveThemeOptions({
+      markdownExtensions: false,
+    });
+    expect(resolved.markdownExtensions).toEqual({
+      admonitions: false,
+      githubCards: false,
+    });
+  });
+
+  it('overrides one markdown extension without changing the other default', () => {
+    const resolved = resolveThemeOptions({
+      markdownExtensions: {
+        githubCards: false,
+      },
+    });
+    expect(resolved.markdownExtensions).toEqual({
+      admonitions: true,
+      githubCards: false,
+    });
   });
 });

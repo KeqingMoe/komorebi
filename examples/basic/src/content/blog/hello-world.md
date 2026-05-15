@@ -9,3 +9,9 @@ draft: false
 你好，木漏れ日!
 
 这是你的一小步，却是木漏れ日的一大步！
+
+:::tip
+提示框里的 **Markdown** 会继续正常渲染。
+:::
+
+::github{repo="KeqingMoe/komorebi"}

@@ -40,6 +40,13 @@ export interface GiscusOptions {
 
 export type CommentsConfig = false | GiscusOptions;
 
+export interface MarkdownExtensionsOptions {
+  admonitions?: boolean;
+  githubCards?: boolean;
+}
+
+export type MarkdownExtensionsConfig = false | MarkdownExtensionsOptions;
+
 export interface KomorebiThemeOptions {
   title?: string;
   tagline?: string;
@@ -63,6 +70,7 @@ export interface KomorebiThemeOptions {
   friends?: KomorebiFriend[];
   customCss?: string[];
   comments?: CommentsConfig;
+  markdownExtensions?: MarkdownExtensionsConfig;
   labels?: Partial<KomorebiThemeLabels>;
 }
 
@@ -89,6 +97,10 @@ export interface ResolvedKomorebiThemeOptions {
   friends: KomorebiFriend[];
   customCss: string[];
   comments: false | GiscusOptions;
+  markdownExtensions: {
+    admonitions: boolean;
+    githubCards: boolean;
+  };
   labels: KomorebiThemeLabels;
 }
 
@@ -176,6 +188,7 @@ export function resolveThemeOptions(
     friends: options.friends ?? [],
     customCss: options.customCss ?? [],
     comments: resolveComments(options.comments),
+    markdownExtensions: resolveMarkdownExtensions(options.markdownExtensions),
     labels,
   };
 }
@@ -187,5 +200,21 @@ function resolveComments(
   return {
     ...comments,
     mapping: comments.mapping ?? 'pathname',
+  };
+}
+
+function resolveMarkdownExtensions(
+  markdownExtensions: MarkdownExtensionsConfig | undefined,
+): ResolvedKomorebiThemeOptions['markdownExtensions'] {
+  if (markdownExtensions === false) {
+    return {
+      admonitions: false,
+      githubCards: false,
+    };
+  }
+
+  return {
+    admonitions: markdownExtensions?.admonitions ?? true,
+    githubCards: markdownExtensions?.githubCards ?? true,
   };
 }

@@ -22,6 +22,10 @@ export default defineConfig({
     autoTarget: true,
     indicator: 'mdi:launch',
   },
+  markdownExtensions: {
+    admonitions: true,
+    githubCards: true,
+  },
   customCss: ['./src/styles/custom.css'],
   labels: {},
 });
@@ -234,6 +238,31 @@ export default defineConfig({
 ```
 
 :::
+
+## `markdownExtensions`
+
+`false | { admonitions?: boolean; githubCards?: boolean }` — 内置 Markdown 扩展。
+
+默认开启提示框和 GitHub 仓库卡片。若你希望完全接管 Markdown 管线，可以设置为 `false`：
+
+```ts
+export default defineConfig({
+  markdownExtensions: false,
+});
+```
+
+也可以只关闭其中一项：
+
+```ts
+export default defineConfig({
+  markdownExtensions: {
+    admonitions: true,
+    githubCards: false,
+  },
+});
+```
+
+当前内置语法边界见[写文章指南](/guide/writing#markdown-扩展)。
 
 ## `customCss`
 
