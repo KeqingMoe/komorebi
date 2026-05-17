@@ -64,6 +64,10 @@ describe('resolveThemeOptions', () => {
     expect(resolved.repositoryUrl).toBeUndefined();
     expect(resolved.friends).toEqual([]);
     expect(resolved.customCss).toEqual([]);
+    expect(resolved.githubCards).toEqual({
+      clientUpdate: true,
+      serverFetch: true,
+    });
   });
 
   it('returns default home content', () => {
@@ -165,5 +169,29 @@ describe('resolveThemeOptions', () => {
       customCss: ['./custom.css'],
     });
     expect(resolved.customCss).toEqual(['./custom.css']);
+  });
+
+  it('overrides GitHub card fetching behavior', () => {
+    const resolved = resolveThemeOptions({
+      githubCards: {
+        clientUpdate: false,
+      },
+    });
+    expect(resolved.githubCards).toEqual({
+      clientUpdate: false,
+      serverFetch: true,
+    });
+  });
+
+  it('overrides GitHub card server fetch behavior', () => {
+    const resolved = resolveThemeOptions({
+      githubCards: {
+        serverFetch: false,
+      },
+    });
+    expect(resolved.githubCards).toEqual({
+      clientUpdate: true,
+      serverFetch: false,
+    });
   });
 });
