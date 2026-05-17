@@ -22,6 +22,10 @@ export default defineConfig({
     autoTarget: true,
     indicator: 'mdi:launch',
   },
+  githubCards: {
+    clientUpdate: true,
+    serverFetch: true,
+  },
   customCss: ['./src/styles/custom.css'],
   labels: {},
 });
@@ -234,6 +238,34 @@ export default defineConfig({
 ```
 
 :::
+
+## `githubCards`
+
+`{ clientUpdate?: boolean; serverFetch?: boolean }` — GitHub 仓库卡片配置。
+
+`GitHubCard` 组件默认会在 SSG/SSR 阶段请求 GitHub API 生成初始仓库信息，并在浏览器端再渐进刷新一次。接口失败不会影响页面渲染。
+
+如果不希望浏览器端再次更新数据，可以关闭 `clientUpdate`：
+
+```ts
+export default defineConfig({
+  githubCards: {
+    clientUpdate: false,
+  },
+});
+```
+
+如果构建环境不适合访问 GitHub API，也可以关闭服务端请求，只保留组件的静态占位内容：
+
+```ts
+export default defineConfig({
+  githubCards: {
+    serverFetch: false,
+  },
+});
+```
+
+组件用法见[写文章指南](/guide/writing#mdx-组件)。
 
 ## `customCss`
 

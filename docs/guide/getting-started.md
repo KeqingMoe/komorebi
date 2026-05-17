@@ -68,4 +68,4 @@ npm run dev
 - [手动安装](./installation) — 如果已有 Astro 项目，了解如何手动集成主题
 - [写文章](./writing) — 了解文章 frontmatter 的完整格式
 - [配置选项](/reference/configuration) — 查看所有可配置项
-- [定制与扩展](./customization) — 自定义页面、复用组件、配置 Markdown 扩展
+- [定制与扩展](./customization) — 自定义页面、复用组件、配置 Astro Markdown

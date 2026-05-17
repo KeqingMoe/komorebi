@@ -231,7 +231,7 @@ giscus 评论区本身由 giscus.app 的脚本注入，不涉及跨域问题。�
 
 完整的字段说明、映射方式、主题切换等，参见[配置选项 — comments](/reference/configuration#comments)。
 
-## 配置 Markdown 扩展
+## 配置 Astro Markdown
 
 Astro 的 `markdown` 配置不需要 komorebi 代理——直接在 `astro.config.ts` 中设置即可。以下是一些常见场景。
 
