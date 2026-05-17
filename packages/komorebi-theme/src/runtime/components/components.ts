@@ -11,6 +11,8 @@ export { default as DesktopNav } from './layout/Nav/DesktopNav.astro';
 export { default as MobileNav } from './layout/Nav/MobileNav.astro';
 export { default as SiteFooter } from './layout/SiteFooter.astro';
 export { default as SiteHeader } from './layout/SiteHeader.astro';
+export { default as Callout } from './markdown/Callout.astro';
+export { default as GitHubCard } from './markdown/GitHubCard.astro';
 export { default as AdjacentNav } from './post/AdjacentNav.astro';
 export { default as PostBody } from './post/PostBody.astro';
 export { default as PostContentLayout } from './post/PostContentLayout.astro';

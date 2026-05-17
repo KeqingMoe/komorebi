@@ -1,0 +1,80 @@
+---
+import { themeConfig } from '../../config';
+import {
+  fetchGitHubRepo,
+  formatStars,
+  type GitHubRepo,
+  getGitHubRepoUrl,
+  splitGitHubRepo,
+  toGitHubRepo,
+} from '../../lib/github-card';
+
+interface Props {
+  clientUpdate?: boolean | undefined;
+  description?: string | undefined;
+  language?: string | undefined;
+  license?: string | undefined;
+  repo: GitHubRepo;
+  serverFetch?: boolean | undefined;
+  stars?: number | undefined;
+}
+
+const {
+  clientUpdate = themeConfig.githubCards.clientUpdate,
+  description,
+  language,
+  license,
+  repo: repoInput,
+  serverFetch = themeConfig.githubCards.serverFetch,
+  stars,
+} = Astro.props as Props;
+
+const repo = toGitHubRepo(repoInput);
+
+if (!repo) {
+  throw new Error('GitHubCard repo must use the "owner/repo" format.');
+}
+
+const [owner, name] = splitGitHubRepo(repo);
+const href = getGitHubRepoUrl(repo);
+const serverData = serverFetch ? await fetchGitHubRepo(repo) : undefined;
+const renderedDescription =
+  description ?? serverData?.description ?? 'GitHub repository';
+const renderedLanguage = language ?? serverData?.language ?? 'GitHub';
+const renderedStars = stars ?? serverData?.stars;
+const renderedStarsLabel =
+  typeof renderedStars === 'number'
+    ? `${formatStars(renderedStars)} stars`
+    : 'Stars';
+const renderedLicense = license ?? serverData?.license ?? 'License';
+---
+
+<article
+  class="not-prose my-6 block rounded-[22px] border border-zinc-200/80 bg-white/65 p-5 shadow-[0_18px_48px_-38px_rgb(15_23_42_/_0.36)] transition duration-200 hover:-translate-y-0.25 hover:border-rose-300/60 hover:bg-white/80 hover:shadow-[0_22px_56px_-38px_rgb(244_63_94_/_0.42)]"
+  data-github-card
+  data-github-card-client-update={clientUpdate ? 'true' : 'false'}
+  data-repo={repo}
+>
+  <a class="block text-inherit no-underline" href={href} target="_blank" rel="noopener noreferrer">
+    <span class="flex items-center gap-1.5">
+      <span class="i-mdi:github inline-block size-5 text-zinc-950" aria-hidden="true"></span>
+      <span class="text-[1.06rem] font-bold leading-6 text-zinc-950" data-gh-owner>{owner}</span>
+      <span class="text-[1.06rem] leading-6 text-zinc-400">/</span>
+      <span class="text-[1.06rem] font-bold leading-6 text-zinc-950" data-gh-repo>{name}</span>
+    </span>
+
+    <span class="mt-3 block leading-7 text-zinc-600" data-gh-description>
+      {renderedDescription}
+    </span>
+
+    <span class="mt-4 flex flex-wrap items-center gap-1.5 text-sm text-zinc-500" aria-label="GitHub repository metadata">
+      <span data-gh-language>{renderedLanguage}</span>
+      <span aria-hidden="true">·</span>
+      <span data-gh-stars>{renderedStarsLabel}</span>
+      <span aria-hidden="true">·</span>
+      <span data-gh-license>{renderedLicense}</span>
+    </span>
+  </a>
+</article>
+
+{clientUpdate && <script>import './github-card.client';</script>}

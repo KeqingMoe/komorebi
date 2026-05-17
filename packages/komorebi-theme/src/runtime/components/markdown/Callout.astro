@@ -1,0 +1,87 @@
+---
+type CalloutType =
+  | 'caution'
+  | 'danger'
+  | 'important'
+  | 'info'
+  | 'note'
+  | 'success'
+  | 'tip'
+  | 'warning';
+
+interface Props {
+  title?: string | undefined;
+  type?: CalloutType | undefined;
+}
+
+const labels: Record<CalloutType, string> = {
+  caution: 'Caution',
+  danger: 'Danger',
+  important: 'Important',
+  info: 'Info',
+  note: 'Note',
+  success: 'Success',
+  tip: 'Tip',
+  warning: 'Warning',
+};
+
+const marks: Record<CalloutType, string> = {
+  caution: '!',
+  danger: '!',
+  important: '!',
+  info: 'i',
+  note: 'i',
+  success: '+',
+  tip: '+',
+  warning: '!',
+};
+
+const styles: Record<CalloutType, string> = {
+  caution: 'before:bg-red-600',
+  danger: 'before:bg-red-600',
+  important: 'before:bg-violet-600',
+  info: 'before:bg-rose-600',
+  note: 'before:bg-rose-600',
+  success: 'before:bg-green-600',
+  tip: 'before:bg-green-600',
+  warning: 'before:bg-amber-600',
+};
+
+const markStyles: Record<CalloutType, string> = {
+  caution: 'border-red-200 bg-red-50 text-red-600',
+  danger: 'border-red-200 bg-red-50 text-red-600',
+  important: 'border-violet-200 bg-violet-50 text-violet-600',
+  info: 'border-rose-200 bg-rose-50 text-rose-600',
+  note: 'border-rose-200 bg-rose-50 text-rose-600',
+  success: 'border-green-200 bg-green-50 text-green-600',
+  tip: 'border-green-200 bg-green-50 text-green-600',
+  warning: 'border-amber-200 bg-amber-50 text-amber-600',
+};
+
+const { title, type = 'note' } = Astro.props as Props;
+---
+
+<aside
+  data-callout={type}
+  class:list={[
+    "not-prose relative my-7 rounded-lg border border-zinc-200/80 bg-white/65 px-5 py-4 text-zinc-700 shadow-[0_18px_46px_-40px_rgb(15_23_42_/_0.28)] before:absolute before:bottom-3.5 before:left-0 before:top-3.5 before:w-[3px] before:rounded-r-full",
+    styles[type],
+  ]}
+>
+  <div class="mb-2 flex items-center gap-2 text-sm font-semibold leading-6 text-zinc-950">
+    <span
+      aria-hidden="true"
+      class:list={[
+        'inline-grid size-5 place-items-center rounded-full border text-xs font-bold leading-none',
+        markStyles[type],
+      ]}
+    >
+      {marks[type]}
+    </span>
+    {title || labels[type]}
+  </div>
+
+  <div class="prose prose-zinc max-w-none [&>:first-child]:mt-0 [&>:last-child]:mb-0">
+    <slot />
+  </div>
+</aside>

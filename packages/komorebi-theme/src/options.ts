@@ -40,6 +40,11 @@ export interface GiscusOptions {
 
 export type CommentsConfig = false | GiscusOptions;
 
+export interface GitHubCardsOptions {
+  clientUpdate?: boolean;
+  serverFetch?: boolean;
+}
+
 export interface KomorebiThemeOptions {
   title?: string;
   tagline?: string;
@@ -63,6 +68,7 @@ export interface KomorebiThemeOptions {
   friends?: KomorebiFriend[];
   customCss?: string[];
   comments?: CommentsConfig;
+  githubCards?: GitHubCardsOptions;
   labels?: Partial<KomorebiThemeLabels>;
 }
 
@@ -89,6 +95,10 @@ export interface ResolvedKomorebiThemeOptions {
   friends: KomorebiFriend[];
   customCss: string[];
   comments: false | GiscusOptions;
+  githubCards: {
+    clientUpdate: boolean;
+    serverFetch: boolean;
+  };
   labels: KomorebiThemeLabels;
 }
 
@@ -176,6 +186,7 @@ export function resolveThemeOptions(
     friends: options.friends ?? [],
     customCss: options.customCss ?? [],
     comments: resolveComments(options.comments),
+    githubCards: resolveGitHubCards(options.githubCards),
     labels,
   };
 }
@@ -187,5 +198,14 @@ function resolveComments(
   return {
     ...comments,
     mapping: comments.mapping ?? 'pathname',
+  };
+}
+
+function resolveGitHubCards(
+  githubCards: GitHubCardsOptions | undefined,
+): ResolvedKomorebiThemeOptions['githubCards'] {
+  return {
+    clientUpdate: githubCards?.clientUpdate ?? true,
+    serverFetch: githubCards?.serverFetch ?? true,
   };
 }
