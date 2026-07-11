@@ -129,3 +129,56 @@ export function greet(name: string): string {
 }
 ```
 ````
+
+## MDX 组件
+
+komorebi 提供可在 MDX 中直接使用的内容组件。相比扩展 Markdown 语法，组件更容易组合、复用，也更适合长期维护。
+
+如果你的项目还没有启用 MDX，需要先接入 Astro 的 MDX integration。
+
+这些组件只通过 MDX 引入使用；主题不会额外启用 `:::tip`、GitHub Alert 或 `::github{}` 这类非标准 Markdown 语法。
+
+### 提示框
+
+在 `.mdx` 文件中引入 `Callout`：
+
+````mdx
+---
+import { Callout } from 'komorebi-theme/components';
+---
+
+<Callout type="tip" title="小技巧">
+这里可以继续写 **Markdown/MDX**。
+
+- 列表
+- `inline code`
+</Callout>
+````
+
+支持的类型包括 `note`、`tip`、`important`、`warning`、`caution`、`danger`、`info`、`success`。
+
+### GitHub 仓库卡片
+
+在 `.mdx` 文件中引入 `GitHubCard`：
+
+```mdx
+---
+import { GitHubCard } from 'komorebi-theme/components';
+---
+
+<GitHubCard repo="KeqingMoe/komorebi" />
+```
+
+组件会先在 SSG/SSR 阶段请求 GitHub API 生成初始数据；浏览器端默认会再更新一次。若你不希望客户端更新，可以在配置中设置 [`githubCards.clientUpdate`](/reference/configuration#githubcards) 为 `false`。
+
+如果已经提供 `description`、`language`、`stars` 和 `license` 四个数据属性，组件会直接使用这些值，不会请求 GitHub API：
+
+```mdx
+<GitHubCard
+  repo="KeqingMoe/komorebi"
+  description="A lightweight Astro blog theme"
+  language="TypeScript"
+  stars={42}
+  license="MIT"
+/>
+```
