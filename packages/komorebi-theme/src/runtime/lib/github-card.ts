@@ -7,6 +7,22 @@ export interface GitHubRepoData {
   stars?: number;
 }
 
+export function shouldFetchGitHubData(
+  enabled: boolean,
+  data: GitHubRepoData,
+): boolean {
+  return enabled && !hasCompleteGitHubRepoData(data);
+}
+
+function hasCompleteGitHubRepoData(data: GitHubRepoData): boolean {
+  return (
+    typeof data.description === 'string' &&
+    typeof data.language === 'string' &&
+    typeof data.license === 'string' &&
+    typeof data.stars === 'number'
+  );
+}
+
 interface GitHubApiRepo {
   description?: string | null;
   language?: string | null;

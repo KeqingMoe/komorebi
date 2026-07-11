@@ -5,6 +5,7 @@ import {
   formatStars,
   type GitHubRepo,
   getGitHubRepoUrl,
+  shouldFetchGitHubData,
   splitGitHubRepo,
   toGitHubRepo,
 } from '../../lib/github-card';
@@ -37,7 +38,12 @@ if (!repo) {
 
 const [owner, name] = splitGitHubRepo(repo);
 const href = getGitHubRepoUrl(repo);
-const serverData = serverFetch ? await fetchGitHubRepo(repo) : undefined;
+const cardProps = { description, language, license, stars };
+const shouldFetchServerData = shouldFetchGitHubData(serverFetch, cardProps);
+const shouldClientUpdate = shouldFetchGitHubData(clientUpdate, cardProps);
+const serverData = shouldFetchServerData
+  ? await fetchGitHubRepo(repo)
+  : undefined;
 const renderedDescription =
   description ?? serverData?.description ?? 'GitHub repository';
 const renderedLanguage = language ?? serverData?.language ?? 'GitHub';
@@ -52,7 +58,7 @@ const renderedLicense = license ?? serverData?.license ?? 'License';
 <article
   class="not-prose my-6 block rounded-[22px] border border-zinc-200/80 bg-white/65 p-5 shadow-[0_18px_48px_-38px_rgb(15_23_42_/_0.36)] transition duration-200 hover:-translate-y-0.25 hover:border-rose-300/60 hover:bg-white/80 hover:shadow-[0_22px_56px_-38px_rgb(244_63_94_/_0.42)]"
   data-github-card
-  data-github-card-client-update={clientUpdate ? 'true' : 'false'}
+  data-github-card-client-update={shouldClientUpdate ? 'true' : 'false'}
   data-repo={repo}
 >
   <a class="block text-inherit no-underline" href={href} target="_blank" rel="noopener noreferrer">
@@ -77,4 +83,4 @@ const renderedLicense = license ?? serverData?.license ?? 'License';
   </a>
 </article>
 
-{clientUpdate && <script>import './github-card.client';</script>}
+{shouldClientUpdate && <script>import './github-card.client';</script>}

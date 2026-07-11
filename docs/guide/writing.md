@@ -170,3 +170,15 @@ import { GitHubCard } from 'komorebi-theme/components';
 ```
 
 组件会先在 SSG/SSR 阶段请求 GitHub API 生成初始数据；浏览器端默认会再更新一次。若你不希望客户端更新，可以在配置中设置 [`githubCards.clientUpdate`](/reference/configuration#githubcards) 为 `false`。
+
+如果已经提供 `description`、`language`、`stars` 和 `license` 四个数据属性，组件会直接使用这些值，不会请求 GitHub API：
+
+```mdx
+<GitHubCard
+  repo="KeqingMoe/komorebi"
+  description="A lightweight Astro blog theme"
+  language="TypeScript"
+  stars={42}
+  license="MIT"
+/>
+```

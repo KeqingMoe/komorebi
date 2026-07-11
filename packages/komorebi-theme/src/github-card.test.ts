@@ -5,6 +5,7 @@ import {
   type GitHubRepo,
   getGitHubRepoUrl,
   getLicenseLabel,
+  shouldFetchGitHubData,
   splitGitHubRepo,
   toGitHubRepo,
 } from './runtime/lib/github-card';
@@ -29,6 +30,24 @@ describe('GitHub card helpers', () => {
     expect(formatStars(999)).toBe('999');
     expect(formatStars(1530)).toBe('1.5k');
     expect(formatStars(12_300)).toBe('12k');
+  });
+
+  it('skips requests when card data is complete, including zero stars', () => {
+    const completeData = {
+      description: 'Theme',
+      language: 'TypeScript',
+      license: 'MIT',
+      stars: 0,
+    };
+    expect(shouldFetchGitHubData(true, completeData)).toBe(false);
+    expect(shouldFetchGitHubData(false, completeData)).toBe(false);
+    expect(
+      shouldFetchGitHubData(true, {
+        description: 'Theme',
+        language: 'TypeScript',
+        license: 'MIT',
+      }),
+    ).toBe(true);
   });
 
   it('normalizes license labels', () => {
