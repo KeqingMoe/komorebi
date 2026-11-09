@@ -28,7 +28,6 @@ komorebi/
 - `src/unocss.ts` — UnoCSS 集成配置
 - `src/routes/` — 主题提供的路由页面
 - `src/runtime/` — 运行时组件、布局和样式
-- `src/middleware/` — 中间件，例如外链转换
 - `src/content/` — 预定义内容集合
 
 ### packages/create-komorebi

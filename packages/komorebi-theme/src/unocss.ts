@@ -6,16 +6,12 @@ import {
   transformerDirectives,
 } from 'unocss';
 
-export function createKomorebiUnoOptions(
-  filesystem: string[],
-  safelist: string[] = [],
-) {
+export function createKomorebiUnoOptions(filesystem: string[]) {
   return {
     injectReset: true,
     content: {
       filesystem,
     },
-    safelist,
     presets: [
       presetWind4(),
       presetAttributify(),

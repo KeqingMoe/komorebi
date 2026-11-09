@@ -2,6 +2,10 @@
 
 本文档记录本项目的所有重要变更。格式部分遵循 Keep a Changelog 规范，版本号遵循语义化版本号规范。
 
+## [Unreleased]
+
+- **BREAKING**: 移除全局外链处理（`externalLinks` 配置项、外链 middleware 与指示器图标）
+
 ## [0.6.3] - 2026-04-21
 
 - **fix**: 通过 jsdelivr 提供默认 giscus 主题以免去配置跨域

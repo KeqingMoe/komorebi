@@ -18,10 +18,6 @@ export default defineConfig({
   },
   nav: navLinks(),
   friends: [],
-  externalLinks: {
-    autoTarget: true,
-    indicator: 'mdi:launch',
-  },
   customCss: ['./src/styles/custom.css'],
   labels: {},
 });
@@ -161,79 +157,6 @@ export default defineConfig({
   ],
 });
 ```
-
-## `externalLinks`
-
-控制外部链接的行为。从 v0.5.0 开始，外链默认显示指示器图标并在新标签页打开。
-
-可以设置为 `false` 来完全禁用外链处理：
-
-```ts
-export default defineConfig({
-  externalLinks: false,
-});
-```
-
-也可以精细配置各项行为：
-
-```ts
-export default defineConfig({
-  externalLinks: {
-    autoTarget: true,
-    indicator: 'mdi:launch',
-  },
-});
-```
-
-### `externalLinks.autoTarget`
-
-- 类型：`boolean`
-- 默认值：`true`
-
-是否自动为外链添加 `target="_blank"`（在新标签页打开）。
-
-### `externalLinks.indicator`
-
-- 类型：`string | { html: string } | false`
-- 默认值：`'mdi:launch'`
-
-外链旁显示的指示器图标。
-
-- `string` — 使用 [Iconify](https://iconify.design/) 图标名称，例如 `'mdi:launch'`、`'ri:external-link-line'`。需要安装对应的 Iconify 图标集包。可以在[这里](https://icones.js.org/)查看所有可用图标。
-- `{ html: string }` — 自定义 HTML，例如 `{ html: '<svg>...</svg>' }`。如果有类名，会自动提取到 UnoCSS 的 safelist 中。
-- `false` — 不显示指示器图标。
-
-例如：
-
-::: code-group
-
-```ts [使用 Iconify 图标]
-export default defineConfig({
-  externalLinks: {
-    indicator: 'ri:external-link-line',
-  },
-});
-```
-
-```ts [使用自定义 SVG]
-export default defineConfig({
-  externalLinks: {
-    indicator: {
-      html: '<svg class="my-icon" viewBox="0 0 24 24"><path d="..."/></svg>',
-    },
-  },
-});
-```
-
-```ts [不显示指示器]
-export default defineConfig({
-  externalLinks: {
-    indicator: false,
-  },
-});
-```
-
-:::
 
 ## `customCss`
 
