@@ -10,6 +10,7 @@
     "check": "astro check",
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "sync": "astro sync"
   }
 }

@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "npm --workspace examples/basic run dev",
     "build": "npm --workspace examples/basic run build",
-    "check": "npm --workspace examples/basic run check",
+    "check": "npm --workspace examples/basic run sync && astro check --noSync && tsc --noEmit -p packages/create-komorebi",
     "preview": "npm --workspace examples/basic run preview",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
