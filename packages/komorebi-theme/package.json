@@ -5,7 +5,8 @@
   "files": [
     "src",
     "README.md",
-    "virtual.d.ts"
+    "virtual.d.ts",
+    "!src/**/*.test.ts"
   ],
   "exports": {
     ".": "./src/index.ts",
