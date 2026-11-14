@@ -5,6 +5,7 @@ vi.mock('virtual:komorebi-theme/config', () => ({
     title: '木漏れ日',
     tagline: '',
     locale: 'zh-CN',
+    timeZone: 'Asia/Shanghai',
     pagination: { pageSize: 10 },
     home: {
       eyebrow: '欢迎来到这里',
@@ -49,7 +50,6 @@ vi.mock('astro:content', () => ({
 
 import {
   computeReadingTime,
-  formatDate,
   getPosts,
   getPostUrl,
   getSortedPosts,
@@ -126,16 +126,6 @@ describe('computeReadingTime', () => {
   it('returns near-zero for empty string', () => {
     const result = computeReadingTime('');
     expect(result.words).toBe(0);
-  });
-});
-
-describe('formatDate', () => {
-  it('formats a date using zh-CN locale', () => {
-    const date = new Date(2025, 0, 15);
-    const formatted = formatDate(date);
-    expect(formatted).toContain('2025');
-    expect(formatted).toContain('1');
-    expect(formatted).toContain('15');
   });
 });
 

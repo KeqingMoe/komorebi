@@ -1,6 +1,6 @@
 ---
 import type { ReadTimeResults } from 'reading-time';
-import { formatDate } from '../../lib/content';
+import DateTime from '../common/DateTime.astro';
 import ReadingTime from '../widgets/ReadingTime.astro';
 import WordsCount from '../widgets/WordsCount.astro';
 
@@ -21,9 +21,6 @@ const {
   draft = false,
   readingStats,
 } = Astro.props;
-
-const publishedLabel = pubDate ? formatDate(pubDate) : undefined;
-const updatedLabel = updatedDate ? formatDate(updatedDate) : undefined;
 ---
 
 <header class="border-b border-zinc-200/80 pb-10">
@@ -37,18 +34,18 @@ const updatedLabel = updatedDate ? formatDate(updatedDate) : undefined;
 
   <div class="post-meta">
     {
-      publishedLabel && (
+      pubDate && (
         <span class="post-meta__item">
           <span class="post-meta__label">发布于</span>
-          <time class="post-meta__value">{publishedLabel}</time>
+          <DateTime class="post-meta__value" datetime={pubDate} />
         </span>
       )
     }
     {
-      updatedLabel && (
+      updatedDate && (
         <span class="post-meta__item">
           <span class="post-meta__label">更新于</span>
-          <time class="post-meta__value">{updatedLabel}</time>
+          <DateTime class="post-meta__value" datetime={updatedDate} />
         </span>
       )
     }

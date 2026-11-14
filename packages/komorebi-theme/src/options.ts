@@ -38,11 +38,23 @@ export interface GiscusOptions {
 
 export type CommentsConfig = false | GiscusOptions;
 
+export const DEFAULT_TIME_ZONE = 'Asia/Shanghai';
+
+export function isValidTimeZone(zone: string): boolean {
+  try {
+    new Intl.DateTimeFormat('en-US', { timeZone: zone }).format(0);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export interface KomorebiThemeOptions {
   title?: string;
   tagline?: string;
   repositoryUrl?: string;
   locale?: string;
+  timeZone?: string;
   pagination?: {
     pageSize?: number;
   };
@@ -63,6 +75,7 @@ export interface ResolvedKomorebiThemeOptions {
   tagline: string;
   repositoryUrl?: string;
   locale: string;
+  timeZone: string;
   pagination: {
     pageSize: number;
   };
@@ -134,6 +147,14 @@ export function resolveThemeOptions(
 
   const nav = options.nav ?? navLinks();
 
+  const timeZone = options.timeZone ?? DEFAULT_TIME_ZONE;
+  if (!isValidTimeZone(timeZone)) {
+    throw new Error(
+      `[komorebi-theme] Invalid timeZone "${timeZone}". ` +
+        'Use an IANA time zone name such as "Asia/Shanghai" or "America/New_York".',
+    );
+  }
+
   return {
     title: options.title ?? '木漏れ日',
     tagline: options.tagline ?? '',
@@ -141,6 +162,7 @@ export function resolveThemeOptions(
       ? { repositoryUrl: options.repositoryUrl }
       : {}),
     locale: options.locale ?? 'zh-CN',
+    timeZone,
     pagination: {
       pageSize: options.pagination?.pageSize ?? 10,
     },

@@ -2,13 +2,10 @@ import rss from '@astrojs/rss';
 import type { APIRoute } from 'astro';
 import { escapeUTF8 } from 'entities';
 import { getPostUrl, getSortedPosts } from '../runtime/lib/content';
-import { siteLocale, siteTitle } from '../runtime/lib/site';
+import { formatDate } from '../runtime/lib/date';
+import { siteTitle } from '../runtime/lib/site';
 
 const RSS_EXT_NS = 'https://komorebi.keqing.moe/rss-ext';
-
-function formatDateForFeed(date: Date) {
-  return date.toLocaleDateString(siteLocale);
-}
 
 function formatReadingTime(milliseconds: number) {
   const totalSeconds = Math.ceil(milliseconds / 1000);
@@ -39,7 +36,7 @@ export const GET: APIRoute = async (context) => {
       k: RSS_EXT_NS,
     },
     items: blog.map((post) => {
-      const pubDateLabel = formatDateForFeed(post.data.pubDate);
+      const pubDateLabel = formatDate(post.data.pubDate);
       const updatedAt = post.data.updatedDate;
       const words = Math.round(post.readingStats.words);
       const readingTimeLabel = formatReadingTime(post.readingStats.time);
@@ -49,7 +46,7 @@ export const GET: APIRoute = async (context) => {
 
       if (updatedAt) {
         customDataParts.push(
-          `<k:updatedDateLabel>${escapeUTF8(formatDateForFeed(updatedAt))}</k:updatedDateLabel>`,
+          `<k:updatedDateLabel>${escapeUTF8(formatDate(updatedAt))}</k:updatedDateLabel>`,
         );
       }
 

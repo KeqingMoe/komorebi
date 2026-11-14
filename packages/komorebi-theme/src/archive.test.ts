@@ -1,6 +1,23 @@
-import { describe, expect, it } from 'vitest';
-import { buildArchiveYears, formatArchiveDay } from './runtime/lib/archive';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('virtual:komorebi-theme/config', () => ({
+  default: {
+    title: '木漏れ日',
+    tagline: '',
+    locale: 'zh-CN',
+    timeZone: 'Asia/Shanghai',
+    pagination: { pageSize: 10 },
+    home: { eyebrow: '', title: '', description: '' },
+    nav: [],
+    friends: [],
+    customCss: [],
+    labels: {},
+  },
+}));
+
+import { buildArchiveYears } from './runtime/lib/archive';
 import type { PostEntry } from './runtime/lib/content';
+import { formatDateISO } from './runtime/lib/date';
 
 function makePost(year: number, month: number, day: number): PostEntry {
   return {
@@ -11,7 +28,8 @@ function makePost(year: number, month: number, day: number): PostEntry {
     data: {
       title: `Post ${year}-${month}-${day}`,
       description: 'A test post',
-      pubDate: new Date(year, month - 1, day),
+      // 使用 UTC 正午，避免测试结果受运行机器时区影响
+      pubDate: new Date(Date.UTC(year, month - 1, day, 12)),
       draft: false,
     },
     readingStats: {
@@ -22,18 +40,6 @@ function makePost(year: number, month: number, day: number): PostEntry {
     },
   } as unknown as PostEntry;
 }
-
-describe('formatArchiveDay', () => {
-  it('pads single-digit days with zero', () => {
-    expect(formatArchiveDay(1)).toBe('01');
-    expect(formatArchiveDay(9)).toBe('09');
-  });
-
-  it('keeps two-digit days as-is', () => {
-    expect(formatArchiveDay(10)).toBe('10');
-    expect(formatArchiveDay(31)).toBe('31');
-  });
-});
 
 describe('buildArchiveYears', () => {
   it('returns empty array for empty input', () => {
@@ -51,7 +57,7 @@ describe('buildArchiveYears', () => {
     expect(result[0].months[0].month).toBe(3);
     expect(result[0].months[0].total).toBe(1);
     expect(result[0].months[0].days).toHaveLength(1);
-    expect(result[0].months[0].days[0].day).toBe(15);
+    expect(formatDateISO(result[0].months[0].days[0].date)).toBe('2025-03-15');
     expect(result[0].months[0].days[0].posts).toHaveLength(1);
   });
 

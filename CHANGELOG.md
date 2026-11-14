@@ -9,6 +9,8 @@
 - **BREAKING**: 运行环境要求提升到 Node `22.23.4+`；`create-komorebi` 默认生成 Astro 7 项目
 - **chore**: 升级 UnoCSS 到 `66.12`、`@astrojs/rss` 到 `4.0.19`
 - **docs**: 更新版本声明与 Markdown 扩展教程（`markdown.processor` / Sätteri）
+- **feat**: 新增 `timeZone` 配置项（默认 `Asia/Shanghai`），日期格式化、归档分组与 RSS 标签统一走同一套实现，输出不再受构建机器时区影响
+- **feat**: 所有 `<time>` 元素输出语义化的 `datetime` 属性
 
 ## [0.6.3] - 2026-04-21
 

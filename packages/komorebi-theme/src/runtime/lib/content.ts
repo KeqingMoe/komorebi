@@ -1,7 +1,6 @@
 import { type CollectionEntry, getCollection, getEntry } from 'astro:content';
 import getReadingTime, { type ReadTimeResults } from 'reading-time';
 import removeMd from 'remove-markdown';
-import { siteLocale } from './site';
 
 export type BlogEntry = CollectionEntry<'blog'>;
 export type SpecialEntry = CollectionEntry<'special'>;
@@ -9,12 +8,6 @@ export type SpecialEntry = CollectionEntry<'special'>;
 export type PostEntry = BlogEntry & {
   readingStats: ReadTimeResults;
 };
-
-const dateFormatter = new Intl.DateTimeFormat(siteLocale, {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-});
 
 export async function getPosts(
   filter?: (entry: BlogEntry) => boolean,
@@ -78,8 +71,4 @@ export function getPostUrl(id: string) {
 export function computeReadingTime(body: string) {
   const plainText = removeMd(body);
   return getReadingTime(plainText);
-}
-
-export function formatDate(date: Date) {
-  return dateFormatter.format(date);
 }

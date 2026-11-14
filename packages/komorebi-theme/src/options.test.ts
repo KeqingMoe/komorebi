@@ -60,6 +60,7 @@ describe('resolveThemeOptions', () => {
     expect(resolved.title).toBe('木漏れ日');
     expect(resolved.tagline).toBe('');
     expect(resolved.locale).toBe('zh-CN');
+    expect(resolved.timeZone).toBe('Asia/Shanghai');
     expect(resolved.pagination.pageSize).toBe(10);
     expect(resolved.repositoryUrl).toBeUndefined();
     expect(resolved.friends).toEqual([]);
@@ -100,6 +101,17 @@ describe('resolveThemeOptions', () => {
   it('overrides locale', () => {
     const resolved = resolveThemeOptions({ locale: 'en' });
     expect(resolved.locale).toBe('en');
+  });
+
+  it('overrides timeZone', () => {
+    const resolved = resolveThemeOptions({ timeZone: 'America/New_York' });
+    expect(resolved.timeZone).toBe('America/New_York');
+  });
+
+  it('throws on an invalid timeZone', () => {
+    expect(() => resolveThemeOptions({ timeZone: 'Mars/Olympus' })).toThrow(
+      /Invalid timeZone/,
+    );
   });
 
   it('overrides pagination size', () => {

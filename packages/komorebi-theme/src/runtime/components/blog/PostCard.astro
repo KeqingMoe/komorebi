@@ -1,5 +1,6 @@
 ---
-import { formatDate, getPostUrl, type PostEntry } from '../../lib/content';
+import { getPostUrl, type PostEntry } from '../../lib/content';
+import DateTime from '../common/DateTime.astro';
 import ReadingTime from '../widgets/ReadingTime.astro';
 import WordsCount from '../widgets/WordsCount.astro';
 
@@ -9,17 +10,13 @@ interface Props {
 
 const { post } = Astro.props;
 const { words, time: milliseconds } = post.readingStats;
-const publishedLabel = formatDate(post.data.pubDate);
-const updatedLabel = post.data.updatedDate
-  ? formatDate(post.data.updatedDate)
-  : undefined;
 ---
 
 <a href={getPostUrl(post.id)} class="group block">
   <article class="-mx-4 rounded-[22px] px-4 py-6 transition duration-200 hover:bg-white/38 sm:py-7">
     <div class="grid gap-4 md:grid-cols-[10rem_minmax(0,1fr)] md:gap-7">
       <div class="space-y-2.5 text-sm text-zinc-400 md:pt-0.5">
-        <time class="block font-medium text-zinc-600">{publishedLabel}</time>
+        <DateTime class="block font-medium text-zinc-600" datetime={post.data.pubDate} />
 
         <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
           <WordsCount {words} />
@@ -28,9 +25,9 @@ const updatedLabel = post.data.updatedDate
         </div>
 
         {
-          updatedLabel && (
+          post.data.updatedDate && (
             <p class="text-xs text-zinc-400">
-              更新于 {updatedLabel}
+              更新于 <DateTime datetime={post.data.updatedDate} />
             </p>
           )
         }

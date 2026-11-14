@@ -1,6 +1,7 @@
 ---
-import { type ArchiveMonth, formatArchiveDay } from '../../lib/archive';
+import type { ArchiveMonth } from '../../lib/archive';
 import { getPostUrl } from '../../lib/content';
+import { formatDateISO, formatDayOfMonth } from '../../lib/date';
 
 interface Props {
   group: ArchiveMonth;
@@ -23,10 +24,10 @@ const { month, total, days } = group;
 
   <div class="space-y-5">
     {
-      days.map(({ day, posts }) => (
+      days.map(({ date, posts }) => (
         <section class="grid gap-3 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-6">
           <h4 class="pt-0.5 text-sm font-medium tabular-nums text-zinc-400">
-            {formatArchiveDay(day)} 日
+            <time datetime={formatDateISO(date)}>{formatDayOfMonth(date)} 日</time>
           </h4>
 
           <ul class="space-y-1">

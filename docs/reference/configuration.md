@@ -10,6 +10,7 @@ export default defineConfig({
   tagline: '轻盈排版、安静阅读与持续写作。',
   repositoryUrl: 'https://github.com/user/repo',
   locale: 'zh-CN',
+  timeZone: 'Asia/Shanghai',
   pagination: { pageSize: 10 },
   home: {
     eyebrow: '欢迎来到这里',
@@ -76,6 +77,21 @@ export default defineConfig({
 ```ts
 export default defineConfig({
   locale: 'en',
+});
+```
+
+## `timeZone`
+
+`string` — 站点时区，使用 IANA 名称。
+
+决定日期以哪个时区显示（页面、归档分组、RSS 标签）。解析出的时间本身不会被改写，构建机器的时区也不会影响结果。
+
+- 默认值：`'Asia/Shanghai'`
+- 非法值会在加载配置时直接报错
+
+```ts
+export default defineConfig({
+  timeZone: 'Asia/Shanghai',
 });
 ```
 

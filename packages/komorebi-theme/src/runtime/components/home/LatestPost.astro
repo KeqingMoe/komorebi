@@ -1,5 +1,6 @@
 ---
-import { formatDate, getPostUrl, type PostEntry } from '../../lib/content';
+import { getPostUrl, type PostEntry } from '../../lib/content';
+import DateTime from '../common/DateTime.astro';
 import ReadingTime from '../widgets/ReadingTime.astro';
 
 interface Props {
@@ -14,9 +15,7 @@ const { post } = Astro.props as Props;
   class="group grid gap-3 py-5 transition sm:grid-cols-[10rem_minmax(0,1fr)_auto] sm:items-start sm:gap-6"
 >
   <div class="text-sm text-zinc-500">
-    <time class="block font-medium text-zinc-700">
-      {formatDate(post.data.pubDate)}
-    </time>
+    <DateTime class="block font-medium text-zinc-700" datetime={post.data.pubDate} />
   </div>
 
   <div class="min-w-0">

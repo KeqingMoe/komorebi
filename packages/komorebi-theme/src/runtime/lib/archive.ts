@@ -1,7 +1,8 @@
 import type { PostEntry } from './content';
+import { dateParts } from './date';
 
 export interface ArchiveDay {
-  day: number;
+  date: Date;
   posts: PostEntry[];
 }
 
@@ -17,15 +18,12 @@ export interface ArchiveYear {
   months: ArchiveMonth[];
 }
 
-type DayMap = Map<number, PostEntry[]>;
+type DayMap = Map<number, ArchiveDay>;
 type MonthMap = Map<number, DayMap>;
 
 export function buildArchiveYears(posts: PostEntry[]): ArchiveYear[] {
   const grouped = posts.reduce((acc, post) => {
-    const date = post.data.pubDate;
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+    const { year, month, day } = dateParts(post.data.pubDate);
 
     if (!acc.has(year)) {
       acc.set(year, new Map<number, DayMap>());
@@ -38,16 +36,16 @@ export function buildArchiveYears(posts: PostEntry[]): ArchiveYear[] {
 
     let dayMap = monthMap.get(month);
     if (!dayMap) {
-      dayMap = new Map<number, PostEntry[]>();
+      dayMap = new Map<number, ArchiveDay>();
       monthMap.set(month, dayMap);
     }
 
-    let dayPosts = dayMap.get(day);
-    if (!dayPosts) {
-      dayPosts = [];
-      dayMap.set(day, dayPosts);
+    let dayGroup = dayMap.get(day);
+    if (!dayGroup) {
+      dayGroup = { date: post.data.pubDate, posts: [] };
+      dayMap.set(day, dayGroup);
     }
-    dayPosts.push(post);
+    dayGroup.posts.push(post);
 
     return acc;
   }, new Map<number, MonthMap>());
@@ -58,7 +56,7 @@ export function buildArchiveYears(posts: PostEntry[]): ArchiveYear[] {
       (sum, dayMap) =>
         sum +
         Array.from(dayMap.values()).reduce(
-          (inner, dayPosts) => inner + dayPosts.length,
+          (inner, dayGroup) => inner + dayGroup.posts.length,
           0,
         ),
       0,
@@ -66,17 +64,10 @@ export function buildArchiveYears(posts: PostEntry[]): ArchiveYear[] {
     months: Array.from(monthMap.entries()).map(([month, dayMap]) => ({
       month,
       total: Array.from(dayMap.values()).reduce(
-        (sum, dayPosts) => sum + dayPosts.length,
+        (sum, dayGroup) => sum + dayGroup.posts.length,
         0,
       ),
-      days: Array.from(dayMap.entries()).map(([day, dayPosts]) => ({
-        day,
-        posts: dayPosts,
-      })),
+      days: Array.from(dayMap.values()),
     })),
   }));
-}
-
-export function formatArchiveDay(value: number) {
-  return String(value).padStart(2, '0');
 }

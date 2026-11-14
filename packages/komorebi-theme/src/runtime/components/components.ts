@@ -3,6 +3,7 @@ export { default as ArchiveTimeline } from './archive/ArchiveTimeline.astro';
 export { default as ArchiveYearSection } from './archive/ArchiveYearSection.astro';
 export { default as PaginationNav } from './blog/PaginationNav.astro';
 export { default as PostCard } from './blog/PostCard.astro';
+export { default as DateTime } from './common/DateTime.astro';
 export { default as PageIntro } from './common/PageIntro.astro';
 export { default as HomeHero } from './home/HomeHero.astro';
 export { default as LatestPost } from './home/LatestPost.astro';
