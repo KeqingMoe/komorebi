@@ -5,10 +5,10 @@
 ## 安装依赖
 
 ```sh
-npm i astro@^6 komorebi-theme
+npm i astro@^7 komorebi-theme
 ```
 
-komorebi 要求 Astro 6，以及 Node `22.12.0` 或更高版本。
+komorebi 要求 Astro 7，以及 Node `22.23.4` 或更高版本。
 
 ## 注册主题
 

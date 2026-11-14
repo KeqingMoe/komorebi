@@ -2,7 +2,7 @@
 
 一个基于 Astro 的博客主题，注重轻盈排版、安静阅读与持续写作。
 
-要求 Astro 6 和 Node `22.12.0` 或更高版本。
+要求 Astro 7 和 Node `22.23.4` 或更高版本。
 
 ## 快速开始
 
@@ -17,7 +17,7 @@ npm create komorebi
 终端执行：
 
 ```sh
-npm i astro@^6 komorebi-theme
+npm i astro@^7 komorebi-theme
 ```
 
 `astro.config.ts`:

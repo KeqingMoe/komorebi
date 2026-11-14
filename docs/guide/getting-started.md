@@ -4,7 +4,7 @@
 
 ## 前置要求
 
-- [Node.js](https://nodejs.org/) `22.12.0` 或更高版本
+- [Node.js](https://nodejs.org/) `22.23.4` 或更高版本
 - npm（随 Node.js 附带）
 
 ## 创建项目

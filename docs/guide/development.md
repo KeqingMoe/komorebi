@@ -40,7 +40,7 @@ CLI 脚手架工具。通过 `npm create komorebi` 使用。
 
 ## 环境要求
 
-- [Node.js](https://nodejs.org/) `22.12.0` 或更高版本
+- [Node.js](https://nodejs.org/) `22.23.4` 或更高版本
 - npm
 
 ## 开发命令

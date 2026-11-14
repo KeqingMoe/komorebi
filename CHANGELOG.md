@@ -5,6 +5,10 @@
 ## [Unreleased]
 
 - **BREAKING**: 移除全局外链处理（`externalLinks` 配置项、外链 middleware 与指示器图标）
+- **BREAKING**: 升级到 Astro 7，仅支持 Astro 7（Vite 8 / Rust 编译器 / Sätteri 默认 Markdown 处理器）
+- **BREAKING**: 运行环境要求提升到 Node `22.23.4+`；`create-komorebi` 默认生成 Astro 7 项目
+- **chore**: 升级 UnoCSS 到 `66.12`、`@astrojs/rss` 到 `4.0.19`
+- **docs**: 更新版本声明与 Markdown 扩展教程（`markdown.processor` / Sätteri）
 
 ## [0.6.3] - 2026-04-21
 

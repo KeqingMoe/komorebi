@@ -235,30 +235,64 @@ giscus 评论区本身由 giscus.app 的脚本注入，不涉及跨域问题。�
 
 Astro 的 `markdown` 配置不需要 komorebi 代理——直接在 `astro.config.ts` 中设置即可。以下是一些常见场景。
 
+Astro 7 默认使用 Sätteri 处理器。下面的写法同时给出 Sätteri 和 Unified 两种。
+
 ### 数学公式（KaTeX）
 
 1. 安装依赖：
 
-    ```sh
-    npm i remark-math rehype-katex katex
+    ::: code-group
+
+    ```sh [Sätteri]
+    npm i @astrojs/markdown-satteri satteri satteri-katex katex
     ```
+
+    ```sh [Unified]
+    npm i @astrojs/markdown-remark remark-math rehype-katex katex
+    ```
+
+    :::
 
 2. 在 `astro.config.ts` 中配置插件：
 
-    ```ts
+    ::: code-group
+
+    ```ts [Sätteri]
     import { defineConfig } from 'astro/config';
+    import { satteri } from '@astrojs/markdown-satteri';
     import komorebi from 'komorebi-theme';
-    import remarkMath from 'remark-math'; // [!code focus:2]
+    import { satteriKatex } from 'satteri-katex';
+
+    export default defineConfig({
+      integrations: [komorebi()],
+      markdown: {
+        processor: satteri({
+          features: { math: true }, // [!code focus:2]
+          mdastPlugins: [satteriKatex()],
+        }),
+      },
+    });
+    ```
+
+    ```ts [Unified]
+    import { defineConfig } from 'astro/config';
+    import { unified } from '@astrojs/markdown-remark';
+    import komorebi from 'komorebi-theme';
+    import remarkMath from 'remark-math';
     import rehypeKatex from 'rehype-katex';
 
     export default defineConfig({
       integrations: [komorebi()],
       markdown: {
-        remarkPlugins: [remarkMath], // [!code focus:2]
-        rehypePlugins: [rehypeKatex],
+        processor: unified({
+          remarkPlugins: [remarkMath], // [!code focus:2]
+          rehypePlugins: [rehypeKatex],
+        }),
       },
     });
     ```
+
+    :::
 
 3. 在 `komorebi.config.ts` 中引入 KaTeX 样式：
 
@@ -276,18 +310,40 @@ Astro 的 `markdown` 配置不需要 komorebi 代理——直接在 `astro.confi
 作者正是在试图为自己的 Blog 配置 KaTeX 的时候想起来没做自定义 CSS 支持。
 :::
 
-### Smartypants
+### 智能标点
 
-Astro 内置支持 smartypants（自动将直引号转换为弯引号等），且默认开启。
+默认开启，会把直引号转成弯引号、`--` 转成破折号等。中文博客通常建议关闭，否则中文引号和省略号会被不必要地转换。
 
-对于中文博客，默认关闭 smartypants 可能更合适——它会把中文引号和省略号等做不必要的转换。如果你遇到了引号异常，可以显式关闭：
+::: code-group
 
-```ts
+```ts [Sätteri（默认）]
+import { defineConfig } from 'astro/config';
+import { satteri } from '@astrojs/markdown-satteri';
+import komorebi from 'komorebi-theme';
+
 export default defineConfig({
+  integrations: [komorebi()],
   markdown: {
-    smartypants: false, // [!code focus]
+    processor: satteri({
+      features: { smartPunctuation: false }, // [!code focus]
+    }),
   },
 });
 ```
 
-无需主题介入，Astro 原生支持此配置。
+```ts [Unified]
+import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
+import komorebi from 'komorebi-theme';
+
+export default defineConfig({
+  integrations: [komorebi()],
+  markdown: {
+    processor: unified({
+      smartypants: false, // [!code focus]
+    }),
+  },
+});
+```
+
+:::
