@@ -2,7 +2,7 @@
 
 本文档记录本项目的所有重要变更。格式部分遵循 Keep a Changelog 规范，版本号遵循语义化版本号规范。
 
-## [Unreleased]
+## [0.7.0] - 2026-11-15
 
 - **BREAKING**: 移除全局外链处理（`externalLinks` 配置项、外链 middleware 与指示器图标）
 - **BREAKING**: 升级到 Astro 7，仅支持 Astro 7（Vite 8 / Rust 编译器 / Sätteri 默认 Markdown 处理器）
