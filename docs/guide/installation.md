@@ -77,10 +77,10 @@ export const collections = {
 
 主题使用两个集合：
 
-| 集合 | 用途 | 文件位置 |
-| - | - | - |
-| `blog` | 博客文章 | `src/content/blog/**/*.{md,mdx}` |
-| `special` | 特殊页面（目前仅包含关于） | `src/content/about.{md,mdx}` |
+| 集合      | 用途                       | 文件位置                         |
+| --------- | -------------------------- | -------------------------------- |
+| `blog`    | 博客文章                   | `src/content/blog/**/*.{md,mdx}` |
+| `special` | 特殊页面（目前仅包含关于） | `src/content/about.{md,mdx}`     |
 
 详细的内容格式参见[写文章](./writing.md)。
 

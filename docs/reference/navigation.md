@@ -66,13 +66,13 @@ export default defineConfig({
 
 ### 可用的链接函数
 
-| 函数 | 默认标签 | 链接 |
-| - | - | - |
-| `homeLink(label?)` | 首页 | `/` |
-| `blogLink(label?)` | 文章 | `/blog` |
-| `archiveLink(label?)` | 归档 | `/archive` |
-| `friendsLink(label?)` | 友链 | `/friends` |
-| `aboutLink(label?)` | 关于 | `/about` |
+| 函数                  | 默认标签 | 链接       |
+| --------------------- | -------- | ---------- |
+| `homeLink(label?)`    | 首页     | `/`        |
+| `blogLink(label?)`    | 文章     | `/blog`    |
+| `archiveLink(label?)` | 归档     | `/archive` |
+| `friendsLink(label?)` | 友链     | `/friends` |
+| `aboutLink(label?)`   | 关于     | `/about`   |
 
 每个函数接受一个可选的 `label` 参数，覆盖默认标签文本：
 

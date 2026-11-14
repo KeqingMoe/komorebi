@@ -29,7 +29,7 @@ const props = {
     title="文章列表"
     description="按发布时间浏览全部文章，保留清晰的信息层级和更轻的阅读节奏。"
   >
-    <p slot="meta">第 {current} 页 · 共 {total} 页 · 每页 {size} 篇</p>
+    <p slot="meta">{`第 ${current} 页 · 共 ${total} 页 · 每页 ${size} 篇`}</p>
     <span slot="meta" class="text-zinc-300">·</span>
     <a
       slot="meta"

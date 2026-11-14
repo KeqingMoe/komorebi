@@ -118,10 +118,10 @@ export default defineConfig({
 
 控制首页 hero 区域显示的文本。
 
-| 字段 | 类型 | 默认值 | 说明 |
-| - | - | - | - |
-| `eyebrow` | `string` | `'欢迎来到这里'` | hero 区域小标题 |
-| `title` | `string` | `'Hi~'` | hero 区域大标题 |
+| 字段          | 类型     | 默认值                                                           | 说明              |
+| ------------- | -------- | ---------------------------------------------------------------- | ----------------- |
+| `eyebrow`     | `string` | `'欢迎来到这里'`                                                 | hero 区域小标题   |
+| `title`       | `string` | `'Hi~'`                                                          | hero 区域大标题   |
 | `description` | `string` | `'欢迎来到我的博客，希望你能在这里读到一些值得停留下来的内容。'` | hero 区域描述文字 |
 
 ```ts
@@ -154,12 +154,12 @@ export default defineConfig({
 
 每项显示为友链页面上的一张卡片。
 
-| 字段 | 类型 | 必填 | 说明 |
-| - | - | - | - |
-| `name` | `string` | 是 | 朋友的昵称或网站名称 |
-| `url` | `string` | 是 | 网站链接 |
-| `avatar` | `string` | 是 | 头像 URL |
-| `description` | `string` | 是 | 简短描述 |
+| 字段          | 类型     | 必填 | 说明                 |
+| ------------- | -------- | ---- | -------------------- |
+| `name`        | `string` | 是   | 朋友的昵称或网站名称 |
+| `url`         | `string` | 是   | 网站链接             |
+| `avatar`      | `string` | 是   | 头像 URL             |
+| `description` | `string` | 是   | 简短描述             |
 
 ```ts
 export default defineConfig({
@@ -212,31 +212,31 @@ export default defineConfig({
 
 ### `GiscusOptions` 字段
 
-| 字段 | 类型 | 必填 | 默认值 | 说明 |
-| - | - | - | - | - |
-| `repo` | `` `${string}/${string}` `` | 是 | — | GitHub 仓库，格式 `owner/repo` |
-| `repoId` | `string` | 是 | — | 仓库 ID（从 giscus.app 获取） |
-| `category` | `string` | 否 | — | Discussion 分类名称 |
-| `categoryId` | `string` | 否 | — | 分类 ID（从 giscus.app 获取） |
-| `mapping` | `string` | 否 | `'pathname'` | 页面与 Discussion 的映射方式 |
-| `term` | `string` | 否 | — | 搜索关键词（`mapping` 为 `specific` 时使用） |
-| `strict` | `boolean` | 否 | — | 是否启用严格标题匹配 |
-| `reactionsEnabled` | `boolean` | 否 | — | 是否启用主帖表情回应 |
-| `emitMetadata` | `boolean` | 否 | — | 是否定期发送 discussion 元数据 |
-| `inputPosition` | `'top' \| 'bottom'` | 否 | — | 评论框位置 |
-| `lang` | `string` | 否 | — | 界面语言，如 `'zh-CN'` |
-| `theme` | `string \| { preset: Theme }` | 否 | 内置主题 | 评论区主题，详见下文 |
+| 字段               | 类型                          | 必填 | 默认值       | 说明                                         |
+| ------------------ | ----------------------------- | ---- | ------------ | -------------------------------------------- |
+| `repo`             | `` `${string}/${string}` ``   | 是   | —            | GitHub 仓库，格式 `owner/repo`               |
+| `repoId`           | `string`                      | 是   | —            | 仓库 ID（从 giscus.app 获取）                |
+| `category`         | `string`                      | 否   | —            | Discussion 分类名称                          |
+| `categoryId`       | `string`                      | 否   | —            | 分类 ID（从 giscus.app 获取）                |
+| `mapping`          | `string`                      | 否   | `'pathname'` | 页面与 Discussion 的映射方式                 |
+| `term`             | `string`                      | 否   | —            | 搜索关键词（`mapping` 为 `specific` 时使用） |
+| `strict`           | `boolean`                     | 否   | —            | 是否启用严格标题匹配                         |
+| `reactionsEnabled` | `boolean`                     | 否   | —            | 是否启用主帖表情回应                         |
+| `emitMetadata`     | `boolean`                     | 否   | —            | 是否定期发送 discussion 元数据               |
+| `inputPosition`    | `'top' \| 'bottom'`           | 否   | —            | 评论框位置                                   |
+| `lang`             | `string`                      | 否   | —            | 界面语言，如 `'zh-CN'`                       |
+| `theme`            | `string \| { preset: Theme }` | 否   | 内置主题     | 评论区主题，详见下文                         |
 
 `mapping` 支持的值：
 
-| 值 | 说明 |
-| - | - |
-| `'pathname'` | 按页面路径匹配（推荐） |
-| `'url'` | 按完整 URL 匹配 |
-| `'title'` | 按页面标题匹配 |
-| `'og:title'` | 按 Open Graph 标题匹配 |
+| 值           | 说明                       |
+| ------------ | -------------------------- |
+| `'pathname'` | 按页面路径匹配（推荐）     |
+| `'url'`      | 按完整 URL 匹配            |
+| `'title'`    | 按页面标题匹配             |
+| `'og:title'` | 按 Open Graph 标题匹配     |
 | `'specific'` | 按 `term` 指定的关键词匹配 |
-| `'number'` | 按 Discussion 编号匹配 |
+| `'number'`   | 按 Discussion 编号匹配     |
 
 ### 主题配置
 
@@ -319,14 +319,14 @@ export default defineConfig({
 
 可以覆盖主题中显示的各种文本标签。未覆盖的字段使用默认值。
 
-| 字段 | 默认值 | 说明 |
-| - | - | - |
-| `latestPostsHeading` | `'最近写了什么'` | 首页最新文章区域的标题 |
-| `latestPostsMore` | `'查看全部 →'` | 查看更多文章的链接文字 |
-| `latestPostsEmptyPrefix` | `'暂时还没有公开文章，先去'` | 没有文章时的提示前缀 |
-| `latestPostsEmptyLink` | `'关于页面'` | 没有文章时链接的文字 |
-| `latestPostsEmptySuffix` | `'看看吧。'` | 没有文章时的提示后缀 |
-| `footerRss` | `'订阅 RSS'` | 页脚 RSS 链接的文字 |
+| 字段                     | 默认值                       | 说明                   |
+| ------------------------ | ---------------------------- | ---------------------- |
+| `latestPostsHeading`     | `'最近写了什么'`             | 首页最新文章区域的标题 |
+| `latestPostsMore`        | `'查看全部 →'`               | 查看更多文章的链接文字 |
+| `latestPostsEmptyPrefix` | `'暂时还没有公开文章，先去'` | 没有文章时的提示前缀   |
+| `latestPostsEmptyLink`   | `'关于页面'`                 | 没有文章时链接的文字   |
+| `latestPostsEmptySuffix` | `'看看吧。'`                 | 没有文章时的提示后缀   |
+| `footerRss`              | `'订阅 RSS'`                 | 页脚 RSS 链接的文字    |
 
 例如：
 

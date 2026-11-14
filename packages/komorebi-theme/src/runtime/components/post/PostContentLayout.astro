@@ -67,14 +67,12 @@ const processComments = (comments: GiscusOptions) => {
 
     {(prev || next) && <AdjacentNav {prev} {next} />}
 
-    {
-      comments && (
-        <>
-          <div class="h-50px" />
-          <GiscusComments {...processComments(comments)} />
-        </>
-      )
-    }
+    {comments && (
+      <>
+        <div class="h-50px" />
+        <GiscusComments {...processComments(comments)} />
+      </>
+    )}
   </div>
 
   <TOC {headings} />

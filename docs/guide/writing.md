@@ -37,13 +37,13 @@ pubDate: 2026-03-30
 
 ### 字段说明
 
-| 字段 | 类型 | 必填 | 默认值 | 说明 |
-| - | - | - | - | - |
-| `title` | `string` | 是 | N / A | 文章标题，显示在文章详情页顶部和列表中 |
-| `description` | `string` | 是 | N / A | 文章描述，用于 SEO `<meta>` 标签和列表预览 |
-| `pubDate` | `date` | 是 | N / A | 发布日期，格式为 `YYYY-MM-DD` |
-| `updatedDate` | `date` | 否 | `undefined` | 最后更新日期，设置后会在文章头部显示「更新于」 |
-| `draft` | `boolean` | 否 | `true` | 草稿标记 |
+| 字段          | 类型      | 必填 | 默认值      | 说明                                           |
+| ------------- | --------- | ---- | ----------- | ---------------------------------------------- |
+| `title`       | `string`  | 是   | N / A       | 文章标题，显示在文章详情页顶部和列表中         |
+| `description` | `string`  | 是   | N / A       | 文章描述，用于 SEO `<meta>` 标签和列表预览     |
+| `pubDate`     | `date`    | 是   | N / A       | 发布日期，格式为 `YYYY-MM-DD`                  |
+| `updatedDate` | `date`    | 否   | `undefined` | 最后更新日期，设置后会在文章头部显示「更新于」 |
+| `draft`       | `boolean` | 否   | `true`      | 草稿标记                                       |
 
 ### 草稿机制
 
@@ -91,12 +91,12 @@ pubDate: 2026-03-30
 
 ### 特殊页面 Frontmatter
 
-| 字段 | 类型 | 必填 | 说明 |
-| - | - | - | - |
-| `title` | `string` | 是 | 页面标题 |
-| `description` | `string` | 否 | 页面描述 |
-| `pubDate` | `date` | 是 | 发布日期 |
-| `updatedDate` | `date` | 否 | 最后更新日期 |
+| 字段          | 类型     | 必填 | 说明         |
+| ------------- | -------- | ---- | ------------ |
+| `title`       | `string` | 是   | 页面标题     |
+| `description` | `string` | 否   | 页面描述     |
+| `pubDate`     | `date`   | 是   | 发布日期     |
+| `updatedDate` | `date`   | 否   | 最后更新日期 |
 
 特殊页面没有 `draft` 字段——只要文件存在，页面就会显示。
 
